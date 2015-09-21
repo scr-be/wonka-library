@@ -2,15 +2,16 @@
     "name"        : "scribe/wonka-library",
     "license"     : "MIT",
     "type"        : "library",
-    "description" : "Collection of framework-agnostic utilities and helper scripts.",
+    "homepage"    : "https://scr.be/wonka-library/homepage",
+    "description" : "Collection of framework-agnostic utilities and helper functions.",
     "support" : {
-        "email"   : "rmf@scr.be",
-        "source"  : "https://scr.be/wonka-library/git",
-        "issues"  : "https://scr.be/wonka-library/issues",
-        "irc"     : "irc://irc.efnet.org/scribe"
+        "email"  : "rmf@scr.be",
+        "source" : "https://scr.be/wonka-library/git",
+        "issues" : "https://scr.be/wonka-library/issues",
+        "irc"    : "irc://irc.efnet.org/scribe"
     },
     "keywords"    : [
-        "wonka-library", "scribe-wonka-library", "scr.be", "scribe", "scribenet", "scribe-softwade", "scribe-services"
+        "wonka-library", "scribe-wonka-library", "library", "scr.be", "scribe", "scribenet", "scribe-softwade", "scribe-services"
     ],
     "authors" : [
         {
@@ -32,6 +33,9 @@
     },
     "conflict" : {
         "scribe/mantle-bundle" : "<2.1.0"
+    },
+    "suggest" : {
+        "scribe/wonka-bundle" : "Provides this library, as well as Symfony-integration and additional functionality."
     },
     "autoload" : {
         "psr-4" : {
