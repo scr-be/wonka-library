@@ -36,5 +36,5 @@ script:
     - bin/phpunit --verbose --configuration phpunit.xml.dist
 
 after_script:
-    - bin/coveralls -c .coveralls.yml -vvv
+    - bin/coveralls -vvv
     - bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml

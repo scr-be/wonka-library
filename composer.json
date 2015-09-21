@@ -3,7 +3,7 @@
     "license"     : "MIT",
     "type"        : "library",
     "homepage"    : "https://scr.be/wonka-library/home",
-    "description" : "Collection of framework-agnostic utilities and helper classes.",
+    "description" : "Collection of framework-agnostic utilities and classes.",
     "support" : {
         "email"  : "rmf@scr.be",
         "source" : "https://scr.be/wonka-library/git",
