@@ -29,8 +29,8 @@ class ExtensionTest extends WonkaUnitTestCase
     public function testAreAnyEnabledSuccess()
     {
         static::assertEquals(
-            'memcached',
-            Extension::areAnyEnabled('not-real-extension', 'memcached', 'mbstring')
+            'igbinary',
+            Extension::areAnyEnabled('not-real-extension', 'igbinary', 'mbstring')
         );
     }
 
@@ -44,7 +44,7 @@ class ExtensionTest extends WonkaUnitTestCase
     public function testAreAllEnabledSuccess()
     {
         static::assertTrue(
-            Extension::areAllEnabled('memcached', 'igbinary', 'twig')
+            Extension::areAllEnabled('igbinary', 'twig')
         );
     }
 
