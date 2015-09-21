@@ -20,6 +20,7 @@ notifications:
 
 before_install:
     - git clone https://github.com/scribenet/world-configuration-public.git
+    - sh app/config/shared_public/tests/travis/php-build-igbinary.sh
     - phpenv config-add world-configuration-public/tests/travis/config-timezone.ini
     - phpenv rehash
     - mkdir -p build/logs
