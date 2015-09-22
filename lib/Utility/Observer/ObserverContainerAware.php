@@ -11,8 +11,8 @@
 
 namespace Scribe\Wonka\Utility\Observer;
 
-use Scribe\Component\DependencyInjection\Container\ContainerAwareInterface;
-use Scribe\Component\DependencyInjection\Container\ContainerAwareTrait;
+use Scribe\WonkaBundle\Component\DependencyInjection\Container\ContainerAwareInterface;
+use Scribe\WonkaBundle\Component\DependencyInjection\Container\ContainerAwareTrait;
 
 /**
  * Class ObserverContainerAware.
