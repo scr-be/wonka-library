@@ -23,7 +23,7 @@ class DeprecationErrorHandler
     /**
      * @var string
      */
-    const MSG_PKG_NAME = 'Mantle';
+    const MSG_PKG_NAME = 'Wonka';
 
     /**
      * @var string

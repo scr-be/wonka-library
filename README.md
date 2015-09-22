@@ -5,7 +5,7 @@
 [![Coveralls](https://img.shields.io/coveralls/scr-be/wonka-library/master.svg?style=flat-square)](https://gemnasium.com/scr-be/wonka-library)
 [![Gemnasium](https://img.shields.io/gemnasium/scr-be/wonka-library.svg?style=flat-square)](https://coveralls.io/github/scr-be/wonka-library)
 
-*scribe/wonka-library* is a collection of framework-agnostic utilities and classes..
+*scribe/wonka-library* is a collection of framework-agnostic utilities and classes.
 
 ## License, Usage, Documentation
 

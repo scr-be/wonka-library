@@ -12,7 +12,6 @@
 namespace Scribe\Wonka\Exception\Model;
 
 use Scribe\Wonka\Utility\Error\DeprecationErrorHandler;
-use Symfony\Component\Debug\Exception\ContextErrorException;
 use Scribe\Wonka\Utility\ClassInfo;
 
 /**
@@ -99,7 +98,7 @@ trait ExceptionTrait
 
         try {
             $message = sprintf($message, ...$sprintfArgs);
-        } catch (ContextErrorException $e) {
+        } catch (\Exception $e) {
             $message .= ' (Substitution values for message could not be provided.)';
         }
 
