@@ -12,9 +12,9 @@
 namespace Scribe\Wonka\Tests\Utility\System\Storage;
 
 use Scribe\Wonka\Utility\System\Storage\SystemStorage;
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
-class FilesystemTest extends WonkaUnitTestCase
+class FilesystemTest extends WonkaTestCase
 {
     public function testGenerateRandom()
     {

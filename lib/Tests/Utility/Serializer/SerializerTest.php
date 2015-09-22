@@ -11,10 +11,10 @@
 
 namespace Scribe\Wonka\Tests\Utility\Serializer;
 
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 use Scribe\Wonka\Utility\Serializer\Serializer;
 
-class SerializerTest extends WonkaUnitTestCase
+class SerializerTest extends WonkaTestCase
 {
     public function testThrowsExceptionOnInstantiation()
     {

@@ -13,12 +13,12 @@ namespace Scribe\Wonka\Tests\Component\Hydrator\Mapping;
 
 use Scribe\Wonka\Component\Hydrator\Mapping\HydratorMapping;
 use Scribe\Wonka\Tests\Component\Hydrator\HydratorMockObjectInstance;
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
 /**
  * Class HydratorMappingTest.
  */
-class HydratorMappingTest extends WonkaUnitTestCase
+class HydratorMappingTest extends WonkaTestCase
 {
     /**
      * @var \stdClass

@@ -12,9 +12,9 @@
 namespace Scribe\Wonka\Tests\Utility\System\Execute;
 
 use Scribe\Wonka\Utility\System\Execute\SystemExecute;
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
-class SystemExecuteTest extends WonkaUnitTestCase
+class SystemExecuteTest extends WonkaTestCase
 {
     public function testFactory()
     {

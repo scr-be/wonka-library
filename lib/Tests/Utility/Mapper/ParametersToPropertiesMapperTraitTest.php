@@ -12,9 +12,9 @@
 namespace Scribe\Wonka\Tests\Utility\System;
 
 use Scribe\Wonka\Tests\Utility\Mapper\MapperFixture;
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
-class ParametersToPropertiesMapperTraitTest extends WonkaUnitTestCase
+class ParametersToPropertiesMapperTraitTest extends WonkaTestCase
 {
     public function testAssignmentMapping()
     {

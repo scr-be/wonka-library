@@ -12,9 +12,9 @@
 namespace Scribe\Wonka\Tests\Utility;
 
 use Scribe\Wonka\Utility\ClassInfo;
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
-class ClassInfoTest extends WonkaUnitTestCase
+class ClassInfoTest extends WonkaTestCase
 {
     public function testGet()
     {

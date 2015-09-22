@@ -11,13 +11,13 @@
 
 namespace Scribe\Wonka\Tests\Utility\Reflection;
 
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 use Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyser;
 
 /**
  * Class ClassReflectionAnalyserTest.
  */
-class ClassReflectionAnalyserTest extends WonkaUnitTestCase
+class ClassReflectionAnalyserTest extends WonkaTestCase
 {
     /**
      * @var string

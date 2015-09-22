@@ -11,11 +11,11 @@
 
 namespace Scribe\Wonka\Tests\Utility;
 
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 use Scribe\Wonka\Utility\Plode\Plode;
 use Scribe\Wonka\Exception\BadFunctionCallException;
 
-class PlodeTest extends WonkaUnitTestCase
+class PlodeTest extends WonkaTestCase
 {
     public function testShouldThrowExceptionOnInstantiation()
     {

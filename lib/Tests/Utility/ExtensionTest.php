@@ -11,10 +11,10 @@
 
 namespace Scribe\Wonka\Tests\Utility;
 
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 use Scribe\Wonka\Utility\Extension;
 
-class ExtensionTest extends WonkaUnitTestCase
+class ExtensionTest extends WonkaTestCase
 {
     public function testThrowsExceptionOnInstantiation()
     {

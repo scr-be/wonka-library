@@ -15,12 +15,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Scribe\Wonka\Component\Hydrator\Mapping\HydratorMapping;
 use Scribe\Wonka\Component\Hydrator\Manager\HydratorManager;
 use Scribe\Wonka\Tests\Component\Hydrator\HydratorMockObjectInstance;
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
 /**
  * Class HydratorManagerTest.
  */
-class HydratorManagerTest extends WonkaUnitTestCase
+class HydratorManagerTest extends WonkaTestCase
 {
     /**
      * @var HydratorMockObjectInstance

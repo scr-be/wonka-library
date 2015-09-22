@@ -11,10 +11,10 @@
 
 namespace Scribe\Wonka\Tests\Utility\Filter;
 
-use Scribe\Wonka\Utility\UnitTest\WonkaUnitTestCase;
+use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 use Scribe\Wonka\Utility\Filter\StringFilter;
 
-class StringFilterTest extends WonkaUnitTestCase
+class StringFilterTest extends WonkaTestCase
 {
     /**
      * @var StringFilter
