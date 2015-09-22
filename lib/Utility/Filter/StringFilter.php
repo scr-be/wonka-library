@@ -274,9 +274,8 @@ class StringFilter
     {
         if (true === (mb_strlen($string) < $length)) {
             if (true === $throw) {
-                throw new RuntimeException(
-                    sprintf('The string "%s" must be greater than %n characters.', (string) $string, (int) $length)
-                );
+                throw new RuntimeException('The string "%s" must be greater than %n characters.', null, null,
+                    (string) $string, (int) $length);
             }
 
             return false;

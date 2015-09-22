@@ -72,15 +72,11 @@ class SystemExecute extends AbstractSystemExecute
     protected function sanitizeAndGetCommand()
     {
         if ($this->command === null) {
-            throw new RuntimeException('Cannot run an empty command in "%s".', null, null, null, __METHOD__);
+            throw new RuntimeException('Cannot run an empty command in "%s".', null, null, __METHOD__);
         }
 
-        return sprintf(
-            '%s -c \'%s %s\'',
-            (string) $this->shell,
-            (string) $this->command,
-            $this->stdErrToNull === true ? '2> /dev/null' : '2>&1'
-        );
+        return sprintf('%s -c \'%s %s\'', (string) $this->shell, (string) $this->command,
+            ($this->stdErrToNull === true ? '2> /dev/null' : '2>&1'));
     }
 }
 

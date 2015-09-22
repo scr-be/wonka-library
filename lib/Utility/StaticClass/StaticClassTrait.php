@@ -26,9 +26,7 @@ trait StaticClassTrait
      */
     final public function __construct(...$values)
     {
-        throw new RuntimeException(
-            sprintf('Cannot instantiate static class %s.', get_called_class())
-        );
+        throw new RuntimeException('Cannot instantiate static class %s.', null, null, get_called_class());
     }
 }
 

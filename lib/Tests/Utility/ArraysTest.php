@@ -45,7 +45,7 @@ class ArraysTest extends WonkaTestCase
     {
         $this->setExpectedException(
             'Scribe\Wonka\Exception\RuntimeException',
-            'There is no way to determine if en empty array is a hash or not.'
+            'There is no way to determine if an empty array is a hash or not.'
         );
 
         Arrays::isHash([]);

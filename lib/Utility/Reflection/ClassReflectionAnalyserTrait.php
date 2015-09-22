@@ -205,8 +205,7 @@ trait ClassReflectionAnalyserTrait
         if ($filter === false) {
             return (array) $this
                 ->reflectionClass
-                ->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE)
-            ;
+                ->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PRIVATE);
         }
 
         if ($filter === \ReflectionProperty::IS_PRIVATE) {
@@ -217,10 +216,8 @@ trait ClassReflectionAnalyserTrait
             return $this->getPropertiesPublic();
         }
 
-        throw new InvalidArgumentException(
-            'Invalid filter provided to getProperties. Valid filters are false (for all properties), \ReflectionProperty::IS_PRIVATE '.
-            '\ReflectionProperty::IS_PROTECTED, and \ReflectionProperty::IS_PUBLIC.'
-        );
+        throw new InvalidArgumentException('Invalid filter provided to getProperties. Valid filters are false (for all properties), ' .
+            '\ReflectionProperty::IS_PRIVATE \ReflectionProperty::IS_PROTECTED, and \ReflectionProperty::IS_PUBLIC.');
     }
 
     /**
@@ -232,8 +229,7 @@ trait ClassReflectionAnalyserTrait
     {
         return (array) $this
             ->reflectionClass
-            ->getProperties(\ReflectionProperty::IS_PUBLIC)
-        ;
+            ->getProperties(\ReflectionProperty::IS_PUBLIC);
     }
 
     /**
@@ -245,8 +241,7 @@ trait ClassReflectionAnalyserTrait
     {
         return (array) $this
             ->reflectionClass
-            ->getProperties(\ReflectionProperty::IS_PROTECTED)
-        ;
+            ->getProperties(\ReflectionProperty::IS_PROTECTED);
     }
 
     /**
@@ -258,8 +253,7 @@ trait ClassReflectionAnalyserTrait
     {
         return (array) $this
             ->reflectionClass
-            ->getProperties(\ReflectionProperty::IS_PRIVATE)
-        ;
+            ->getProperties(\ReflectionProperty::IS_PRIVATE);
     }
 
     /**
@@ -276,9 +270,8 @@ trait ClassReflectionAnalyserTrait
         $className = $class->getName();
 
         if (false === $this->hasProperty($property)) {
-            throw new InvalidArgumentException(
-                sprintf('The requested property %s does not exist on the passed class %s.', $property, $className)
-            );
+            throw new InvalidArgumentException('The requested property %s does not exist on the passed class %s.',
+                null, null, $property, $className);
         }
 
         $classProperty = $class->getProperty($property);
@@ -301,9 +294,8 @@ trait ClassReflectionAnalyserTrait
         $className = $class->getName();
 
         if (false === $this->hasMethod($method)) {
-            throw new InvalidArgumentException(
-                sprintf('The requested method %s does not exist on the passed class %s.', $method, $className)
-            );
+            throw new InvalidArgumentException('The requested method %s does not exist on the passed class %s.',
+                null, null, $method, $className);
         }
 
         $classMethod = $class->getMethod($method);
@@ -329,9 +321,7 @@ trait ClassReflectionAnalyserTrait
             return $this->reflectionClass;
         }
 
-        throw new InvalidArgumentException(
-            'No valid object reflection class instance provided explicitly via method call or injected into object instance.'
-        );
+        throw new InvalidArgumentException('No valid object reflection class instance provided explicitly via method call or injected into object instance.');
     }
 
     /**

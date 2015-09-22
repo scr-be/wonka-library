@@ -11,8 +11,6 @@
 
 namespace Scribe\Wonka\Exception;
 
-use Symfony\Component\Debug\Exception\ContextErrorException;
-use Scribe\Wonka\Utility\Error\DeprecationErrorHandler;
 use Scribe\Wonka\Utility\ClassInfo;
 
 /**
@@ -21,121 +19,70 @@ use Scribe\Wonka\Utility\ClassInfo;
 trait ExceptionTrait
 {
     /**
-     * Optional array of attributes.
-     *
      * @var array
      */
     protected $attributes;
 
     /**
-     * Get an instance of the exception, allowing for setting the message and any substitution parameters.
-     *
-     * @deprecated
-     *
-     * @param string|null $message
-     * @param mixed       ...$sprintfArgs
-     *
-     * @return $this
-     */
-    public static function getInstance($message, ...$sprintfArgs)
-    {
-        DeprecationErrorHandler::trigger(
-            __METHOD__, __LINE__,
-            'Exception factory construction is no longer supported: exceptions must be manually instantiated.',
-            '2015-06-06 23:00 -0400', '2.0.0'
-        );
-
-        return new self($message, null, null, null, ...$sprintfArgs);
-    }
-
-    /**
-     * Get an instance of the exception, allowing for providing only string substitution parameters.
-     *
-     * @deprecated
-     *
-     * @param mixed ...$sprintfArgs
-     *
-     * @return $this
-     */
-    public static function getDefaultInstance(...$sprintfArgs)
-    {
-        DeprecationErrorHandler::trigger(
-            __METHOD__, __LINE__,
-            'Exception factory construction is no longer supported: exceptions must be manually instantiated.',
-            '2015-06-06 23:00 -0400', '2.0.0'
-        );
-
-        return new self(null, null, null, null, ...$sprintfArgs);
-    }
-
-    /**
-     * Output string representation of exception with general, entity, and trace included.
-     *
      * @return string
      */
     public function __toString()
     {
-        return (string) print_r((array) $this->getDebugOutput(), true);
+        $stringSet = [
+            'type' => $this->getType(true),
+            'msg'  => $this->getMessage(),
+            'code' => $this->getCode(),
+            'file' => $this->getFile(),
+            'line' => $this->getLine(),
+        ];
+
+        return (string) print_r((array) $stringSet, true);
     }
 
     /**
-     * Validate message by providing a default if one was not provided and optionally calling sprintf on the message
-     * if arguments were passed for string replacement.
-     *
      * @param null|string $message
-     * @param mixed       ...$sprintfArgs
+     * @param mixed,...   $replaceSet
      *
      * @return string
      */
-    public function getFinalMessage($message = null, ...$sprintfArgs)
+    public function getFinalMessage($message = null, ...$replaceSet)
     {
-        if (true === empty($message)) {
-            $message = $this->getDefaultMessage();
-        }
+        $message = (string) (is_null_or_empty_string($message) ? $this->getDefaultMessage() : $message);
 
-        if (true === is_iterable_empty($sprintfArgs)) {
+        if (is_iterable_empty($replaceSet)) {
             return (string) $message;
         }
 
         try {
-            $message = sprintf($message, ...$sprintfArgs);
+            $message = sprintf($message, ...$replaceSet);
         } catch (\Exception $e) {
-            $message .= ' (Substitution values for message could not be provided.)';
+            $message .=
+                ' ' .
+                '[Error performing message string replacements in exception handler.' .
+                'Here are the replacement items ' . implode(', ', $replaceSet) . ']';
         }
 
         return (string) $message;
     }
 
     /**
-     * Validate code by providing a default if one was not provided.
-     *
      * @param int|null $code
      *
      * @return int
      */
     public function getFinalCode($code = null)
     {
-        if (true === empty($code)) {
-            return (int) $this->getDefaultCode();
-        }
-
-        return (int) $code;
+        return (int) ($code ? $code : $this->getDefaultCode());
     }
 
     /**
-     * Validate previous exception by requiring it is a subclass of \Exception or returning null.
-     *
-     * @param mixed $exception
+     * @param \Exception|ExceptionInterface $exception
      *
      * @return null|\Exception
      */
     public function getFinalPreviousException($exception = null)
     {
-        if ($exception instanceof \Exception) {
-            return $exception;
-        }
-
-        return;
+        return ($exception instanceof \Exception ? $exception : null);
     }
 
     /**
@@ -172,7 +119,8 @@ trait ExceptionTrait
      */
     public function addAttribute($attribute, $key = null)
     {
-        if (null === $key) {
+
+        if (is_null_or_empty_string($key)) {
             $this->attributes[] = $attribute;
         } else {
             $this->attributes[(string) $key] = $attribute;
@@ -190,26 +138,22 @@ trait ExceptionTrait
     }
 
     /**
-     * Returns the exception information (with all debug information) as an array.
-     *
      * @return array
      */
     public function getDebugOutput()
     {
         return (array) [
-            'Exception' => get_class($this),
-            'Message' => $this->getMessage(),
-            'Code' => $this->getCode(),
-            'Attributes' => $this->getAttributes(),
-            'File Name' => $this->getFile(),
-            'File Line' => $this->getLine(),
-            'Trace-back' => $this->getTraceLimited(),
+            'e'      => $this->getType(true),
+            'msg'    => $this->getMessage(),
+            'code'   => $this->getCode(),
+            'attrbs' => $this->getAttributes(),
+            'name'   => $this->getFile(),
+            'line'   => $this->getLine(),
+            'trace'  => $this->getTraceLimited(),
         ];
     }
 
     /**
-     * Get trace limited to only one object-level of depth.
-     *
      * @internal
      *
      * @return array
@@ -220,9 +164,7 @@ trait ExceptionTrait
 
         array_walk($trace, function (&$v, $i) {
             foreach ($v['args'] as &$arg) {
-                if (is_object($arg)) {
-                    $arg = get_class($arg);
-                }
+                if (is_object($arg)) { $arg = get_class($arg); }
             }
         });
 
@@ -230,23 +172,17 @@ trait ExceptionTrait
     }
 
     /**
-     * Get the exception type (class name).
+     * @param false|bool $fullyQualifiedName
      *
      * @return string
      */
-    public function getType()
+    public function getType($fullyQualifiedName = false)
     {
-        return (string) ClassInfo::get($this, ClassInfo::CLASS_STR);
-    }
+        if (true === $fullyQualifiedName) {
+            return (string) ClassInfo::getNamespace(get_called_class());
+        }
 
-    /**
-     * Get the exception namespace (class namespace).
-     *
-     * @return string
-     */
-    public function getTypeNamespace()
-    {
-        return (string) ClassInfo::get($this, ClassInfo::NAMESPACE_STR);
+        return (string) ClassInfo::getClassName(get_called_class());
     }
 
     /**

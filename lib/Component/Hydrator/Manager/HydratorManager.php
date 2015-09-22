@@ -63,11 +63,7 @@ class HydratorManager implements HydratorManagerInterface
     public function getMappedObject($from, $to)
     {
         if (false === is_object($from) || false === is_object($to)) {
-            throw new InvalidArgumentException(
-                'The method %s expects to be passed two objects.',
-                null, null, null,
-                __METHOD__
-            );
+            throw new InvalidArgumentException('The method %s expects to be passed two objects.', null, null, __METHOD__);
         }
 
         return $this->mapPropertyCollection(
@@ -87,12 +83,10 @@ class HydratorManager implements HydratorManagerInterface
     protected function mapPropertyCollection($from, $to, array $propertyCollection)
     {
         $refFrom = (new ClassReflectionAnalyser())
-            ->setReflectionClassFromClassInstance($from)
-        ;
+            ->setReflectionClassFromClassInstance($from);
 
         $refTo = (new ClassReflectionAnalyser())
-            ->setReflectionClassFromClassInstance($to)
-        ;
+            ->setReflectionClassFromClassInstance($to);
 
         foreach ($propertyCollection as $fromProperty => $toProperty) {
             $this->mapProperty($refFrom, $refTo, $to, $from, $fromProperty, $toProperty);
@@ -113,13 +107,13 @@ class HydratorManager implements HydratorManagerInterface
                                    &$to, $from, $fromProperty, $toProperty)
     {
         if (true !== $refFrom->hasProperty($fromProperty) ||
-            true !== $refTo->hasProperty($toProperty)) {
+            true !== $refTo->hasProperty($toProperty))
+        {
             return;
         }
 
         $refFromProperty = $refFrom->setPropertyPublic($fromProperty);
         $refFromValue = $refFromProperty->getValue($from);
-
         $refToProperty = $refTo->setPropertyPublic($toProperty);
         $refToProperty->setValue($to, $refFromValue);
     }

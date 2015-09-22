@@ -11,9 +11,6 @@
 
 namespace Scribe\Wonka\Exception;
 
-use Scribe\Wonka\Exception\ExceptionInterface;
-use Scribe\Wonka\Exception\ExceptionTrait;
-
 /**
  * Class InvalidArgumentException.
  */
@@ -22,31 +19,25 @@ class InvalidArgumentException extends \InvalidArgumentException implements Exce
     use ExceptionTrait;
 
     /**
-     * An enhanced constructor that allows for passing the default \Exception parameters, as well as an array of additional
-     * attributes followed by any number of additional arguments that will be passed to sprintf against the message.
-     *
-     * @param string|null  $message    An error message string (optionally fed to sprintf if optional args are given)
-     * @param int|null     $code       The error code (which should be from ORMExceptionInterface). If null, the value
-     *                                 of ExceptionInterface::CODE_GENERIC will be used.
-     * @param mixed        $previous   The previous exception (when re-thrown within another exception), if applicable.
-     * @param mixed[]|null $attributes An optional array of attributes to pass. Will be provided in the debug output.
-     * @param mixed        ...$sprintfArgs Optional additional parameters that will be passed to sprintf against the
-     *                                 message string provided.
+     * @param string|null  $message        An error message string (optionally fed to sprintf if optional args are given)
+     * @param int|null     $code           The error code (which should be from ORMExceptionInterface). If null, the value
+     *                                     of ExceptionInterface::CODE_GENERIC will be used.
+     * @param mixed        $previous       The previous exception, if applicable.
+     * @param mixed        $replaceSet,... All extra parameters passed are used to provide replacement values against the
+     *                                     exception message.
      */
-    public function __construct($message = null, $code = null, $previous = null, array $attributes = null, ...$sprintfArgs)
+    public function __construct($message = null, $code = null, $previous = null, ...$replaceSet)
     {
         parent::__construct(
-            $this->getFinalMessage((string) $message, ...$sprintfArgs),
+            $this->getFinalMessage((string) $message, ...$replaceSet),
             $this->getFinalCode((int) $code),
             $this->getFinalPreviousException($previous)
         );
 
-        $this->setAttributes((array) $attributes);
+        $this->setAttributes([]);
     }
 
     /**
-     * Get the default exception message.
-     *
      * @return string
      */
     public function getDefaultMessage()
@@ -55,8 +46,6 @@ class InvalidArgumentException extends \InvalidArgumentException implements Exce
     }
 
     /**
-     * Get the default exception code.
-     *
      * @return int
      */
     public function getDefaultCode()

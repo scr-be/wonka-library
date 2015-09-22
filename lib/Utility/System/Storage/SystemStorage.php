@@ -126,14 +126,11 @@ class SystemStorage implements SystemStorageInterface
     {
         foreach (self::UNIT_IEC_ABBR_NAME as $unitIecKey => $unitIecAbbr) {
             if (false !== ($unitBaseKey = array_search((string) $unit, (array) $unitIecAbbr, true))) {
-                return [
-                    (int) $unitIecKey,
-                    (int) $unitBaseKey,
-                ];
+                return [(int) $unitIecKey, (int) $unitBaseKey];
             }
         }
 
-        throw new InvalidArgumentException('Invalid unit "%s" provided to "%s".', null, null, null, (string) $unit, __METHOD__);
+        throw new InvalidArgumentException('Invalid unit "%s" provided to "%s".', null, null, (string) $unit, __METHOD__);
     }
 }
 

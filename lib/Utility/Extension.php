@@ -34,9 +34,7 @@ class Extension
     public static function isEnabled($extension)
     {
         if (empty((string) $extension)) {
-            throw new RuntimeException(
-                sprintf('Cannot check extension availability against empty string in %s.', __CLASS__)
-            );
+            throw new RuntimeException('Cannot check extension availability against empty string in %s.', null, null, __CLASS__);
         }
 
         return (bool) (true === extension_loaded((string) $extension));

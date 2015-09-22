@@ -40,9 +40,7 @@ class Arrays
     public static function isHash(array $array, $throw = true)
     {
         if (true === (count($array) === 0) && true === $throw) {
-            throw new RuntimeException(
-                'There is no way to determine if en empty array is a hash or not.'
-            );
+            throw new RuntimeException('There is no way to determine if an empty array is a hash or not.');
         }
 
         $keys = array_keys($array);

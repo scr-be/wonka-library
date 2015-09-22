@@ -28,22 +28,13 @@ class SystemCpu
      */
     public function getLoadAverages($precision = 2)
     {
-        $this->getCacheChain()->setTtl(60);
-
-        if (null !== ($loadAverages = $this->getCacheChain()->get(__METHOD__))) {
-            $loadAveragesDirect = sys_getloadavg();
-
-            $loadAverages[1] = round($loadAveragesDirect[0], $precision);
-            $loadAverages[2] = round($loadAveragesDirect[1], $precision);
-            $loadAverages[3] = round($loadAveragesDirect[2], $precision);
-            $loadAverages[4] = round(array_sum($loadAveragesDirect) / 3, $precision);
-
-            $this->getCacheChain()->set($loadAverages, __METHOD__);
-        }
-
-        $this->getCacheChain()->setTtlToDefault();
+        $loadAveragesDirect = sys_getloadavg();
 
         $loadAverages[0] = time();
+        $loadAverages[1] = round($loadAveragesDirect[0], $precision);
+        $loadAverages[2] = round($loadAveragesDirect[1], $precision);
+        $loadAverages[3] = round($loadAveragesDirect[2], $precision);
+        $loadAverages[4] = round(array_sum($loadAveragesDirect) / 3, $precision);
 
         return (array) $loadAverages;
     }
@@ -58,8 +49,7 @@ class SystemCpu
         $coreCount = $this->getCoreCount();
 
         list($time, $load01, $load05, $load15, $loadAverage)
-            = $this->getLoadAverages($precision)
-        ;
+            = $this->getLoadAverages($precision);
 
         return [
             $time,
@@ -75,16 +65,7 @@ class SystemCpu
      */
     public function getCoreCount()
     {
-        $this->getCacheChain()->setTtl(60 * 60 * 24);
-
-        if (null !== ($cpuCount = $this->getCacheChain()->get(__METHOD__))) {
-            $cpuCount = $this->getCoreCountPlatformLookup();
-            $this->getCacheChain()->set($cpuCount, __METHOD__);
-        }
-
-        $this->getCacheChain()->setTtlToDefault();
-
-        return (int) $cpuCount;
+        return (int)$this->getCoreCountPlatformLookup();
     }
 
     /**
@@ -114,10 +95,7 @@ class SystemCpu
         }
 
         if ($cmd->isSuccess() !== true || count($cmd->getOutput()) > 1) {
-            throw new RuntimeException(
-                'The platform you are using does not support core count look-ups. "%s".',
-                null, null, null, (string) $platform
-            );
+            throw new RuntimeException('The platform you are using does not support core count look-ups. "%s".', null, null, (string) $platform);
         }
 
         return (int) $cmd->getOutput()[0];

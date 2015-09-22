@@ -21,7 +21,7 @@ interface ExceptionInterface
      *
      * @var string
      */
-    const MSG_GENERIC = 'An undefined exception was thrown.';
+    const MSG_GENERIC = 'An undefined exception was thrown. %s';
 
     /**
      * Exception code for an unknown/undefined state.
@@ -42,14 +42,14 @@ interface ExceptionInterface
      *
      * @var int
      */
-    const CODE_GENERIC_FROM_MANTLE_LIB = 1000;
+    const CODE_GENERIC_FROM_LIBRARY = 1000;
 
     /**
      * Generic exception code for exceptions thrown from within Mantle bundle.
      *
      * @var int
      */
-    const CODE_GENERIC_FROM_MANTLE_BDL = 2000;
+    const CODE_GENERIC_FROM_BUNDLE = 2000;
 
     /**
      * Exception code for generic invalid arguments exception.
@@ -94,61 +94,31 @@ interface ExceptionInterface
     const CODE_FIXTURE_DATA_INCONSISTENT = 735;
 
     /**
-     * An enhanced constructor that allows for passing the default \Exception parameters, as well as an array of additional
-     * attributes followed by any number of additional arguments that will be passed to sprintf against the message.
-     *
-     * @param string|null  $message    An error message string (optionally fed to sprintf if optional args are given)
-     * @param int|null     $code       The error code (which should be from ORMExceptionInterface). If null, the value
-     *                                 of ExceptionInterface::CODE_GENERIC will be used.
-     * @param mixed        $previous   The previous exception (when re-thrown within another exception), if applicable.
-     * @param mixed[]|null $attributes An optional array of attributes to pass. Will be provided in the debug output.
-     * @param mixed        ...$sprintfArgs Optional additional parameters that will be passed to sprintf against the
-     *                                 message string provided.
+     * @param string|null  $message        An error message string (optionally fed to sprintf if optional args are given)
+     * @param int|null     $code           The error code (which should be from ORMExceptionInterface). If null, the value
+     *                                     of ExceptionInterface::CODE_GENERIC will be used.
+     * @param mixed        $previous       The previous exception, if applicable.
+     * @param mixed        $replaceSet,... All extra parameters passed are used to provide replacement values against the
+     *                                     exception message.
      */
-    public function __construct($message = null, $code = null, $previous = null, array $attributes = null, ...$sprintfArgs);
+    public function __construct($message = null, $code = null, $previous = null, ...$replaceSet);
 
     /**
-     * Get an instance of the exception, allowing for setting the message and any substitution parameters.
-     *
-     * @param string|null $message
-     * @param mixed       ...$sprintfArgs
-     *
-     * @return $this
-     */
-    public static function getInstance($message, ...$sprintfArgs);
-
-    /**
-     * Get an instance of the exception, allowing for providing only string substitution parameters.
-     *
-     * @param mixed ...$sprintfArgs
-     *
-     * @return $this
-     */
-    public static function getDefaultInstance(...$sprintfArgs);
-
-    /**
-     * Output string representation of exception with general, entity, and trace included.
-     *
      * @return string
      */
     public function __toString();
 
     /**
-     * Validate message by providing a default if one was not provided and optionally calling sprintf on the message
-     * if arguments were passed for string replacement.
-     *
      * @param null|string $message
-     * @param mixed       ...$sprintfArgs
+     * @param mixed,...   $replaceSet
      *
      * @internal
      *
      * @return string
      */
-    public function getFinalMessage($message = null, ...$sprintfArgs);
+    public function getFinalMessage($message = null, ...$replaceSet);
 
     /**
-     * Validate code by providing a default if one was not provided.
-     *
      * @param int|null $code
      *
      * @internal
@@ -158,8 +128,6 @@ interface ExceptionInterface
     public function getFinalCode($code = null);
 
     /**
-     * Validate previous exception by requiring it is a subclass of \Exception or returning null.
-     *
      * @param mixed $exception
      *
      * @internal
@@ -169,16 +137,11 @@ interface ExceptionInterface
     public function getFinalPreviousException($exception = null);
 
     /**
-     * Get the default exception message.
-     *
      * @return string
      */
     public function getDefaultMessage();
 
-    /**
-     * Get the default exception code.
-     *
-     * @return int
+    /**@return int
      */
     public function getDefaultCode();
 
@@ -198,39 +161,24 @@ interface ExceptionInterface
     public function addAttribute($attribute, $key = null);
 
     /**
-     * Returns the attributes array.
-     *
      * @return array
      */
     public function getAttributes();
 
     /**
-     * Returns the exception information (with all debug information) as an array.
-     *
      * @return array
      */
     public function getDebugOutput();
 
     /**
-     * Get trace limited to only one object-level of depth.
-     *
      * @return array
      */
     public function getTraceLimited();
 
     /**
-     * Get the exception type (class name).
-     *
      * @return string
      */
     public function getType();
-
-    /**
-     * Get the exception namespace (class namespace).
-     *
-     * @return string
-     */
-    public function getTypeNamespace();
 }
 
 /* EOF */
