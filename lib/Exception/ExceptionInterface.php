@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Exception\Model;
+namespace Scribe\Wonka\Exception;
 
 /**
  * Interface ExceptionInterface.

@@ -12,7 +12,7 @@
 namespace Scribe\Wonka\Utility;
 
 use Scribe\Wonka\Exception\BadFunctionCallException;
-use Scribe\Wonka\Exception\Model\ExceptionInterface;
+use Scribe\Wonka\Exception\ExceptionInterface;
 use Scribe\Wonka\Utility\Caller\Call;
 use Scribe\Wonka\Utility\StaticClass\StaticClassTrait;
 

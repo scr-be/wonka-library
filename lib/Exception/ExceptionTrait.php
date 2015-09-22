@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Exception\Model;
+namespace Scribe\Wonka\Exception;
 
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Scribe\Wonka\Utility\Error\DeprecationErrorHandler;
 use Scribe\Wonka\Utility\ClassInfo;
 

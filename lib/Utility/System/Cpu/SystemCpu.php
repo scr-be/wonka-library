@@ -11,7 +11,6 @@
 
 namespace Scribe\Wonka\Utility\System\Cpu;
 
-use Scribe\CacheBundle\DependencyInjection\Aware\CacheChainAwareTrait;
 use Scribe\Wonka\Exception\RuntimeException;
 use Scribe\Wonka\Utility\Math;
 use Scribe\Wonka\Utility\System\Execute\SystemExecute;
@@ -22,8 +21,6 @@ use Scribe\Wonka\Utility\System\Platform\SystemPlatform;
  */
 class SystemCpu
 {
-    use CacheChainAwareTrait;
-
     /**
      * @param int $precision
      *

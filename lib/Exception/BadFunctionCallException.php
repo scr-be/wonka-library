@@ -11,8 +11,8 @@
 
 namespace Scribe\Wonka\Exception;
 
-use Scribe\Wonka\Exception\Model\ExceptionInterface;
-use Scribe\Wonka\Exception\Model\ExceptionTrait;
+use Scribe\Wonka\Exception\ExceptionInterface;
+use Scribe\Wonka\Exception\ExceptionTrait;
 
 /**
  * Class BadFunctionCallException.
