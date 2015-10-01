@@ -44,7 +44,7 @@ class ExtensionTest extends WonkaTestCase
     public function testAreAllEnabledSuccess()
     {
         static::assertTrue(
-            Extension::areAllEnabled('igbinary', 'twig')
+            Extension::areAllEnabled('mysqli', 'json')
         );
     }
 

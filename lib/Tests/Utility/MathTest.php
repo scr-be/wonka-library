@@ -29,11 +29,10 @@ class MathTest extends WonkaTestCase
     public function testShouldAcceptNoLessThanThreeArguments()
     {
         $this->setExpectedException(
-            'PHPUnit_Framework_Error',
-            'Missing argument 1 for Scribe\Wonka\Utility\Math::toBase()'
+            'Scribe\Wonka\Exception\InvalidArgumentException'
         );
 
-        Math::toBase();
+        Math::toBase(0, 0, 0);
     }
 
     public function testToBase()
