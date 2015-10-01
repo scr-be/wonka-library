@@ -16,8 +16,8 @@ notifications:
 before_install:
     - mkdir -p app/config
     - git clone https://github.com/scribenet/world-configuration-public.git shared_public
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.6" ]]; then echo "Running for 5.6"; sh app/config/shared_public/world-configuration-public/tests/travis/php-build-igbinary.sh; done
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then echo "Running for 7.0"; sh app/config/shared_public/world-configuration-public/tests/travis/php7-build-igbinary.sh; done
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.6" ]]; then echo "Running for 5.6"; sh app/config/shared_public/world-configuration-public/tests/travis/php-build-igbinary.sh; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then echo "Running for 7.0"; sh app/config/shared_public/world-configuration-public/tests/travis/php7-build-igbinary.sh; fi
     - phpenv config-add app/config/shared_public/world-configuration-public/tests/travis/config-timezone.ini
     - phpenv rehash
     - mkdir -p build/logs
