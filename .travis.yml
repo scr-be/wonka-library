@@ -14,10 +14,9 @@ notifications:
         secure: fQJkH85f60YbHu0y3y7lptnouX3IULkX9f8wrEq4+SFI7n7Uy6RLRhz1wRioOR0gjRcX4dH+40ZZit3GpLB0M781cOwuBAcnobrU6coE8YdbFLrK/EFD/qXM/6RlwRik/3TA3ZX5C1WQfrBxnxq3jvuTFDplrXoxThS3lIl/KCo=
 
 before_install:
-    - git clone -b aboriginal-pasta https://github.com/scribenet/world-configuration-public.git shared_public
-    - echo ${TRAVIS_PHP_VERSION:0:3} && echo ${TRAVIS_PHP_VERSION}
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then echo "Running for 7.0"; sh shared_public/tests/travis/php-7_build-mod_igbinary.sh; else echo "Running for 5.x"; sh shared_public/tests/travis/php-build-igbinary.sh; fi
-    - phpenv config-add shared_public/tests/travis/config-timezone.ini
+    - git clone -b aboriginal-pasta https://github.com/scribenet/world-configuration-public.git config_shared_public
+    - bash config_shared_public/build/php_build-mod_igbinary.sh
+    - phpenv config-add shared_public/build/php_config-en_timezone.ini
     - phpenv rehash
     - mkdir -p build/logs
     - mkdir -p bin
@@ -31,5 +30,5 @@ script:
     - bin/phpunit --verbose --configuration phpunit.xml.dist
 
 after_script:
-    - bin/coveralls -vvv
-    - bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} != "7.0" ]]; then bin/coveralls -vvv; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} != "7.0" ]]; then bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml; fi
