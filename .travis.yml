@@ -16,7 +16,7 @@ notifications:
 before_install:
     - git clone -b aboriginal-pasta https://github.com/scribenet/world-configuration-public.git config_shared_public
     - bash config_shared_public/build/php_build-mod_igbinary.sh
-    - phpenv config-add shared_public/build/php_config-en_timezone.ini
+    - phpenv config-add config_shared_public/build/php_config-en_timezone.ini
     - phpenv rehash
     - mkdir -p build/logs
     - mkdir -p bin
