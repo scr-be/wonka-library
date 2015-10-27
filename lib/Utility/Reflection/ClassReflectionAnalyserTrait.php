@@ -198,7 +198,7 @@ trait ClassReflectionAnalyserTrait
      *
      * @throws InvalidArgumentException If argument type is not false or a \ReflectionProperty filter.
      *
-     * @return array
+     * @return \ReflectionProperty[]
      */
     public function getProperties($filter = \ReflectionProperty::IS_PUBLIC)
     {

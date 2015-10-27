@@ -11,8 +11,8 @@
          syntaxCheck="true"
          bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="scribe/wonka-library">
-            <directory>./lib/Tests/</directory>
+        <testsuite name="Scribe Wonka Library">
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
     <groups>
@@ -23,9 +23,6 @@
     <filter>
         <whitelist>
             <directory>./lib</directory>
-            <exclude>
-                <directory>./*/Tests/</directory>
-            </exclude>
         </whitelist>
     </filter>
     <logging>

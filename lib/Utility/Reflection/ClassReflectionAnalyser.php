@@ -22,6 +22,16 @@ class ClassReflectionAnalyser implements ClassReflectionAnalyserInterface
     use ClassReflectionAnalyserTrait;
 
     /**
+     * @param \ReflectionClass|null $reflectionClass
+     *
+     * @return $this
+     */
+    static public function create(\ReflectionClass $reflectionClass = null)
+    {
+        return new self($reflectionClass);
+    }
+
+    /**
      * Optional injection at instantiation of reflection class for analysis.
      *
      * @param \ReflectionClass $reflectionClass

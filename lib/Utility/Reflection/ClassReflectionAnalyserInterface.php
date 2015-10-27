@@ -17,6 +17,13 @@ namespace Scribe\Wonka\Utility\Reflection;
 interface ClassReflectionAnalyserInterface
 {
     /**
+     * @param \ReflectionClass|null $reflectionClass
+     *
+     * @return ClassReflectionAnalyser
+     */
+    static public function create(\ReflectionClass $reflectionClass = null);
+
+    /**
      * Optional injection at instantiation of reflection class for analysis.
      *
      * @param \ReflectionClass $reflectionClass
