@@ -1,3 +1,4 @@
+
 language: php
 
 env:
@@ -29,5 +30,5 @@ script:
     - bin/phpunit --verbose --configuration phpunit.xml.dist
 
 after_script:
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} != "7.0" ]]; then bin/coveralls -vvv; fi
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} != "7.0" ]]; then bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:1} != "7" ]]; then bin/coveralls -vvv; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:1} != "7" ]]; then bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml; fi
