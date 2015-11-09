@@ -38,14 +38,14 @@ interface ExceptionInterface
     const CODE_GENERIC = -5;
 
     /**
-     * Generic exception code for exceptions thrown from within Mantle library.
+     * Generic exception code for exceptions thrown from within Wonka library.
      *
      * @var int
      */
     const CODE_GENERIC_FROM_LIBRARY = 1000;
 
     /**
-     * Generic exception code for exceptions thrown from within Mantle bundle.
+     * Generic exception code for exceptions thrown from within Wonka bundle.
      *
      * @var int
      */

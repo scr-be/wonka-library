@@ -1,16 +1,18 @@
-# scribe/wonka-library
+# Scribe: Wonka Library
 
-[![Travis](https://img.shields.io/travis/scr-be/wonka-library/master.svg?style=flat-square)](https://travis-ci.org/scr-be/wonka-library)
-[![Scrutinizer](https://img.shields.io/scrutinizer/g/scr-be/wonka-library/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/scr-be/wonka-library)
-[![Coveralls](https://img.shields.io/coveralls/scr-be/wonka-library/master.svg?style=flat-square)](https://gemnasium.com/scr-be/wonka-library)
-[![Gemnasium](https://img.shields.io/gemnasium/scr-be/wonka-library.svg?style=flat-square)](https://coveralls.io/github/scr-be/wonka-library)
+[![Travis](//scr.be/wonka-library/travis_shield)](//scr.be/wonka-library/travis)
+[![Scrutinizer](//scr.be/wonka-library/scrutinizer_shield)](//scr.be/wonka-library/scrutinizer)
+[![Coveralls](//scr.be/wonka-library/coveralls_shield)](//scr.be/wonka-library/coveralls)
+[![Gemnasium](//scr.be/wonka-library/gemnasium_shield)](//scr.be/wonka-library/gemnasium)
 
-*scribe/wonka-library* is a collection of framework-agnostic utilities and classes.
+The `scr-be/wonka-library` project is a collection of framework-agnostic functions and classes used as the base for many other Scribe projects.
 
-## License, Usage, Documentation
+## License, Reference, and Release
 
-[![License](https://img.shields.io/badge/license-MIT-008AC6.svg?style=flat-square)](https://github.com/scr-be/wonka-library/blob/master/README.md)
-[![API](https://img.shields.io/badge/docs-reference%20api-c75ec1.svg?style=flat-square)](https://wonka-library.scribe.tools/api)
+[![License](//scr.be/wonka-library/license_shield)](https://scr.be/wonka-library/license)
+[![README](//scr.be/wonka-library/readme_shield)](https://scr.be/wonka-library/readme)
+[![API](//scr.be/wonka-library/api_shield)](https://scr.be/wonka-library/api)
+[![Packagist](//scr.be/wonka-library/packagist_shield)](https://scr.be/wonka-library/packagist)
 
-This project is licensed under the [MIT License](https://github.com/scr-be/wonka-library/blob/master/README.md).
-API reference is available via the above button.
+This project is licensed under the [MIT License](https://github.com/scr-be/wonka-library/blob/master/LICENSE.md).
+API Reference docs and our latest release are available via the above badges.
