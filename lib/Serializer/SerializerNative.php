@@ -14,26 +14,15 @@ namespace Scribe\Wonka\Serializer;
 /**
  * Class SerializerNative.
  */
-class SerializerNative implements SerializerInterface
+class SerializerNative extends AbstractSerializer
 {
     /**
-     * @param mixed $data
-     *
-     * @return string
+     * SerializerNative constructor.
      */
-    public function getSerialized($data)
+    public function __construct()
     {
-        return serialize($data);
-    }
-
-    /**
-     * @param mixed $data
-     *
-     * @return mixed
-     */
-    public function getUnSerialized($data)
-    {
-        return unserialize($data);
+        $this->serializationHandler = 'serialize';
+        $this->unSerializationHandler = 'unserialize';
     }
 }
 

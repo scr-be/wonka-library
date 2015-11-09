@@ -63,7 +63,7 @@ class DeprecationErrorHandler
     /**
      * @var string
      */
-    const DATETIME_REGEX = '#([0-9]{4})[\/\.-]{1}([0-9]{1,2})[\/\.-]{1}([0-9]{1,2})\s?(([0-9]{1,2}):([0-9]{2}):?([0-9]{2})?)?\s?([\+-]{1}[0-9]{4})?#';
+    const DATETIME_REGEX = '#([0-9]{4})[\/\.-]{1}([0-9]{1,2})[\/\.-]{1}([0-9]{1,2})\s?(([0-9]{1,2}):([0-9]{2}):?([0-9]{2})?)?\s?([+-]{1}[0-9]{4})?#';
 
     /**
      * @param string           $methodName   The fully-qualified method calling the deprecation notice.
@@ -81,13 +81,9 @@ class DeprecationErrorHandler
             (int) $methodLine,
             (string) $message,
             self::getDeprecatedOnMessage($deprecatedOn),
-            self::getRemovalOnMessage($removalOn)
-        );
+            self::getRemovalOnMessage($removalOn));
 
-        trigger_error(
-            self::getFinalCleanedMessage($message),
-            E_USER_DEPRECATED
-        );
+        trigger_error(self::getFinalCleanedMessage($message), E_USER_DEPRECATED);
     }
 
     /**
@@ -190,21 +186,20 @@ class DeprecationErrorHandler
      */
     protected static function attemptDateTimeZoneFromString(\DateTime & $dateTime, $timezoneOffset)
     {
-        $timezoneOffsetLength = strlen((int) $timezoneOffset);
+        $negativeOffset = false;
 
-        if ($timezoneOffsetLength > 2 && $timezoneOffsetLength !== 4) {
-            return;
+        if (!is_int($timezoneDirection = substr($timezoneOffset, 0, 1))) {
+            $negativeOffset = (bool) (substr($timezoneOffset, 0, 1) === '-');
+            $timezoneOffset = substr($timezoneOffset, 1) / 100;
+
         }
 
-        if ($timezoneOffsetLength === 4) {
-            $timezoneOffset /= 100;
-        }
-
-        if ($timezoneOffset > 26 || $timezoneOffset < -26) {
+        if ((int) $timezoneOffset > 26 || (int) $timezoneOffset < -26 || (int) $timezoneOffset === 0) {
             return;
         }
 
         $timezoneOffset *= 3600;
+        $timezoneOffset = (int) ($negativeOffset ? '-'.$timezoneOffset : $timezoneOffset);
 
         $timezoneConstant = timezone_name_from_abbr('', $timezoneOffset, date('I'));
 

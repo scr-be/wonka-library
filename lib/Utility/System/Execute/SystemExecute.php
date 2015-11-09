@@ -24,14 +24,6 @@ class SystemExecute extends AbstractSystemExecute
     protected $command;
 
     /**
-     * @return $this
-     */
-    public static function start()
-    {
-        return new self();
-    }
-
-    /**
      * @param string $command
      *
      * @return $this
@@ -60,8 +52,8 @@ class SystemExecute extends AbstractSystemExecute
 
         $this
             ->sanitizeAndSetOutput($output)
-            ->sanitizeAndSetReturn($return)
-        ;
+            ->sanitizeAndSetReturn($return);
+
 
         return $this;
     }
@@ -75,7 +67,7 @@ class SystemExecute extends AbstractSystemExecute
             throw new RuntimeException('Cannot run an empty command in "%s".', null, null, __METHOD__);
         }
 
-        return sprintf('%s -c \'%s %s\'', (string) $this->shell, (string) $this->command,
+        return sprintf('%s -c \'%s\' %s', (string) $this->shell, (string) $this->command,
             ($this->stdErrToNull === true ? '2> /dev/null' : '2>&1'));
     }
 }

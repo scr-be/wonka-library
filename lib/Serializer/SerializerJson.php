@@ -14,26 +14,15 @@ namespace Scribe\Wonka\Serializer;
 /**
  * Class SerializerJson.
  */
-class SerializerJson implements SerializerInterface
+class SerializerJson extends AbstractSerializer
 {
     /**
-     * @param mixed $data
-     *
-     * @return string
+     * SerializerJson constructor.
      */
-    public function getSerialized($data)
+    public function __construct()
     {
-        return json_encode($data);
-    }
-
-    /**
-     * @param mixed $data
-     *
-     * @return mixed
-     */
-    public function getUnSerialized($data)
-    {
-        return json_decode($data);
+        $this->serializationHandler = 'json_encode';
+        $this->unSerializationHandler = 'json_decode';
     }
 }
 

@@ -52,10 +52,8 @@ namespace {
     {
         return (bool) (
             true === is_array($iterable) ||
-            true === ($iterable instanceof \Iterator) ||
             true === ($iterable instanceof \ArrayAccess) ||
-            true === ($iterable instanceof \Countable) ||
-            true === ($iterable instanceof ArrayCollection)
+            true === ($iterable instanceof \Countable)
         );
     }
 
@@ -68,7 +66,7 @@ namespace {
      */
     function is_iterable_empty($iterable)
     {
-        return (bool) (false === is_iterable($iterable) || true === (count($iterable) > 0) ? false : true);
+        return (bool) !is_iterable_not_empty($iterable);
     }
 
     /**
@@ -80,7 +78,11 @@ namespace {
      */
     function is_iterable_not_empty($iterable)
     {
-        return (bool) !is_iterable_empty($iterable);
+        if (false === is_iterable($iterable)) {
+            return false;
+        }
+
+        return (bool) (true === (count($iterable) > 0) ? true : false);
     }
 
     /**
@@ -92,7 +94,7 @@ namespace {
      */
     function get_iterable_count($iterable)
     {
-        return is_iterable($iterable) ? (bool) false : (int) count($iterable);
+        return (int) (is_iterable($iterable) ? count($iterable) : 0);
     }
 
     /**

@@ -52,6 +52,14 @@ abstract class AbstractSystemExecute
     protected $expectedReturn = 0;
 
     /**
+     * @return $this
+     */
+    public static function start()
+    {
+        return new static();
+    }
+
+    /**
      * @param string $shell
      *
      * @return $this

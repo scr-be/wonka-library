@@ -17,18 +17,19 @@ namespace Scribe\Wonka\Serializer;
 interface SerializerInterface
 {
     /**
-     * @param mixed $data
-     *
+     * @param mixed|null    $data
+     * @param \Closure|null $visitor
      * @return mixed
      */
-    public function getSerialized($data);
+    public function serializeData($data = null, \Closure $visitor = null);
 
     /**
-     * @param mixed $data
+     * @param mixed|null    $data
+     * @param \Closure|null $visitor
      *
      * @return mixed
      */
-    public function getUnSerialized($data);
+    public function unSerializeData($data = null, \Closure $visitor = null);
 }
 
 /* EOF */

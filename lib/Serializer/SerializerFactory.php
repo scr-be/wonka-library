@@ -42,28 +42,35 @@ class SerializerFactory implements SerializerFactoryInterface
     const SERIALIZER_JSON = 'json';
 
     /**
-     * @param string $serializer
+     * @param string $type
      *
      * @return SerializerInterface
      */
-    public static function create($serializer = self::SERIALIZER_AUTO)
+    public static function create($type = self::SERIALIZER_AUTO)
     {
-        if ($serializer === self::SERIALIZER_AUTO && Extension::hasIgbinary()) {
-            return new SerializerIgbinary();
+        if ($type === self::SERIALIZER_AUTO && Extension::hasIgbinary()) {
+            $type = self::SERIALIZER_IGBINARY;
         }
 
-        switch ($serializer) {
+        return self::createRequestedType($type);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return SerializerInterface
+     */
+    protected static function createRequestedType($type)
+    {
+        switch ($type) {
             case self::SERIALIZER_IGBINARY:
-                return new SerializerIgbinary();
+                return SerializerIgbinary::create();
 
             case self::SERIALIZER_JSON:
-                return new SerializerJson();
-
-            case self::SERIALIZER_NATIVE:
-            case self::SERIALIZER_AUTO:
-            default:
-                return new SerializerNative();
+                return SerializerJson::create();
         }
+
+        return SerializerNative::create();
     }
 }
 

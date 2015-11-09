@@ -14,26 +14,15 @@ namespace Scribe\Wonka\Serializer;
 /**
  * Class SerializerIgbinary.
  */
-class SerializerIgbinary implements SerializerInterface
+final class SerializerIgbinary extends AbstractSerializer
 {
     /**
-     * @param mixed $data
-     *
-     * @return string
+     * SerializerIgbinary constructor.
      */
-    public function getSerialized($data)
+    public function __construct()
     {
-        return igbinary_serialize($data);
-    }
-
-    /**
-     * @param mixed $data
-     *
-     * @return mixed
-     */
-    public function getUnSerialized($data)
-    {
-        return igbinary_unserialize($data);
+        $this->serializationHandler = 'igbinary_serialize';
+        $this->unSerializationHandler = 'igbinary_unserialize';
     }
 }
 

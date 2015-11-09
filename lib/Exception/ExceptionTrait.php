@@ -49,20 +49,7 @@ trait ExceptionTrait
     {
         $message = (string) (is_null_or_empty_string($message) ? $this->getDefaultMessage() : $message);
 
-        if (is_iterable_empty($replaceSet)) {
-            return (string) $message;
-        }
-
-        try {
-            $message = sprintf($message, ...$replaceSet);
-        } catch (\Exception $e) {
-            $message .=
-                ' ' .
-                '[Error performing message string replacements in exception handler.' .
-                'Here are the replacement items ' . implode(', ', $replaceSet) . ']';
-        }
-
-        return (string) $message;
+        return (string) (is_iterable_empty($replaceSet) ? $message : sprintf($message, ...$replaceSet));
     }
 
     /**
@@ -160,7 +147,7 @@ trait ExceptionTrait
      */
     public function getTraceLimited()
     {
-        $trace = $this->getTrace();
+        $trace = (array) $this->getTrace();
 
         array_walk($trace, function (&$v, $i) {
             foreach ($v['args'] as &$arg) {

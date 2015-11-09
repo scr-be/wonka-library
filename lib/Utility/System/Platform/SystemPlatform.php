@@ -53,7 +53,7 @@ class SystemPlatform
      */
     public static function getSystemPlatform()
     {
-        return (string) self::normalizeSystemPlatform(PHP_OS);
+        return (string) static::normalizeSystemPlatform(PHP_OS);
     }
 
     /**
@@ -63,7 +63,7 @@ class SystemPlatform
      */
     public static function isSystemPlatform($platform)
     {
-        return (bool) (self::getSystemPlatform() === self::normalizeSystemPlatform($platform) ?: false);
+        return (bool) (static::getSystemPlatform() === static::normalizeSystemPlatform($platform) ?: false);
     }
 
     /**
@@ -73,7 +73,7 @@ class SystemPlatform
      */
     public static function isNotSystemPlatform($platform)
     {
-        return (bool) (self::isSystemPlatform($platform) === false);
+        return (bool) (static::isSystemPlatform($platform) === false);
     }
 
     /**
@@ -81,7 +81,7 @@ class SystemPlatform
      *
      * @return string
      */
-    public static function normalizeSystemPlatform($name)
+    protected static function normalizeSystemPlatform($name)
     {
         return (string) (strtoupper(substr($name, 0, 3)));
     }

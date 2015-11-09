@@ -65,7 +65,7 @@ class SystemCpu
      */
     public function getCoreCount()
     {
-        return (int)$this->getCoreCountPlatformLookup();
+        return (int) $this->getCoreCountPlatformLookup();
     }
 
     /**
@@ -75,30 +75,31 @@ class SystemCpu
     {
         $platform = SystemPlatform::getSystemPlatform();
         $cmd = new SystemExecute();
+        $out = null;
 
         switch ($platform) {
             case SystemPlatform::OS_LINUX:
-                $cmd
+                $out = $cmd
                     ->start()
-                    ->setCommand('cat /proc/stat | grep cpu[0-9]')
+                    ->setCommand('cat /proc/stat | grep cpu[0-9] | wc -l')
                     ->run()
-                ;
+                    ->getOutput();
                 break;
 
             case SystemPlatform::OS_DARWIN:
-                $cmd
+                $out = $cmd
                     ->start()
                     ->setCommand('sysctl hw.ncpu | cut -d " " -f 2')
                     ->run()
-                ;
+                    ->getOutput();
                 break;
         }
 
-        if ($cmd->isSuccess() !== true || count($cmd->getOutput()) > 1) {
+        if (is_null_or_empty($out) || false === (count($out) === 1)) {
             throw new RuntimeException('The platform you are using does not support core count look-ups. "%s".', null, null, (string) $platform);
         }
 
-        return (int) $cmd->getOutput()[0];
+        return (int) $out[0];
     }
 }
 
