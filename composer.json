@@ -2,8 +2,8 @@
     "name"        : "scr-be/wonka-library",
     "license"     : "MIT",
     "type"        : "library",
-    "homepage"    : "https://scr.be/wonka-library/home",
-    "description" : "Collection of framework-agnostic utilities and classes.",
+    "homepage"    : "https://scr.be/wonka-library",
+    "description" : "A collection of framework-agnostic functions and classes used as the base for many other Scribe projects.",
     "support" : {
         "email"  : "rmf@scr.be",
         "source" : "https://scr.be/wonka-library/git",
@@ -33,6 +33,9 @@
     "conflict" : {
         "scribe/mantle-bundle" : "<2.2.0"
     },
+    "suggest" : {
+        "hoa/math" : "~0.1"
+    },
     "autoload" : {
         "psr-4" : { 
             "Scribe\\Wonka\\" : "lib/"
@@ -47,7 +50,7 @@
         }
     },
     "minimum-stability" : "dev",
-    "prefer-stable" : true,
+    "prefer-stable"     : true,
     "config": {
         "bin-dir" : "bin"
     },
