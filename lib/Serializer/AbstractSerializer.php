@@ -11,8 +11,6 @@
 
 namespace Scribe\Wonka\Serializer;
 
-use Scribe\Wonka\Serializer\Visitor\SerializerVisitorInterface;
-
 /**
  * Class AbstractSerializer.
  */
