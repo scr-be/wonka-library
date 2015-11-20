@@ -166,7 +166,7 @@ trait ExceptionTrait
     public function getType($fullyQualifiedName = false)
     {
         if (true === $fullyQualifiedName) {
-            return (string) ClassInfo::getNamespace(get_called_class());
+            return (string) get_called_class();
         }
 
         return (string) ClassInfo::getClassName(get_called_class());
