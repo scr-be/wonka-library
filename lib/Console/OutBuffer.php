@@ -27,14 +27,9 @@ class OutBuffer extends ConsoleStringFormatter
     const CFG_LEN="lineLength";
 
     /**
-     * @var array[]
-     */
-    protected static $bufferLines = [];
-
-    /**
      * @var string[]
      */
-    protected static $buffer = [];
+    protected static $buffer;
 
     /**
      * @var string
@@ -44,32 +39,31 @@ class OutBuffer extends ConsoleStringFormatter
     /**
      * @var int
      */
-    protected static $lineLength = 120;
+    protected static $lineLength = 200;
+
+    static public function make()
+    {
+        self::conf([OutBuffer::CFG_PRE => '    ']);
+    }
+
+    /**
+     * @param string    $message
+     * @param mixed,... $replacements
+     */
+    static public function stat($message, ...$replacements)
+    {
+        self::make();
+        self::line($message);
+        self::show(...$replacements);
+    }
 
     /**
      * @param mixed[] $config
      */
     static public function conf(array $config = [])
     {
-        foreach ($config as $cfg => $val) {
-            static::${(string) $cfg} = $val;
-        }
-    }
-
-    /**
-     * @param string $str
-     */
-    static public function open($str)
-    {
-        if (count(static::$buffer) > 0) {
-            static::$buffer[1];
-        }
-
-        static::$buffer[count(static::$buffer)] = [
-            'open' => static::getActiveConfig()
-        ];
-
-        static::line($str);
+        foreach ($config as $cfg => $val) { self::${(string) $cfg} = $val; }
+        self::addConfigToBuffer();
     }
 
     /**
@@ -77,119 +71,119 @@ class OutBuffer extends ConsoleStringFormatter
      */
     static public function line($str)
     {
-        static::$buffer[count(static::$buffer)][] = (string) $str;
+        self::$buffer[] = (string) $str;
     }
 
-    static public function done(...$subs)
+    /**
+     * @param mixed,... $replacements
+     */
+    static public function show(...$replacements)
     {
-        $out = static::prepareOutputFromBuffer();
+        echo self::getOutputFromBuffer($replacements);
+        static::$buffer = [];
     }
 
-    static protected function getActiveConfig()
+    /**
+     * @return void
+     */
+    static protected function addConfigToBuffer()
     {
-        return [
-            'prefix' => static::$linePrefix,
-            'length' => static::$lineLength,
+        self::$buffer[] = [
+            'prefix' => self::$linePrefix
         ];
     }
 
-    static protected function prepareOutputFromBuffer()
+    static protected function getOutputFromBuffer(array $replacements = [])
     {
-        $output = [];
-        $buffer = static::$buffer;
-        $config = static::getActiveConfig();
+        $lines = self::getOutputLinesConcatFromBuffer();
+        $lines = self::getOutputLinesWithSubstitutions($lines, $replacements);
+        $prefix = '';
+        $output = '';
+        $tmp = '';
+        $first = true;
 
-        array_walk($buffer, function (&$b) {
-            if (!isset($b['open'])) { $b = static::render($b); }
-        });
-
-        foreach ($buffer as $i => $b) {
-            if ($i == 1) {
-                $output[] = "\n";
-            }
-
-            if (isset($b['open'])) {
-                $config = $b['open'];
-                $output[] = $config['buffer'];
-
-                next($output);
+        foreach ($lines as $i => $line) {
+            if (isset($line['prefix'])) {
+                $prefix = $line['prefix'];
                 continue;
             }
 
-            while (strlen($o = current($output) . $b) > $config['length']) {
-                $output[key($output)] = substr($o, 0, $config['length']);
-                $output[] = $config['prefix'] . substr($o, strlen($output[key($output)-1]));
-
-                next($output);
+            if ($i == 0) {
+                continue;
             }
+
+            $tmp .= $line;
         }
 
+        do {
+            $more = 0;
+            $matches = 0;
+            $outputTmp = substr($tmp, 0, self::$lineLength);
+            preg_match_all('{\[([0-9]+;)?[0-9]+m}i', $outputTmp, $matches);
+            if (isset($matches[0][0])) {
+                $more = strlen($matches[0][0]) + (count($matches[0]) * 3);
+                $outputTmp = substr($tmp, 0, (self::$lineLength+$more));
+            }
+            if ($first !== true) $output .= '  ';
+            $output .= $prefix . trim($outputTmp) . "\n";
+            $tmp = substr($tmp, self::$lineLength+$more);
+            $first=false;
+        }
+        while(strlen($tmp) >= self::$lineLength);
 
+        if (strlen($tmp) > 0) $output .= '  '.$prefix . trim($tmp) . "\n";
+
+        return $output . self::getColorTerminationCode();
     }
 
-    /**
-     * @param string    $string
-     * @param mixed,... $replacements
-     */
-    static public function outLine($string, ...$replacements)
+    static protected function getOutputLinesConcatFromBuffer()
     {
-        static::out($string, ...$replacements);
-        echo PHP_EOL;
-    }
+        $output[] = "\n";
 
-    /**
-     * @param string    $string
-     * @param mixed,... $replacements
-     */
-    static public function out($string, ...$replacements)
-    {
-        echo static::render($string, ...$replacements);
-    }
+        foreach (self::$buffer as $i => $b) {
 
-    /**
-     * @param string    $string
-     * @param mixed,... $replacements
-     *
-     * @return string
-     */
-    static public function render($string, ...$replacements)
-    {
-        return (string) static::performColorPlaceholderSubstitutions(
-            static::performReplacementSubstitutions($string, $replacements)
-        );
-    }
+            if (isset($b['prefix'])) {
+                $output[] = ['prefix' => $b['prefix']];
+                $iterator = count($output);
+                continue;
+            }
 
-    /**
-     * @return string
-     */
-    static public function getColorTerminationCode()
-    {
-        return (string) ConsoleStringColorSwatches::$colors['R%'];
-    }
-
-    /**
-     * @param string     $string
-     * @param array|null $replacements
-     *
-     * @return string
-     */
-    static protected function performReplacementSubstitutions($string, array $replacements = null)
-    {
-        return (string) ($replacements ? $string : sprintf((string) $string, ...$replacements));
-    }
-
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    static protected function performColorPlaceholderSubstitutions($string)
-    {
-        foreach (ConsoleStringColorSwatches::$colors as $colorKey => $colorVal) {
-            $string = str_replace($colorKey, $colorVal, $string);
+            $output[$iterator] = (@$output[$iterator]).' '.$b;
         }
 
-        return (string) ($string.self::getColorTerminationCode());
+        return $output;
+    }
+
+    /**
+     * @param array $lines
+     * @param array $replacements
+     * @return array
+     */
+    static protected function getOutputLinesWithSubstitutions(array $lines, array $replacements)
+    {
+        array_walk($lines, function (&$l) {
+            if (isset($l['prefix'])) { return; }
+            $l = self::performColorPlaceholderSubstitutions($l);
+        });
+
+        if (count($replacements) == 0) {
+            return $lines;
+        }
+
+        $temp = array_filter($lines, function($l) {
+            return (bool) !is_array($l);
+        });
+
+        $temp = implode($temp, 'abcdefg!@#$^&');
+        $temp = self::performReplacementSubstitutions($temp, $replacements);
+        $temp = explode('abcdefg!@#$^&', $temp);
+
+        array_walk($lines, function (&$l) use (&$temp) {
+            if (isset($l['prefix'])) { return; }
+            $l = array_shift($temp);
+        });
+
+        return $lines;
     }
 }
 

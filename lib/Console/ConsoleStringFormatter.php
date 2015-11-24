@@ -58,7 +58,7 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
      */
     static public function getColorTerminationCode()
     {
-        return (string) ConsoleStringColorSwatches::$colors['R%'];
+        return (string) ConsoleStringColorSwatches::$colors['+R/-'];
     }
 
     /**
@@ -67,9 +67,9 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
      *
      * @return string
      */
-    static protected function performReplacementSubstitutions($string, array $replacements = null)
+    static protected function performReplacementSubstitutions($string, array $replacements = [])
     {
-        return (string) ($replacements ? $string : sprintf((string) $string, ...$replacements));
+        return (string) (count($replacements) == 0 ? $string : sprintf($string, ...$replacements));
     }
 
     /**
@@ -84,6 +84,17 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
         }
 
         return (string) ($string.self::getColorTerminationCode());
+    }
+
+    static protected function getOutputLinesWithColorRemoved($lines)
+    {
+        array_walk($lines, function (&$l) {
+            foreach (ConsoleStringColorSwatches::$colors as $colorKey => $colorVal) {
+                $l = str_replace($colorVal, '', $l);
+            }
+        });
+
+        return $lines;
     }
 }
 
