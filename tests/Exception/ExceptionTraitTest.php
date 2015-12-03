@@ -56,7 +56,7 @@ class ExceptionTraitTest extends WonkaTestCase
     {
         $a = [
             'index-string' => 'value 01',
-            'numeric index'
+            'numeric index',
         ];
 
         static::$e->setAttributes($a);

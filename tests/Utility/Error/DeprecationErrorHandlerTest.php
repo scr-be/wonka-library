@@ -67,7 +67,6 @@ class DeprecationErrorHandlerTest extends WonkaTestCase
             '{.+A deprecation message\. This feature was deprecated on "Sat, 10 Oct 2015 [0-9]{2}:00:00 [+-][0-9]{4}" and will be removed in version "v3"\..+}');
         DeprecationErrorHandler::trigger(__METHOD__, __LINE__, 'A deprecation message.', new \DateTime('2015-10-10 04:00 +0400'), 'v3');
     }
-
 }
 
 /* EOF */

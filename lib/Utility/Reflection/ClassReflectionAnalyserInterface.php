@@ -21,7 +21,7 @@ interface ClassReflectionAnalyserInterface
      *
      * @return ClassReflectionAnalyser
      */
-    static public function create(\ReflectionClass $reflectionClass = null);
+    public static function create(\ReflectionClass $reflectionClass = null);
 
     /**
      * Optional injection at instantiation of reflection class for analysis.

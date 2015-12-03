@@ -19,6 +19,7 @@ interface SerializerInterface
     /**
      * @param mixed|null    $data
      * @param \Closure|null $visitor
+     *
      * @return mixed
      */
     public function serializeData($data = null, \Closure $visitor = null);

@@ -19,12 +19,12 @@ class OutBuffer extends ConsoleStringFormatter
     /**
      * @var string
      */
-    const CFG_PRE="linePrefix";
+    const CFG_PRE = 'linePrefix';
 
     /**
      * @var string
      */
-    const CFG_LEN="lineLength";
+    const CFG_LEN = 'lineLength';
 
     /**
      * @var string[]
@@ -41,16 +41,16 @@ class OutBuffer extends ConsoleStringFormatter
      */
     protected static $lineLength = 200;
 
-    static public function make()
+    public static function make()
     {
-        self::conf([OutBuffer::CFG_PRE => '    ']);
+        self::conf([self::CFG_PRE => '    ']);
     }
 
     /**
      * @param string    $message
      * @param mixed,... $replacements
      */
-    static public function stat($message, ...$replacements)
+    public static function stat($message, ...$replacements)
     {
         self::make();
         self::line($message);
@@ -60,16 +60,18 @@ class OutBuffer extends ConsoleStringFormatter
     /**
      * @param mixed[] $config
      */
-    static public function conf(array $config = [])
+    public static function conf(array $config = [])
     {
-        foreach ($config as $cfg => $val) { self::${(string) $cfg} = $val; }
+        foreach ($config as $cfg => $val) {
+            self::${(string) $cfg} = $val;
+        }
         self::addConfigToBuffer();
     }
 
     /**
      * @param string $str
      */
-    static public function line($str)
+    public static function line($str)
     {
         self::$buffer[] = (string) $str;
     }
@@ -77,23 +79,22 @@ class OutBuffer extends ConsoleStringFormatter
     /**
      * @param mixed,... $replacements
      */
-    static public function show(...$replacements)
+    public static function show(...$replacements)
     {
         echo self::getOutputFromBuffer($replacements);
         static::$buffer = [];
     }
 
     /**
-     * @return void
      */
-    static protected function addConfigToBuffer()
+    protected static function addConfigToBuffer()
     {
         self::$buffer[] = [
-            'prefix' => self::$linePrefix
+            'prefix' => self::$linePrefix,
         ];
     }
 
-    static protected function getOutputFromBuffer(array $replacements = [])
+    protected static function getOutputFromBuffer(array $replacements = [])
     {
         $lines = self::getOutputLinesConcatFromBuffer();
         $lines = self::getOutputLinesWithSubstitutions($lines, $replacements);
@@ -122,26 +123,28 @@ class OutBuffer extends ConsoleStringFormatter
             preg_match_all('{\[([0-9]+;)?[0-9]+m}i', $outputTmp, $matches);
             if (isset($matches[0][0])) {
                 $more = strlen($matches[0][0]) + (count($matches[0]) * 3);
-                $outputTmp = substr($tmp, 0, (self::$lineLength+$more));
+                $outputTmp = substr($tmp, 0, (self::$lineLength + $more));
             }
-            if ($first !== true) $output .= '  ';
-            $output .= $prefix . trim($outputTmp) . "\n";
-            $tmp = substr($tmp, self::$lineLength+$more);
-            $first=false;
+            if ($first !== true) {
+                $output .= '  ';
+            }
+            $output .= $prefix.trim($outputTmp)."\n";
+            $tmp = substr($tmp, self::$lineLength + $more);
+            $first = false;
+        } while (strlen($tmp) >= self::$lineLength);
+
+        if (strlen($tmp) > 0) {
+            $output .= '  '.$prefix.trim($tmp)."\n";
         }
-        while(strlen($tmp) >= self::$lineLength);
 
-        if (strlen($tmp) > 0) $output .= '  '.$prefix . trim($tmp) . "\n";
-
-        return $output . self::getColorTerminationCode();
+        return $output.self::getColorTerminationCode();
     }
 
-    static protected function getOutputLinesConcatFromBuffer()
+    protected static function getOutputLinesConcatFromBuffer()
     {
         $output[] = "\n";
 
         foreach (self::$buffer as $i => $b) {
-
             if (isset($b['prefix'])) {
                 $output[] = ['prefix' => $b['prefix']];
                 $iterator = count($output);
@@ -157,12 +160,15 @@ class OutBuffer extends ConsoleStringFormatter
     /**
      * @param array $lines
      * @param array $replacements
+     *
      * @return array
      */
-    static protected function getOutputLinesWithSubstitutions(array $lines, array $replacements)
+    protected static function getOutputLinesWithSubstitutions(array $lines, array $replacements)
     {
         array_walk($lines, function (&$l) {
-            if (isset($l['prefix'])) { return; }
+            if (isset($l['prefix'])) {
+                return;
+            }
             $l = self::performColorPlaceholderSubstitutions($l);
         });
 
@@ -170,7 +176,7 @@ class OutBuffer extends ConsoleStringFormatter
             return $lines;
         }
 
-        $temp = array_filter($lines, function($l) {
+        $temp = array_filter($lines, function ($l) {
             return (bool) !is_array($l);
         });
 
@@ -179,7 +185,9 @@ class OutBuffer extends ConsoleStringFormatter
         $temp = explode('abcdefg!@#$^&', $temp);
 
         array_walk($lines, function (&$l) use (&$temp) {
-            if (isset($l['prefix'])) { return; }
+            if (isset($l['prefix'])) {
+                return;
+            }
             $l = array_shift($temp);
         });
 

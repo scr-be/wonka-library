@@ -11,7 +11,6 @@
 
 namespace Scribe\Wonka\Tests\Component\Hydrator\Manager;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Scribe\Wonka\Component\Hydrator\Mapping\HydratorMapping;
 use Scribe\Wonka\Component\Hydrator\Manager\HydratorManager;
 use Scribe\Wonka\Tests\Component\Hydrator\HydratorMockObjectInstance;
@@ -47,7 +46,7 @@ class HydratorManagerTest extends WonkaTestCase
 
         self::$objectInstanceOne
             ->setPublicProp('Something Else')
-            ->setProtectedProp(new \Datetime)
+            ->setProtectedProp(new \Datetime())
             ->setPrivateProp(['an', 'array', 'value'])
         ;
 
@@ -95,7 +94,7 @@ class HydratorManagerTest extends WonkaTestCase
             'random_public_prop' => 'random_public_prop',
             'random_protected_prop' => 'random_protected_prop',
             'random_private_prop' => 'random_private_prop',
-        ]);        
+        ]);
 
         $transferManager1 = new HydratorManager($def1);
         $transferManager2 = new HydratorManager($def2);

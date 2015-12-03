@@ -32,7 +32,7 @@ class ParametersToPropertiesMapperTraitTest extends WonkaTestCase
 
         $loopCount = count($propertyString);
 
-        for ($i = 0; $i < $loopCount; $i++) {
+        for ($i = 0; $i < $loopCount; ++$i) {
             $mapper = new MapperFixture(
                 [
                     'propertyString' => $propertyString[$i],

@@ -18,13 +18,22 @@ class ClassReflectionUnitMockChild
 {
     use ClassReflectionUnitMockChildTrait;
 
-    public $publicPropChild       = 'publicPropChild::' . __CLASS__;
-    protected $protectedPropChild = 'protectedPropChild::' . __CLASS__;
-    private $privatePropChild     = 'privatePropChild::' . __CLASS__;
+    public $publicPropChild = 'publicPropChild::'.__CLASS__;
+    protected $protectedPropChild = 'protectedPropChild::'.__CLASS__;
+    private $privatePropChild = 'privatePropChild::'.__CLASS__;
 
-    public function publicFunctionChild()       { return 'public::' . __METHOD__;    }
-    protected function protectedFunctionChild() { return 'protected::' . __METHOD__; }
-    private function privateFunctionChild()     { return 'private::' . __METHOD__;   }
+    public function publicFunctionChild()
+    {
+        return 'public::'.__METHOD__;
+    }
+    protected function protectedFunctionChild()
+    {
+        return 'protected::'.__METHOD__;
+    }
+    private function privateFunctionChild()
+    {
+        return 'private::'.__METHOD__;
+    }
 }
 
 /* EOF */

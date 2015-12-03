@@ -30,7 +30,7 @@ trait ExceptionTrait
     {
         $stringSet = [
             'type' => $this->getType(true),
-            'msg'  => $this->getMessage(),
+            'msg' => $this->getMessage(),
             'code' => $this->getCode(),
             'file' => $this->getFile(),
             'line' => $this->getLine(),
@@ -69,7 +69,7 @@ trait ExceptionTrait
      */
     public function getFinalPreviousException($exception = null)
     {
-        return ($exception instanceof \Exception ? $exception : null);
+        return $exception instanceof \Exception ? $exception : null;
     }
 
     /**
@@ -106,7 +106,6 @@ trait ExceptionTrait
      */
     public function addAttribute($attribute, $key = null)
     {
-
         if (is_null_or_empty_string($key)) {
             $this->attributes[] = $attribute;
         } else {
@@ -130,13 +129,13 @@ trait ExceptionTrait
     public function getDebugOutput()
     {
         return (array) [
-            'e'      => $this->getType(true),
-            'msg'    => $this->getMessage(),
-            'code'   => $this->getCode(),
+            'e' => $this->getType(true),
+            'msg' => $this->getMessage(),
+            'code' => $this->getCode(),
             'attrbs' => $this->getAttributes(),
-            'name'   => $this->getFile(),
-            'line'   => $this->getLine(),
-            'trace'  => $this->getTraceLimited(),
+            'name' => $this->getFile(),
+            'line' => $this->getLine(),
+            'trace' => $this->getTraceLimited(),
         ];
     }
 
@@ -151,7 +150,9 @@ trait ExceptionTrait
 
         array_walk($trace, function (&$v, $i) {
             foreach ($v['args'] as &$arg) {
-                if (is_object($arg)) { $arg = get_class($arg); }
+                if (is_object($arg)) {
+                    $arg = get_class($arg);
+                }
             }
         });
 

@@ -16,9 +16,18 @@ namespace Scribe\Wonka\Tests\Utility\Reflection;
  */
 trait ClassReflectionUnitMockChildTrait
 {
-    public function publicFunctionChildTrait()       { return 'public::' . __METHOD__;    }
-    protected function protectedFunctionChildTrait() { return 'protected::' . __METHOD__; }
-    private function privateFunctionChildTrait()     { return 'private::' . __METHOD__;   }
+    public function publicFunctionChildTrait()
+    {
+        return 'public::'.__METHOD__;
+    }
+    protected function protectedFunctionChildTrait()
+    {
+        return 'protected::'.__METHOD__;
+    }
+    private function privateFunctionChildTrait()
+    {
+        return 'private::'.__METHOD__;
+    }
 }
 
 /* EOF */

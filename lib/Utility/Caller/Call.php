@@ -176,7 +176,7 @@ class Call implements CallInterface
                 (string) $class, (string) __METHOD__);
         }
 
-        return (true === $static ? $class : $object);
+        return true === $static ? $class : $object;
     }
 
     /**

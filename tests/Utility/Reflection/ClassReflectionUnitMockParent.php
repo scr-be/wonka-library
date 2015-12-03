@@ -16,15 +16,24 @@ namespace Scribe\Wonka\Tests\Utility\Reflection;
  */
 class ClassReflectionUnitMockParent extends ClassReflectionUnitMockChild
 {
-	use ClassReflectionUnitMockParentTrait;
+    use ClassReflectionUnitMockParentTrait;
 
-    public $publicPropParent       = 'publicPropParent::' . __CLASS__;
-    protected $protectedPropParent = 'protectedPropParent::' . __CLASS__;
-    private $privatePropParent     = 'privatePropParent::' . __CLASS__;
+    public $publicPropParent = 'publicPropParent::'.__CLASS__;
+    protected $protectedPropParent = 'protectedPropParent::'.__CLASS__;
+    private $privatePropParent = 'privatePropParent::'.__CLASS__;
 
-    public function publicFunctionParent()       { return 'public::' . __METHOD__;    }
-    protected function protectedFunctionParent() { return 'protected::' . __METHOD__; }
-    private function privateFunctionParent()     { return 'private::' . __METHOD__;   }
+    public function publicFunctionParent()
+    {
+        return 'public::'.__METHOD__;
+    }
+    protected function protectedFunctionParent()
+    {
+        return 'protected::'.__METHOD__;
+    }
+    private function privateFunctionParent()
+    {
+        return 'private::'.__METHOD__;
+    }
 }
 
 /* EOF */

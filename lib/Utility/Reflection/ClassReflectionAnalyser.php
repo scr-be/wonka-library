@@ -26,7 +26,7 @@ class ClassReflectionAnalyser implements ClassReflectionAnalyserInterface
      *
      * @return $this
      */
-    static public function create(\ReflectionClass $reflectionClass = null)
+    public static function create(\ReflectionClass $reflectionClass = null)
     {
         return new self($reflectionClass);
     }

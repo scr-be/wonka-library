@@ -30,9 +30,9 @@ class ArraysTest extends WonkaTestCase
     {
         $data = [
             [['a', 'b', 'c', 'd'], false],
-            [[0 => 'a',1 => 'b',2 => 'c',3 => 'd'], false],
-            [[20 => 'a',3 => 'b',12 => 'c',9 => 'd'], true],
-            [['abc' => 'a','def' => 'b','ghi' => 'c','jkl' => 'd'], true],
+            [[0 => 'a', 1 => 'b', 2 => 'c', 3 => 'd'], false],
+            [[20 => 'a', 3 => 'b', 12 => 'c', 9 => 'd'], true],
+            [['abc' => 'a', 'def' => 'b', 'ghi' => 'c', 'jkl' => 'd'], true],
         ];
 
         foreach ($data as $d) {

@@ -59,7 +59,7 @@ class HydratorMappingTest extends WonkaTestCase
         $expected = [
             'random_public_prop' => 'privateProp',
             'privateProp' => 'protectedProp',
-            'protectedProp' => 'random_public_prop'
+            'protectedProp' => 'random_public_prop',
         ];
 
         static::assertEquals($expected, $def->getTransferable($this->from));
@@ -76,7 +76,7 @@ class HydratorMappingTest extends WonkaTestCase
         $expected = [
             'random_public_prop' => 'random_public_prop',
             'privateProp' => 'privateProp',
-            'protectedProp' => 'protectedProp'
+            'protectedProp' => 'protectedProp',
         ];
 
         static::assertEquals($expected, $def->getTransferable($this->from));

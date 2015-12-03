@@ -20,13 +20,13 @@ interface ConsoleStringFormatterInterface
      * @param string    $string
      * @param mixed,... $replacements
      */
-    static public function outLine($string, ...$replacements);
+    public static function outLine($string, ...$replacements);
 
     /**
      * @param string    $string
      * @param mixed,... $replacements
      */
-    static public function out($string, ...$replacements);
+    public static function out($string, ...$replacements);
 
     /**
      * @param string    $string
@@ -34,12 +34,12 @@ interface ConsoleStringFormatterInterface
      *
      * @return string
      */
-    static public function render($string, ...$replacements);
+    public static function render($string, ...$replacements);
 
     /**
      * @return string
      */
-    static public function getColorTerminationCode();
+    public static function getColorTerminationCode();
 }
 
 /* EOF */

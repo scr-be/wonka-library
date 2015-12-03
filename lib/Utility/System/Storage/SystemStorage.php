@@ -74,10 +74,10 @@ class SystemStorage implements SystemStorageInterface
         $pathAbsolute = $this->isPathAbsolute($path);
         $pathPartsConcat = [];
 
-        for ($i = 0; $i < $pathPartsCount; $i++) {
+        for ($i = 0; $i < $pathPartsCount; ++$i) {
             $pathBuilderTemp = [];
 
-            for ($j = $i; $j >= 0; $j--) {
+            for ($j = $i; $j >= 0; --$j) {
                 array_unshift($pathBuilderTemp, $pathParts[$j]);
             }
 

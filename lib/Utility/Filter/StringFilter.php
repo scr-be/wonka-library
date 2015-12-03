@@ -233,7 +233,7 @@ class StringFilter
             return false;
         }
 
-        for ($i = 0; $i < count($str1Split); $i++) {
+        for ($i = 0; $i < count($str1Split); ++$i) {
             if ($str1Split[$i] !== $str2Split[$i]) {
                 return false;
             }
@@ -252,7 +252,7 @@ class StringFilter
         $stop = mb_strlen($string);
         $result = [];
 
-        for ($idx = 0; $idx < $stop; $idx++) {
+        for ($idx = 0; $idx < $stop; ++$idx) {
             $result[] = mb_substr($string, $idx, 1);
         }
 

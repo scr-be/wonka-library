@@ -184,14 +184,13 @@ class DeprecationErrorHandler
      * @param \DateTime $dateTime
      * @param int       $timezoneOffset
      */
-    protected static function attemptDateTimeZoneFromString(\DateTime & $dateTime, $timezoneOffset)
+    protected static function attemptDateTimeZoneFromString(\DateTime &$dateTime, $timezoneOffset)
     {
         $negativeOffset = false;
 
         if (!is_int($timezoneDirection = substr($timezoneOffset, 0, 1))) {
             $negativeOffset = (bool) (substr($timezoneOffset, 0, 1) === '-');
             $timezoneOffset = substr($timezoneOffset, 1) / 100;
-
         }
 
         if ((int) $timezoneOffset > 26 || (int) $timezoneOffset < -26 || (int) $timezoneOffset === 0) {

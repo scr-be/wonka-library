@@ -179,7 +179,6 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $mockObject = new ClassReflectionUnitMockParent();
         $this->reflectionClassAnalyser->setReflectionClassFromClassInstance($mockObject);
 
-
         static::assertFalse($this->reflectionClassAnalyser->hasProperty(
             'doesNotHaveThisProperty', $this->refOfClassReflectionAnalyser
         ));

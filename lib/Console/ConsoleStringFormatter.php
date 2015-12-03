@@ -25,7 +25,7 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
      * @param string    $string
      * @param mixed,... $replacements
      */
-    static public function outLine($string, ...$replacements)
+    public static function outLine($string, ...$replacements)
     {
         static::out($string, ...$replacements);
         echo PHP_EOL;
@@ -35,7 +35,7 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
      * @param string    $string
      * @param mixed,... $replacements
      */
-    static public function out($string, ...$replacements)
+    public static function out($string, ...$replacements)
     {
         echo static::render($string, ...$replacements);
     }
@@ -46,7 +46,7 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
      *
      * @return string
      */
-    static public function render($string, ...$replacements)
+    public static function render($string, ...$replacements)
     {
         return (string) static::performColorPlaceholderSubstitutions(
             static::performReplacementSubstitutions($string, $replacements)
@@ -56,7 +56,7 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
     /**
      * @return string
      */
-    static public function getColorTerminationCode()
+    public static function getColorTerminationCode()
     {
         return (string) ConsoleStringColorSwatches::$colors['+R/-'];
     }
@@ -67,7 +67,7 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
      *
      * @return string
      */
-    static protected function performReplacementSubstitutions($string, array $replacements = [])
+    protected static function performReplacementSubstitutions($string, array $replacements = [])
     {
         return (string) (count($replacements) == 0 ? $string : sprintf($string, ...$replacements));
     }
@@ -77,7 +77,7 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
      *
      * @return string
      */
-    static protected function performColorPlaceholderSubstitutions($string)
+    protected static function performColorPlaceholderSubstitutions($string)
     {
         foreach (ConsoleStringColorSwatches::$colors as $colorKey => $colorVal) {
             $string = str_replace($colorKey, $colorVal, $string);
@@ -86,7 +86,7 @@ class ConsoleStringFormatter implements ConsoleStringFormatterInterface
         return (string) ($string.self::getColorTerminationCode());
     }
 
-    static protected function getOutputLinesWithColorRemoved($lines)
+    protected static function getOutputLinesWithColorRemoved($lines)
     {
         array_walk($lines, function (&$l) {
             foreach (ConsoleStringColorSwatches::$colors as $colorKey => $colorVal) {

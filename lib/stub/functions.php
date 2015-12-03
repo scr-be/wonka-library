@@ -31,7 +31,9 @@ namespace {
 
         try {
             array_walk($comparisonSet, function ($value) use ($firstItem) {
-                if ($firstItem !== $value) { throw new \Exception; }
+                if ($firstItem !== $value) {
+                    throw new \Exception();
+                }
             });
         } catch (\Exception $e) {
             return false;
@@ -101,13 +103,13 @@ namespace {
      * Get the value of an iterable item via its key.
      *
      * @param string $key
-     * @param mixed $iterable
-     *
-     * @return null
+     * @param mixed  $iterable
      */
     function get_iterable_value_by_key($key, $iterable)
     {
-        if (true !== is_iterable($iterable) || false === array_key_exists($key, $iterable)) { return null; }
+        if (true !== is_iterable($iterable) || false === array_key_exists($key, $iterable)) {
+            return;
+        }
 
         return $iterable[$key];
     }
@@ -124,7 +126,7 @@ namespace {
     {
         $arrayItem = reset($array);
 
-        return ($arrayItem === false ? null : $arrayItem);
+        return $arrayItem === false ? null : $arrayItem;
     }
 
     /**
@@ -139,7 +141,7 @@ namespace {
     {
         $arrayItem = end($array);
 
-        return ($arrayItem === false ? null : $arrayItem);
+        return $arrayItem === false ? null : $arrayItem;
     }
 
     /**

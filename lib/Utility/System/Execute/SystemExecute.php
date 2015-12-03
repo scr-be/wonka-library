@@ -54,7 +54,6 @@ class SystemExecute extends AbstractSystemExecute
             ->sanitizeAndSetOutput($output)
             ->sanitizeAndSetReturn($return);
 
-
         return $this;
     }
 

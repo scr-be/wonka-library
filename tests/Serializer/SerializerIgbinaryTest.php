@@ -43,11 +43,11 @@ class SerializerIgbinaryTest extends WonkaTestCase
         $expectedUnserialized = ['foo'];
         $expectedSerialized = igbinary_serialize($expectedUnserialized);
 
-        $serialized = $s->serializeData($expectedUnserialized, function($data) {
+        $serialized = $s->serializeData($expectedUnserialized, function ($data) {
             return $data;
         });
 
-        $unserialized = $s->unSerializeData($serialized, function($data) {
+        $unserialized = $s->unSerializeData($serialized, function ($data) {
             return $data;
         });
 

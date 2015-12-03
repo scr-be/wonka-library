@@ -216,7 +216,7 @@ trait ClassReflectionAnalyserTrait
             return $this->getPropertiesPublic();
         }
 
-        throw new InvalidArgumentException('Invalid filter provided to getProperties. Valid filters are false (for all properties), ' .
+        throw new InvalidArgumentException('Invalid filter provided to getProperties. Valid filters are false (for all properties), '.
             '\ReflectionProperty::IS_PRIVATE \ReflectionProperty::IS_PROTECTED, and \ReflectionProperty::IS_PUBLIC.');
     }
 

@@ -61,7 +61,7 @@ abstract class AbstractSerializer implements SerializerInterface
      */
     protected static function determineSerializer($default, $serializer = null)
     {
-        return ($serializer === null ? $default : $serializer);
+        return $serializer === null ? $default : $serializer;
     }
 
     /**

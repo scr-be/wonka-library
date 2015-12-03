@@ -107,8 +107,7 @@ class HydratorManager implements HydratorManagerInterface
                                    &$to, $from, $fromProperty, $toProperty)
     {
         if (true !== $refFrom->hasProperty($fromProperty) ||
-            true !== $refTo->hasProperty($toProperty))
-        {
+            true !== $refTo->hasProperty($toProperty)) {
             return;
         }
 

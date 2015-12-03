@@ -31,12 +31,13 @@ class AbstractSerializer implements SerializerInterface
      */
     public static function create()
     {
-        return new static;
+        return new static();
     }
 
     /**
      * @param mixed|null    $data
      * @param \Closure|null $visitor
+     *
      * @return mixed
      */
     public function serializeData($data = null, \Closure $visitor = null)
