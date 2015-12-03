@@ -1,7 +1,7 @@
 # Scribe: Wonka Library
 
 [![Travis](https://scr.be/wonka-library/travis_shield)](https://scr.be/wonka-library/travis)
-[![Scrutinizer](https://scr.be/wonka-library/scrutinizer_shield)](https://scr.be/wonka-library/scrutinizer)
+[![Codacy](https://scr.be/wonka-library/codacy_shield)](https://scr.be/wonka-library/codacy)
 [![Coveralls](https://scr.be/wonka-library/coveralls_shield)](https://scr.be/wonka-library/coveralls)
 [![Gemnasium](https://scr.be/wonka-library/gemnasium_shield)](https://scr.be/wonka-library/gemnasium)
 
