@@ -19,16 +19,32 @@ use Scribe\Wonka\Utility\ClassInfo;
 trait ExceptionTrait
 {
     /**
+     * @var string
+     */
+    protected $message;
+
+    /**
      * @var array
      */
     protected $attributes;
 
     /**
+     * @param string|null $message
+     * @param int|null    $code
+     * @param mixed       $previous
+     * @param mixed,...   $replaceSet
+     */
+    abstract public function __construct($message = null, $code = null, $previous = null, ...$replaceSet);
+
+    /**
+     * @param string|null $message
+     * @param mixed,...   $replacements
+     *
      * @return static
      */
-    public function create()
+    public function create($message = null, ...$replacements)
     {
-        return new static;
+        return new static($message, null, null, ...$replacements);
     }
 
     /**
@@ -48,6 +64,55 @@ trait ExceptionTrait
     }
 
     /**
+     * @param string    $message
+     * @param mixed,... $stringReplacements
+     *
+     * @return $this
+     */
+    public function setMessage($message, ...$stringReplacements)
+    {
+        $this->message = $this->getFinalMessage($message, ...$stringReplacements);
+
+        return $this;
+    }
+
+    /**
+     * @param string|\SplFileInfo $file
+     *
+     * @return $this
+     */
+    public function setFile($file)
+    {
+        $this->file = $this->getFinalFile($file);
+
+        return $this;
+    }
+
+    /**
+     * @param int $line
+     *
+     * @return $this
+     */
+    public function setLine($line)
+    {
+        $this->line = $this->getFinalLine($line);
+
+        return $this;
+    }
+
+    /**
+     * @param \Exception $exception
+     *
+     * @return $this
+     */
+    public function setPrevious(\Exception $exception)
+    {
+        $this->__construct($this->getMessage(), $this->getCode(), $exception);
+
+        return $this;
+    }
+
+    /**
      * @param null|string $message
      * @param mixed,...   $replaceSet
      *
@@ -55,7 +120,7 @@ trait ExceptionTrait
      */
     public function getFinalMessage($message = null, ...$replaceSet)
     {
-        $message = (string) (is_null_or_empty_string($message) ? $this->getDefaultMessage() : $message);
+        $message = (string) (isNullOrEmptyStr($message) ? $this->getDefaultMessage() : $message);
 
         return (string) (is_iterable_empty($replaceSet) ? $message : sprintf($message, ...$replaceSet));
     }
@@ -78,6 +143,30 @@ trait ExceptionTrait
     public function getFinalPreviousException($exception = null)
     {
         return $exception instanceof \Exception ? $exception : null;
+    }
+
+    /**
+     * @param string|\SplFileInfo $file
+     *
+     * @return string|null
+     */
+    protected function getFinalFile($file)
+    {
+        if ($file instanceof \SplFileInfo) {
+            return $file->getPathname();
+        }
+
+        return (notNullOrEmptyStr($file) ? $file : null);
+    }
+
+    /**
+     * @param int $line
+     *
+     * @return int|null
+     */
+    protected function getFinalLine($line)
+    {
+        return (is_int($line) ? $line : null);
     }
 
     /**
