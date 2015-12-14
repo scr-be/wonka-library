@@ -99,7 +99,7 @@ interface ExceptionInterface
      *
      * @return static
      */
-    public function create($message = null, ...$replacements);
+    public static function create($message = null, ...$replacements);
 
     /**
      * @return string
@@ -153,7 +153,7 @@ interface ExceptionInterface
      *
      * @return $this
      */
-    public function setMessage($message, ...$stringReplacements);
+    public function setMessage($message, ...$replacements);
 
     /**
      * @param int $code

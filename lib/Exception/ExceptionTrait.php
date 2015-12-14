@@ -47,9 +47,9 @@ trait ExceptionTrait
      *
      * @return static
      */
-    public function create($message = null, ...$replacements)
+    public static function create($message = null, ...$replacements)
     {
-        return new static((notNullOrEmptyStr($message) ? $message : null), null, null, ...$replacements);
+        return new static($message, null, null, ...$replacements);
     }
 
     /**
@@ -110,13 +110,13 @@ trait ExceptionTrait
 
     /**
      * @param string    $message
-     * @param mixed,... $stringReplacements
+     * @param mixed,... $replacements
      *
      * @return $this
      */
-    public function setMessage($message, ...$stringReplacements)
+    public function setMessage($message, ...$replacements)
     {
-        $this->message = $this->getFinalMessage($message, ...$stringReplacements);
+        $this->message = $this->getFinalMessage($message, ...$replacements);
 
         return $this;
     }
@@ -286,7 +286,7 @@ trait ExceptionTrait
      */
     public function getFinalMessage($message = null, ...$replacements)
     {
-        if (isNullOrEmptyStr($message)) {
+        if (isNullOrEmpty($message)) {
             return;
         }
 
@@ -322,7 +322,7 @@ trait ExceptionTrait
             return $file->getPathname();
         }
 
-        return (notNullOrEmptyStr($file) ? $file : null);
+        return (notNullOrEmpty($file) ? $file : null);
     }
 
     /**

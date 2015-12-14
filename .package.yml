@@ -4,10 +4,10 @@ api_cfgmod : clone
 api_runner : ~
 api_paths  : lib
 env_make : ~
-env_prep : composer-update
-env_post : coveralls,codacy
+env_prep : get-composer
+env_post : ci-coveralls,ci-codacy
 php_conf : timezone
 php_exts : igbinary
-app_prep : install-deps
+app_prep : dep-composer
 app_post : ~
 app_path : ~
