@@ -94,56 +94,94 @@ interface ExceptionInterface
     const CODE_FIXTURE_DATA_INCONSISTENT = 735;
 
     /**
-     * @param string|null $message        An error message string (optionally fed to sprintf if optional args are given)
-     * @param int|null    $code           The error code (which should be from ORMExceptionInterface). If null, the value
-     *                                    of ExceptionInterface::CODE_GENERIC will be used.
-     * @param mixed       $previous       The previous exception, if applicable.
-     * @param mixed       $replaceSet,... All extra parameters passed are used to provide replacement values against the
-     *                                    exception message.
+     * @param string|null $message
+     * @param mixed,...   $replacements
+     *
+     * @return static
      */
-    public function __construct($message = null, $code = null, $previous = null, ...$replaceSet);
+    public function create($message = null, ...$replacements);
 
     /**
      * @return string
      */
     public function __toString();
 
+
     /**
-     * @param null|string $message
-     * @param mixed,...   $replaceSet
-     *
-     * @internal
-     *
      * @return string
      */
-    public function getFinalMessage($message = null, ...$replaceSet);
+    public function getMessage();
 
     /**
-     * @param int|null $code
-     *
-     * @internal
-     *
      * @return int
      */
-    public function getFinalCode($code = null);
+    public function getCode();
 
     /**
-     * @param mixed $exception
-     *
-     * @internal
-     *
-     * @return null|\Exception
+     * @return string
      */
-    public function getFinalPreviousException($exception = null);
+    public function getFile();
+
+    /**
+     * @return int
+     */
+    public function getLine();
+
+    /**
+     * @return \Exception|null
+     */
+    public function getPrevious();
+
+    /**
+     * @return array
+     */
+    public function getTrace();
 
     /**
      * @return string
      */
     public function getDefaultMessage();
 
-    /**@return int
+    /**
+     * @return int
      */
     public function getDefaultCode();
+
+    /**
+     * @param string    $message
+     * @param mixed,... $stringReplacements
+     *
+     * @return $this
+     */
+    public function setMessage($message, ...$stringReplacements);
+
+    /**
+     * @param int $code
+     *
+     * @return $this
+     */
+    public function setCode($code);
+
+    /**
+     * @param string|\SplFileInfo $file
+     *
+     * @return $this
+     */
+    public function setFile($file);
+
+    /**
+     * @param int $line
+     *
+     * @return $this
+     */
+    public function setLine($line);
+
+    /**
+     * @param \Exception $exception
+     *
+     * @return $this
+     */
+    public function setPrevious(\Exception $exception);
 
     /**
      * @param array $attributes
@@ -166,6 +204,20 @@ interface ExceptionInterface
     public function getAttributes();
 
     /**
+     * @param string $index
+     *
+     * @return null|mixed
+     */
+    public function getAttribute($index);
+
+    /**
+     * @param string $index
+     *
+     * @return bool
+     */
+    public function hasAttribute($index);
+
+    /**
      * @return array
      */
     public function getDebugOutput();
@@ -176,9 +228,11 @@ interface ExceptionInterface
     public function getTraceLimited();
 
     /**
+     * @param false|bool $fQCN
+     *
      * @return string
      */
-    public function getType();
+    public function getType($fQCN = false);
 }
 
 /* EOF */

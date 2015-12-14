@@ -27,6 +27,7 @@ class ExceptionTraitTest extends WonkaTestCase
     public function setUp()
     {
         static::$e = $this->getMockBuilder('Scribe\Wonka\Exception\ExceptionTrait')
+            ->disableOriginalConstructor()
             ->getMockForTrait();
 
         parent::setUp();

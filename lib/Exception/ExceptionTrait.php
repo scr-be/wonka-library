@@ -12,6 +12,7 @@
 namespace Scribe\Wonka\Exception;
 
 use Scribe\Wonka\Utility\ClassInfo;
+use Scribe\Wonka\Utility\Error\DeprecationErrorHandler;
 
 /**
  * Class ExceptionTrait.
@@ -19,22 +20,26 @@ use Scribe\Wonka\Utility\ClassInfo;
 trait ExceptionTrait
 {
     /**
-     * @var string
-     */
-    protected $message;
-
-    /**
-     * @var array
+     * @var mixed[]
      */
     protected $attributes;
 
     /**
-     * @param string|null $message
-     * @param int|null    $code
-     * @param mixed       $previous
-     * @param mixed,...   $replaceSet
+     * @param string|null $message      Message string (see later {@see:$replacements} parameter replacement support)
+     * @param int|null    $code         The error code. Default is {@see ExceptionInterface::CODE_GENERIC}
+     * @param \Exception  $previous     The previous exception, if applicable
+     * @param mixed,...   $replacements Additional parameters are fed to {@see sprintf} against the message string
      */
-    abstract public function __construct($message = null, $code = null, $previous = null, ...$replaceSet);
+    public function __construct($message = null, $code = null, \Exception $previous = null, ...$replacements)
+    {
+        parent::__construct(
+            $this->getFinalMessage((string) $message, ...$replacements),
+            $this->getFinalCode((int) $code),
+            $this->getFinalPrevious($previous)
+        );
+
+        $this->setAttributes([]);
+    }
 
     /**
      * @param string|null $message
@@ -44,7 +49,7 @@ trait ExceptionTrait
      */
     public function create($message = null, ...$replacements)
     {
-        return new static($message, null, null, ...$replacements);
+        return new static((notNullOrEmptyStr($message) ? $message : null), null, null, ...$replacements);
     }
 
     /**
@@ -64,6 +69,46 @@ trait ExceptionTrait
     }
 
     /**
+     * @return string
+     */
+    abstract public function getMessage();
+
+    /**
+     * @return int
+     */
+    abstract public function getCode();
+
+    /**
+     * @return string
+     */
+    abstract public function getFile();
+
+    /**
+     * @return int
+     */
+    abstract public function getLine();
+
+    /**
+     * @return \Exception|null
+     */
+    abstract public function getPrevious();
+
+    /**
+     * @return array
+     */
+    abstract public function getTrace();
+
+    /**
+     * @return string
+     */
+    abstract public function getDefaultMessage();
+
+    /**
+     * @return int
+     */
+    abstract public function getDefaultCode();
+
+    /**
      * @param string    $message
      * @param mixed,... $stringReplacements
      *
@@ -74,6 +119,16 @@ trait ExceptionTrait
         $this->message = $this->getFinalMessage($message, ...$stringReplacements);
 
         return $this;
+    }
+
+    /**
+     * @param int $code
+     *
+     * @return $this
+     */
+    public function setCode($code = null)
+    {
+        $this->code = $this->getFinalCode($code);
     }
 
     /**
@@ -107,81 +162,10 @@ trait ExceptionTrait
      */
     public function setPrevious(\Exception $exception)
     {
-        $this->__construct($this->getMessage(), $this->getCode(), $exception);
+        $this->__construct($this->getMessage(), $this->getCode(), $this->getFinalPrevious($exception));
 
         return $this;
     }
-
-    /**
-     * @param null|string $message
-     * @param mixed,...   $replaceSet
-     *
-     * @return string
-     */
-    public function getFinalMessage($message = null, ...$replaceSet)
-    {
-        $message = (string) (isNullOrEmptyStr($message) ? $this->getDefaultMessage() : $message);
-
-        return (string) (is_iterable_empty($replaceSet) ? $message : sprintf($message, ...$replaceSet));
-    }
-
-    /**
-     * @param int|null $code
-     *
-     * @return int
-     */
-    public function getFinalCode($code = null)
-    {
-        return (int) ($code ? $code : $this->getDefaultCode());
-    }
-
-    /**
-     * @param \Exception|ExceptionInterface $exception
-     *
-     * @return null|\Exception
-     */
-    public function getFinalPreviousException($exception = null)
-    {
-        return $exception instanceof \Exception ? $exception : null;
-    }
-
-    /**
-     * @param string|\SplFileInfo $file
-     *
-     * @return string|null
-     */
-    protected function getFinalFile($file)
-    {
-        if ($file instanceof \SplFileInfo) {
-            return $file->getPathname();
-        }
-
-        return (notNullOrEmptyStr($file) ? $file : null);
-    }
-
-    /**
-     * @param int $line
-     *
-     * @return int|null
-     */
-    protected function getFinalLine($line)
-    {
-        return (is_int($line) ? $line : null);
-    }
-
-    /**
-     * Get the default exception message.
-     *
-     * @return string
-     */
-    abstract public function getDefaultMessage();
-
-    /**
-     * Get the default exception code.
-     *
-     * @return int
-     */
-    abstract public function getDefaultCode();
 
     /**
      * @param array $attributes
@@ -204,40 +188,46 @@ trait ExceptionTrait
     }
 
     /**
-     * @param mixed       $attribute
-     * @param null|string $key
+     * @param mixed           $attribute
+     * @param null|string|int $index
      *
      * @return $this
      */
-    public function addAttribute($attribute, $key = null)
+    public function addAttribute($attribute, $index = null)
     {
-        $this->attributes[(notNullOrEmptyStr($key) ? $key : null)] = $attribute;
+        if (isNullOrEmpty($index)) {
+            $this->attributes[] = $attribute;
+
+            return $this;
+        }
+
+        $this->attributes[$index] = $attribute;
 
         return $this;
     }
 
     /**
-     * @param string $key
+     * @param string $index
      *
      * @return null|mixed
      */
-    public function getAttribute($key)
+    public function getAttribute($index)
     {
-        if (isNullOrEmptyStr($key) || !$this->hasAttribute($key)) {
+        if (isNullOrEmpty($index) || !$this->hasAttribute($index)) {
             return null;
         }
 
-        return $this->attributes[$key];
+        return $this->attributes[$index];
     }
 
     /**
-     * @param string $key
+     * @param string $index
      *
      * @return bool
      */
-    public function hasAttribute($key)
+    public function hasAttribute($index)
     {
-        return (bool) (notNullOrEmptyStr($key) && isset($this->attributes[$key]));
+        return (bool) (isNullOrEmpty($index) || isset($this->attributes[$index]));
     }
 
     /**
@@ -257,8 +247,6 @@ trait ExceptionTrait
     }
 
     /**
-     * @internal
-     *
      * @return array
      */
     public function getTraceLimited()
@@ -277,43 +265,103 @@ trait ExceptionTrait
     }
 
     /**
-     * @param false|bool $fullyQualifiedName
+     * @param false|bool $fQCN
      *
      * @return string
      */
-    public function getType($fullyQualifiedName = false)
+    public function getType($fQCN = false)
     {
-        if (true === $fullyQualifiedName) {
-            return (string) get_called_class();
-        }
+        $called = get_called_class();
 
-        return (string) ClassInfo::getClassName(get_called_class());
+        return ($fQCN ? $called : ClassInfo::getClassName($called));
     }
 
     /**
+     * @param null|string $message
+     * @param mixed,...   $replacements
+     *
+     * @internal
+     *
      * @return string
      */
-    abstract public function getMessage();
+    public function getFinalMessage($message = null, ...$replacements)
+    {
+        if (isNullOrEmptyStr($message)) {
+            return;
+        }
+
+        if (count($replacements) === 0) {
+            return $message;
+        }
+
+        return sprintf($message, ...$replacements);
+    }
 
     /**
+     * @param int|null $code
+     *
+     * @internal
+     *
      * @return int
      */
-    abstract public function getCode();
+    public function getFinalCode($code = null)
+    {
+        return (int) ($code ? $code : $this->getDefaultCode());
+    }
 
     /**
-     * @return string
+     * @param string|\SplFileInfo $file
+     *
+     * @internal
+     *
+     * @return string|null
      */
-    abstract public function getFile();
+    protected function getFinalFile($file)
+    {
+        if ($file instanceof \SplFileInfo) {
+            return $file->getPathname();
+        }
+
+        return (notNullOrEmptyStr($file) ? $file : null);
+    }
 
     /**
-     * @return int
+     * @param int $line
+     *
+     * @default
+     *
+     * @return int|null
      */
-    abstract public function getLine();
+    protected function getFinalLine($line)
+    {
+        return (is_int($line) ? $line : null);
+    }
 
     /**
-     * @return array
+     * @param \Exception $exception
+     *
+     * @internal
+     *
+     * @return null|\Exception
      */
-    abstract public function getTrace();
+    public function getFinalPrevious(\Exception $exception = null)
+    {
+        return $exception;
+    }
+
+    /**
+     * @param mixed $exception
+     *
+     * @internal
+     *
+     * @return null|\Exception
+     */
+    public function getFinalPreviousException($exception = null)
+    {
+        DeprecationErrorHandler::trigger(__METHOD__, __LINE__, 'Use getFinalPrevious instead.', '2015-12-14 10:00 -0400', '0.3');
+
+        return $this->getFinalPrevious($exception);
+    }
 }
 
 /* EOF */

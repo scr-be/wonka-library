@@ -191,7 +191,7 @@ class ClassInfo
      */
     public static function getClassName($fqcn)
     {
-        return (string) array_last(self::getNamespaceSet($fqcn, 1000));
+        return (string) getLastArrayElement(self::getNamespaceSet($fqcn, 1000));
     }
 
     /**

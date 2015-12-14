@@ -18,42 +18,60 @@ use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
  */
 class FunctionsTest extends WonkaTestCase
 {
-    public function testCompareStrict()
+    public function testIsEqual()
     {
         $a = ['a', 'b', 1, '2'];
         $b = ['a', 'b', '1', '2'];
 
-        static::assertNotTrue(\compare_strict($a, $b));
-        static::assertNotTrue(\compare_strict($b, $a));
-        static::assertTrue(\compare_strict($a, $a));
-        static::assertTrue(\compare_strict($b, $b));
+        static::assertNotTrue(\isEqual($a, $b));
+        static::assertNotTrue(\isEqual($b, $a));
+        static::assertTrue(\isEqual($a, $a));
+        static::assertTrue(\isEqual($b, $b));
+    }
+
+    public function testIsCollectionEquals()
+    {
+        $a = ['a', 'b', 1, '2'];
+        $b = $c = $e = ['a', 'b', '1', '2'];
+        $d = ['z', 'x'];
+
+        static::assertNotTrue(isCollectionEquals($a, $b, $c, $d));
+        static::assertNotTrue(isCollectionEquals($a, $b, $c));
+        static::assertNotTrue(isCollectionEquals($a, $b));
+        static::assertNotTrue(isCollectionEquals($c, $d));
+        static::assertTrue(isCollectionEquals($b, $c, $e));
+        static::assertTrue(isCollectionEquals($b, $c));
+        static::assertTrue(isCollectionEquals($c, $e));
+        static::assertTrue(isCollectionEquals($b, $e));
+        static::assertTrue(isCollectionEquals($a, $a));
+        static::assertTrue(isCollectionEquals($d, $d));
     }
 
     public function testCompareStrictException()
     {
-        $this->setExpectedException('\RuntimeException');
-        \compare_strict();
+        $this->setExpectedException('\InvalidArgumentException');
+        isCollectionEquals();
     }
 
-    public function testIsIteratorArray()
+    public function testIsIterable()
     {
         $a = [];
 
-        static::assertTrue(\is_iterable($a));
-        static::assertTrue(\is_iterable_empty($a));
-        static::assertFalse(\is_iterable_not_empty($a));
-        static::assertEquals(0, get_iterable_count($a));
+        static::assertTrue(supportsIterable($a));
+        static::assertTrue(isEmptyIterable($a));
+        static::assertFalse(notEmptyIterable($a));
+        static::assertEquals(0, getCountableSize($a));
     }
 
-    public function testIsIteratorArrayNotEmpty()
+    public function testIsArrayNotEmpty()
     {
         $a = [1, 2, 3];
 
-        static::assertTrue(\is_iterable($a));
-        static::assertFalse(\is_iterable_empty($a));
-        static::assertTrue(\is_iterable_not_empty($a));
-        static::assertEquals(3, get_iterable_count($a));
-        static::assertEquals(1, get_iterable_value_by_key(0, $a));
+        static::assertTrue(supportsIterable($a));
+        static::assertFalse(isEmptyIterable($a));
+        static::assertTrue(notEmptyIterable($a));
+        static::assertEquals(3, getCountableSize($a));
+        static::assertEquals(1, getArrayElement(0, $a));
     }
 
     public function testIsIteratorArrayAccess()
@@ -61,9 +79,9 @@ class FunctionsTest extends WonkaTestCase
         $a = $this->getMockBuilder('\ArrayAccess')
             ->getMockForAbstractClass();
 
-        static::assertTrue(\is_iterable($a));
-        static::assertFalse(\is_iterable_empty($a));
-        static::assertTrue(\is_iterable_not_empty($a));
+        static::assertTrue(supportsIterable($a));
+        static::assertTrue(isEmptyIterable($a));
+        static::assertFalse(notEmptyIterable($a));
     }
 
     public function testIsIteratorCountable()
@@ -71,9 +89,9 @@ class FunctionsTest extends WonkaTestCase
         $a = $this->getMockBuilder('\Countable')
             ->getMockForAbstractClass();
 
-        static::assertTrue(\is_iterable($a));
-        static::assertTrue(\is_iterable_empty($a));
-        static::assertFalse(\is_iterable_not_empty($a));
+        static::assertTrue(supportsIterable($a));
+        static::assertTrue(isEmptyIterable($a));
+        static::assertFalse(notEmptyIterable($a));
     }
 
     public function testIsIteratorNotIterable()
@@ -81,18 +99,26 @@ class FunctionsTest extends WonkaTestCase
         $a = $this->getMockBuilder('\Scribe\Wonka\Exception\RuntimeException')
             ->getMockForAbstractClass();
 
-        static::assertFalse(\is_iterable($a));
-        static::assertTrue(\is_iterable_empty($a));
-        static::assertFalse(\is_iterable_not_empty($a));
+        static::assertFalse(supportsIterable($a));
+        static::assertNull(isEmptyIterable($a));
+        static::assertNull(notEmptyIterable($a));
     }
 
     public function testIsNullOrEmpty()
     {
-        static::assertTrue(\is_null_or_empty([]));
-        static::assertTrue(\is_null_or_empty(null));
-        static::assertTrue(\is_null_or_empty(''));
-        static::assertTrue(\is_null_or_empty_string(null));
-        static::assertTrue(\is_null_or_empty_string(''));
+        static::assertTrue(isNullOrEmpty([]));
+        static::assertTrue(isNullOrEmpty(null));
+        static::assertTrue(isNullOrEmpty(''));
+        static::assertFalse(notNullOrEmpty([]));
+        static::assertFalse(notNullOrEmpty(null));
+        static::assertFalse(notNullOrEmpty(''));
+
+        static::assertTrue(isNullOrEmptyStr(''));
+        static::assertFalse(notNullOrEmptyStr(''));
+
+        $this->setExpectedException('\Scribe\Wonka\Exception\InvalidArgumentException');
+
+        static::assertTrue(isNullOrEmptyStr(null));
     }
 }
 

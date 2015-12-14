@@ -95,7 +95,7 @@ class SystemCpu
                 break;
         }
 
-        if (is_null_or_empty($out) || false === (count($out) === 1)) {
+        if (isNullOrEmpty($out) || false === (count($out) === 1)) {
             throw new RuntimeException('The platform you are using does not support core count look-ups. "%s".', null, null, (string) $platform);
         }
 

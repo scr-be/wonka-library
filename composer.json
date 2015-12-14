@@ -38,7 +38,8 @@
             "Scribe\\Wonka\\" : "lib/"
         },
         "files" : [
-            "lib/stub/functions.php"
+            "lib/stub/functions.php",
+            "stub/functions-deprecated.php"
         ]
     },
     "autoload-dev" : {
@@ -53,7 +54,7 @@
     },
     "extra" : {
         "branch-alias" : {
-            "dev-master" : "0.2-dev"
+            "dev-master" : "0.3-dev"
         }
     }
 }

@@ -32,14 +32,14 @@ class Call implements CallInterface
      * Call a global function or class method (if exists) or callable with specified arguments.
      *
      * @param string|array|\Closure $callable  A global function name or class method (if exists) or callable
-     * @param ...mixed              $arguments Arguments to pass to the global function
+     * @param mixed,...             $arguments Arguments to pass to the global function
      *
      * @return mixed
      */
     public static function generic($callable, ...$arguments)
     {
         if (true === is_array($callable)) {
-            return self::handle(array_last($callable), array_first($callable), false, ...$arguments);
+            return self::handle(getLastArrayElement($callable), getFirstArrayElement($callable), false, ...$arguments);
         } elseif ($callable instanceof \Closure) {
             return $callable(...$arguments);
         } elseif (true === is_string($callable)) {
@@ -67,7 +67,7 @@ class Call implements CallInterface
      *
      * @param string|object $object    An object instance or a class name
      * @param string        $method    An accessible object method name
-     * @param ...mixed      $arguments Arguments to pass to the object method
+     * @param mixed,...     $arguments Arguments to pass to the object method
      *
      * @return mixed
      */
@@ -81,7 +81,7 @@ class Call implements CallInterface
      *
      * @param string|object $object    An object instance or a class name
      * @param string        $method    An accessible object method name
-     * @param ...mixed      $arguments Arguments to pass to the object method
+     * @param mixed,...     $arguments Arguments to pass to the object method
      *
      * @return mixed
      */

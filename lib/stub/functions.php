@@ -12,33 +12,41 @@
 namespace {
 
     use Scribe\Wonka\Exception\InvalidArgumentException;
-    use Scribe\Wonka\Utility\Error\DeprecationErrorHandler;
 
     /**
-     * Variadic function that performs a strict comparison on all arguments passed to it and determines if they are
-     * equal or not.
+     * @param mixed $first
+     * @param mixed $second
      *
-     * @param mixed,... $comparisonSet
+     * @return bool
+     */
+    function isEqual($first, $second)
+    {
+        return isCollectionEquals($first, $second);
+    }
+
+    /**
+     * @param mixed,... $comparisons
      *
      * @throws \RuntimeException
      *
      * @return bool
      */
-    function compare_strict(...$comparisonSet)
+    function isCollectionEquals(...$comparisons)
     {
-        if (false === is_iterable($comparisonSet) || true === is_iterable_empty($comparisonSet) || count($comparisonSet) < 2) {
-            throw new \RuntimeException('You must provide at least two items to compare.');
+        if (!is_array($comparisons) || count($comparisons) < 2) {
+            throw new InvalidArgumentException('You must provide at least two items to compare their equality.');
         }
 
-        $firstItem = array_shift($comparisonSet);
+        $firstEl = array_shift($comparisons);
+        $compare = function($element) use ($firstEl) {
+            if ($element !== $firstEl) {
+                throw new \Exception('Not equals.');
+            }
+        };
 
         try {
-            array_walk($comparisonSet, function ($value) use ($firstItem) {
-                if ($firstItem !== $value) {
-                    throw new \Exception();
-                }
-            });
-        } catch (\Exception $e) {
+            array_walk($comparisons, $compare);
+        } catch (\Exception $exception) {
             return false;
         }
 
@@ -46,105 +54,122 @@ namespace {
     }
 
     /**
-     * Checks if the passed item is an iterable type: an array, or an object with support for
-     * iteration: \Iterator, \ArrayAccess, \Countable, and Doctrin's ArrayCollection.
-     *
-     * @param array|\Iterator|\ArrayAccess|\Countable|ArrayCollection|mixed $iterable
+     * @param array|\ArrayAccess|\Countable|mixed $array
      *
      * @return bool
      */
-    function is_iterable($iterable)
+    function supportsIterable($array)
     {
-        return (bool) (
-            true === is_array($iterable) ||
-            true === ($iterable instanceof \ArrayAccess) ||
-            true === ($iterable instanceof \Countable)
-        );
+        return (bool) (is_array($array) || supportsArrayAccess($array) || supportsCountable($array));
     }
 
     /**
-     * Checks if an iterable item is empty. {@see is_iterable_not_empty} for its inverse.
-     *
-     * @param mixed $iterable
+     * @param mixed $array
      *
      * @return bool
      */
-    function is_iterable_empty($iterable)
+    function supportsCountable($array)
     {
-        return (bool) !is_iterable_not_empty($iterable);
+        return (bool) (is_array($array) || $array instanceof \Countable);
     }
 
     /**
-     * Checks if an iterable item is not empty. {@see is_iterable_empty} for its inverse.
-     *
-     * @param mixed $iterable
+     * @param mixed $array
      *
      * @return bool
      */
-    function is_iterable_not_empty($iterable)
+    function supportsArrayAccess($array)
     {
-        if (false === is_iterable($iterable)) {
-            return false;
+        if (is_array($array) || $array instanceof \ArrayAccess) {
+            return true;
         }
 
-        return (bool) (true === (count($iterable) > 0) ? true : false);
+        return false;
     }
 
     /**
-     * Returns the count of an iterable item, or false if the item is not iterable.
-     *
      * @param mixed $iterable
      *
-     * @return false|int
+     * @return bool
      */
-    function get_iterable_count($iterable)
+    function isEmptyIterable($iterable)
     {
-        return (int) (is_iterable($iterable) ? count($iterable) : 0);
+        if (!supportsIterable($iterable)) {
+            return null;
+        }
+
+        return (bool) (!notEmptyIterable($iterable));
     }
 
     /**
-     * Get the value of an iterable item via its key.
+     * @param mixed $iterable
      *
-     * @param string $key
-     * @param mixed  $iterable
+     * @return bool
      */
-    function get_iterable_value_by_key($key, $iterable)
+    function notEmptyIterable($iterable)
     {
-        if (true !== is_iterable($iterable) || false === array_key_exists($key, $iterable)) {
+        if (!supportsIterable($iterable)) {
+            return null;
+        }
+
+        return (bool) (getCountableSize($iterable) !== 0);
+    }
+
+    /**
+     * @param mixed $array
+     *
+     * @return int
+     */
+    function getCountableSize($array)
+    {
+        return (int) (supportsCountable($array) ? count($array) : 0);
+    }
+
+    /**
+     * @param string             $index
+     * @param array|\ArrayAccess $array
+     *
+     * @return mixed|null
+     */
+    function getArrayElement($index, $array)
+    {
+        if (!supportsArrayAccess($array) || !array_key_exists($index, $array)) {
             return;
         }
 
-        return $iterable[$key];
+        return $array[$index];
     }
 
     /**
-     * Helper function to get first element of an array (works around the fact that PHP won't return a function/method
-     * value by reference).
-     *
-     * @param array $array
+     * @param array|\ArrayAccess $array
      *
      * @return mixed
      */
-    function array_first(array $array = [])
+    function getFirstArrayElement($array)
     {
-        $arrayItem = reset($array);
+        if (!supportsArrayAccess($array)) {
+            return null;
+        }
 
-        return $arrayItem === false ? null : $arrayItem;
+        $element = reset($array);
+
+        return $element ?: null;
     }
 
     /**
-     * Helper function to get last element of an array (works around the fact that PHP won't return a function/method
-     * value by reference).
-     *
-     * @param array $array
+     * @param array|\ArrayAccess $array
      *
      * @return mixed
      */
-    function array_last(array $array = [])
+    function getLastArrayElement($array)
     {
-        $arrayItem = end($array);
+        if (!supportsArrayAccess($array)) {
+            return null;
+        }
 
-        return $arrayItem === false ? null : $arrayItem;
+        $element = end($array);
+
+        return $element ?: null;
     }
 
     /**
@@ -153,17 +178,15 @@ namespace {
      *
      * @return bool
      */
-    function enable_new_relic_extension($application, $framework = null)
+    function extensionEnableNewRelic($application, $framework = null)
     {
-        if (false === extension_loaded('newrelic') ||
-            false === function_exists('newrelic_set_appname')
-        ) {
+        if (!extension_loaded('newrelic') || !function_exists('newrelic_set_appname')) {
             return false;
         }
 
         newrelic_set_appname($application);
 
-        if (null !== $framework) {
+        if (notNullOrEmpty($framework)) {
             ini_set('newrelic.framework', $framework);
         }
 
@@ -214,48 +237,6 @@ namespace {
     function notNullOrEmptyStr($string)
     {
         return (bool) (!isNullOrEmptyStr($string));
-    }
-
-    /**
-     * @deprecated
-     *
-     * @param string $string
-     *
-     * @return bool
-     */
-    function is_null_or_empty_string($string)
-    {
-        DeprecationErrorHandler::trigger(__FUNCTION__, __LINE__, 'Use "isNullOrEmptyStr" instead.', '2015-12-14 09:00 -0400', '0.3');
-
-        return isNullOrEmptyStr($string);
-    }
-
-    /**
-     * @deprecated
-     *
-     * @param $string
-     *
-     * @return bool
-     */
-    function not_null_or_empty_string($string)
-    {
-        DeprecationErrorHandler::trigger(__FUNCTION__, __LINE__, 'Use "notNullOrEmptyStr" instead.', '2015-12-14 09:00 -0400', '0.3');
-
-        return notNullOrEmptyStr($string);
-    }
-
-    /**
-     * @deprecated
-     *
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    function is_null_or_empty($value)
-    {
-        DeprecationErrorHandler::trigger(__FUNCTION__, __LINE__, 'Use "nullOrEmpty" instead.', '2015-12-14 09:00 -0400', '0.3');
-
-        return isNullOrEmpty($value);
     }
 }
 
