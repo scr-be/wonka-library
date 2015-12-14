@@ -11,6 +11,9 @@
 
 namespace {
 
+    use Scribe\Wonka\Exception\InvalidArgumentException;
+    use Scribe\Wonka\Utility\Error\DeprecationErrorHandler;
+
     /**
      * Variadic function that performs a strict comparison on all arguments passed to it and determines if they are
      * equal or not.
@@ -168,7 +171,53 @@ namespace {
     }
 
     /**
-     * Checks for null or empty string.
+     * Checks for null or empty value.
+     *
+     * @param mixed $mixed
+     *
+     * @return bool
+     */
+    function isNullOrEmpty($mixed)
+    {
+        return (bool) ($mixed === null || empty($mixed) === true);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    function notNullOrEmpty($value)
+    {
+        return (bool) (!isNullOrEmpty($value));
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return bool
+     */
+    function isNullOrEmptyStr($string)
+    {
+        if (!is_string($string)) {
+            throw new InvalidArgumentException('Value provided to %s is not a sting.', null, null, __FUNCTION__);
+        }
+
+        return (bool) ($string === null || mb_strlen($string) === 0);
+    }
+
+    /**
+     * @param $string
+     *
+     * @return bool
+     */
+    function notNullOrEmptyStr($string)
+    {
+        return (bool) (!isNullOrEmptyStr($string));
+    }
+
+    /**
+     * @deprecated
      *
      * @param string $string
      *
@@ -176,11 +225,27 @@ namespace {
      */
     function is_null_or_empty_string($string)
     {
-        return (bool) ($string === null || strlen((string) $string) === 0);
+        DeprecationErrorHandler::trigger(__FUNCTION__, __LINE__, 'Use "isNullOrEmptyStr" instead.', '2015-12-14 09:00 -0400', '0.3');
+
+        return isNullOrEmptyStr($string);
     }
 
     /**
-     * Checks for null or empty value.
+     * @deprecated
+     *
+     * @param $string
+     *
+     * @return bool
+     */
+    function not_null_or_empty_string($string)
+    {
+        DeprecationErrorHandler::trigger(__FUNCTION__, __LINE__, 'Use "notNullOrEmptyStr" instead.', '2015-12-14 09:00 -0400', '0.3');
+
+        return notNullOrEmptyStr($string);
+    }
+
+    /**
+     * @deprecated
      *
      * @param mixed $value
      *
@@ -188,7 +253,9 @@ namespace {
      */
     function is_null_or_empty($value)
     {
-        return (bool) ($value === null || true === empty($value));
+        DeprecationErrorHandler::trigger(__FUNCTION__, __LINE__, 'Use "nullOrEmpty" instead.', '2015-12-14 09:00 -0400', '0.3');
+
+        return isNullOrEmpty($value);
     }
 }
 

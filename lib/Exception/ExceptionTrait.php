@@ -24,6 +24,14 @@ trait ExceptionTrait
     protected $attributes;
 
     /**
+     * @return static
+     */
+    public function create()
+    {
+        return new static;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
@@ -99,6 +107,14 @@ trait ExceptionTrait
     }
 
     /**
+     * @return mixed[]
+     */
+    public function getAttributes()
+    {
+        return (array) $this->attributes;
+    }
+
+    /**
      * @param mixed       $attribute
      * @param null|string $key
      *
@@ -106,21 +122,33 @@ trait ExceptionTrait
      */
     public function addAttribute($attribute, $key = null)
     {
-        if (is_null_or_empty_string($key)) {
-            $this->attributes[] = $attribute;
-        } else {
-            $this->attributes[(string) $key] = $attribute;
-        }
+        $this->attributes[(notNullOrEmptyStr($key) ? $key : null)] = $attribute;
 
         return $this;
     }
 
     /**
-     * @return array
+     * @param string $key
+     *
+     * @return null|mixed
      */
-    public function getAttributes()
+    public function getAttribute($key)
     {
-        return (array) $this->attributes;
+        if (isNullOrEmptyStr($key) || !$this->hasAttribute($key)) {
+            return null;
+        }
+
+        return $this->attributes[$key];
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function hasAttribute($key)
+    {
+        return (bool) (notNullOrEmptyStr($key) && isset($this->attributes[$key]));
     }
 
     /**
