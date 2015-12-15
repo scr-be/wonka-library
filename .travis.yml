@@ -18,10 +18,22 @@ env :
   global :
     - build_package : true
 
+addons:
+  apt:
+    packages:
+      - gnutls-bin
+
 git :
   depth : 3
 
 before_install :
+  - dpkg -l | grep curl
+  - curl --version
+  - dpkg -l | grep git
+  - git --version
+  - dplg -l | grep gnu | grep tls
+  - gnutls-cli -V -p 443 src.run
+  - gnutls-cli -v
   - git clone --depth=1 --branch=master https://src.run/php/build-knowledge-shared.git config
 
 install :
