@@ -21,18 +21,16 @@ env :
 git :
   depth : 3
 
-cache :
-  directories :
-    - $TRAVIS_BUILD_DIR/vendor
-
 before_install :
-  - git clone https://github.com/scr-be/build-knowledge-shared.git config
+  - git clone --depth=1 --branch=master https://github.com/scr-be/build-knowledge-shared.git config
 
 install :
   - bash config/builders/build-reqs/build-reqs.bash up-env
   - bash config/builders/build-reqs/build-reqs.bash up-app
 
 script :
+  - ls -lah ./
+  - ls -lah ./*
   - bin/phpunit --verbose --configuration phpunit.xml.dist
 
 after_script :
