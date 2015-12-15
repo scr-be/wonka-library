@@ -106,7 +106,6 @@ interface ExceptionInterface
      */
     public function __toString();
 
-
     /**
      * @return string
      */

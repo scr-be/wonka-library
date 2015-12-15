@@ -214,7 +214,7 @@ trait ExceptionTrait
     public function getAttribute($index)
     {
         if (isNullOrEmpty($index) || !$this->hasAttribute($index)) {
-            return null;
+            return;
         }
 
         return $this->attributes[$index];
@@ -273,7 +273,7 @@ trait ExceptionTrait
     {
         $called = get_called_class();
 
-        return ($fQCN ? $called : ClassInfo::getClassName($called));
+        return $fQCN ? $called : ClassInfo::getClassName($called);
     }
 
     /**
@@ -322,7 +322,7 @@ trait ExceptionTrait
             return $file->getPathname();
         }
 
-        return (notNullOrEmpty($file) ? $file : null);
+        return notNullOrEmpty($file) ? $file : null;
     }
 
     /**
@@ -334,7 +334,7 @@ trait ExceptionTrait
      */
     protected function getFinalLine($line)
     {
-        return (is_int($line) ? $line : null);
+        return is_int($line) ? $line : null;
     }
 
     /**

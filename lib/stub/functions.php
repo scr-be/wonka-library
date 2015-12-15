@@ -38,7 +38,7 @@ namespace {
         }
 
         $firstEl = array_shift($comparisons);
-        $compare = function($element) use ($firstEl) {
+        $compare = function ($element) use ($firstEl) {
             if ($element !== $firstEl) {
                 throw new \Exception('Not equals.');
             }
@@ -95,7 +95,7 @@ namespace {
     function isEmptyIterable($iterable)
     {
         if (!supportsIterable($iterable)) {
-            return null;
+            return;
         }
 
         return (bool) (!notEmptyIterable($iterable));
@@ -109,7 +109,7 @@ namespace {
     function notEmptyIterable($iterable)
     {
         if (!supportsIterable($iterable)) {
-            return null;
+            return;
         }
 
         return (bool) (getCountableSize($iterable) !== 0);
@@ -148,7 +148,7 @@ namespace {
     function getFirstArrayElement($array)
     {
         if (!supportsArrayAccess($array)) {
-            return null;
+            return;
         }
 
         $element = reset($array);
@@ -164,7 +164,7 @@ namespace {
     function getLastArrayElement($array)
     {
         if (!supportsArrayAccess($array)) {
-            return null;
+            return;
         }
 
         $element = end($array);
