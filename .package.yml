@@ -11,3 +11,5 @@ php_exts : igbinary
 app_prep : dep-composer
 app_post : ~
 app_path : ~
+pkg_name : wonka-library
+pkg_desc : "a collection of framework-agnostic classes, interfaces, traits, and root-namespace functions used as the building blocks for other projects."
