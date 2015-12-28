@@ -3,7 +3,7 @@
     "license"     : "MIT",
     "type"        : "library",
     "homepage"    : "https://scr.be/wonka-library",
-    "description" : "A collection of framework-agnostic functions and classes used as the base for many other Scribe projects.",
+    "description" : "A collection of framework-agnostic classes, interfaces, traits, and root-namespace functions used as the building blocks for other projects.",
     "support" : {
         "email"  : "rmf@scr.be",
         "source" : "https://scr.be/wonka-library/git",
