@@ -288,7 +288,7 @@ trait ExceptionTrait
     public function getFinalMessage($message = null, ...$replacements)
     {
         if (isNullOrEmpty($message)) {
-            return;
+            $message = $this->getDefaultMessage();
         }
 
         if (count($replacements) === 0) {
