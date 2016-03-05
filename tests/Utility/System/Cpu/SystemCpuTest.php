@@ -12,31 +12,19 @@
 
 namespace Scribe\Wonka\Tests\Utility\System\Cpu;
 
-use Scribe\Wonka\Utility\System\Cpu\SystemCpu;
+use Scribe\Wonka\Utility\System\Stats;
 use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
-class SystemCpuTest extends WonkaTestCase
+class StatsTest extends WonkaTestCase
 {
-    /**
-     * @var SystemCpu
-     */
-    protected $s;
-
-    public function setUp()
+    public function testname()
     {
-        $this->s = new SystemCpu();
-
-        parent::setUp();
-    }
-
-    public function testGetSystemPlatform()
-    {
-        static::assertNotNull($this->s->getCoreCount());
+        static::assertNotNull(Stats::getCoreCount());
     }
 
     public function testGetLoadAverages()
     {
-        $l = $this->s->getLoadAverages();
+        $l = Stats::getLoadAverages();
 
         static::assertInternalType('int', $l[0]);
         static::assertInternalType('float', $l[1]);
@@ -47,7 +35,7 @@ class SystemCpuTest extends WonkaTestCase
 
     public function testGetLoadAveragesAsPercent()
     {
-        $l = $this->s->getLoadAveragesAsPercent();
+        $l = Stats::getLoadAveragesAsPercent();
 
         static::assertInternalType('int', $l[0]);
         static::assertInternalType('float', $l[1]);

@@ -58,20 +58,20 @@ class FunctionsTest extends WonkaTestCase
     {
         $a = [];
 
-        static::assertTrue(supportsIterable($a));
-        static::assertTrue(isEmptyIterable($a));
-        static::assertFalse(notEmptyIterable($a));
-        static::assertEquals(0, getCountableSize($a));
+        static::assertTrue(isIterable($a));
+        static::assertTrue(isIterableEmpty($a));
+        static::assertFalse(isIterableNotEmpty($a));
+        static::assertEquals(0, countableSize($a));
     }
 
     public function testIsArrayNotEmpty()
     {
         $a = [1, 2, 3];
 
-        static::assertTrue(supportsIterable($a));
-        static::assertFalse(isEmptyIterable($a));
-        static::assertTrue(notEmptyIterable($a));
-        static::assertEquals(3, getCountableSize($a));
+        static::assertTrue(isIterable($a));
+        static::assertFalse(isIterableEmpty($a));
+        static::assertTrue(isIterableNotEmpty($a));
+        static::assertEquals(3, countableSize($a));
         static::assertEquals(1, getArrayElement(0, $a));
     }
 
@@ -80,9 +80,9 @@ class FunctionsTest extends WonkaTestCase
         $a = $this->getMockBuilder('\ArrayAccess')
             ->getMockForAbstractClass();
 
-        static::assertTrue(supportsIterable($a));
-        static::assertTrue(isEmptyIterable($a));
-        static::assertFalse(notEmptyIterable($a));
+        static::assertTrue(isIterable($a));
+        static::assertNull(isIterableEmpty($a));
+        static::assertNull(isIterableNotEmpty($a));
     }
 
     public function testIsIteratorCountable()
@@ -90,9 +90,9 @@ class FunctionsTest extends WonkaTestCase
         $a = $this->getMockBuilder('\Countable')
             ->getMockForAbstractClass();
 
-        static::assertTrue(supportsIterable($a));
-        static::assertTrue(isEmptyIterable($a));
-        static::assertFalse(notEmptyIterable($a));
+        static::assertTrue(isIterable($a));
+        static::assertTrue(isIterableEmpty($a));
+        static::assertFalse(isIterableNotEmpty($a));
     }
 
     public function testIsIteratorNotIterable()
@@ -100,9 +100,9 @@ class FunctionsTest extends WonkaTestCase
         $a = $this->getMockBuilder('\Scribe\Wonka\Exception\RuntimeException')
             ->getMockForAbstractClass();
 
-        static::assertFalse(supportsIterable($a));
-        static::assertNull(isEmptyIterable($a));
-        static::assertNull(notEmptyIterable($a));
+        static::assertFalse(isIterable($a));
+        static::assertNull(isIterableEmpty($a));
+        static::assertNull(isIterableNotEmpty($a));
     }
 
     public function testIsNullOrEmpty()
@@ -120,6 +120,11 @@ class FunctionsTest extends WonkaTestCase
         $this->setExpectedException('\Scribe\Wonka\Exception\InvalidArgumentException');
 
         static::assertTrue(isNullOrEmptyStr(null));
+    }
+
+    public function testGetArrayLastOnNonArrayAccess()
+    {
+        static::assertNull(getLastArrayElement('not-iterable'));
     }
 }
 

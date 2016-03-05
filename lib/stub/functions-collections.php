@@ -13,6 +13,7 @@
 namespace {
 
     use Scribe\Wonka\Exception\InvalidArgumentException;
+    use Scribe\Wonka\Utility\Error\DeprecationErrorHandler;
 
     /**
      * @param mixed $first
@@ -38,17 +39,10 @@ namespace {
             throw new InvalidArgumentException('You must provide at least two items to compare their equality.');
         }
 
-        $firstEl = array_shift($comparisons);
-        $compare = function ($element) use ($firstEl) {
-            if ($element !== $firstEl) {
-                throw new \Exception('Not equals.');
-            }
-        };
+        $expected = array_shift($comparisons);
 
-        try {
-            array_walk($comparisons, $compare);
-        } catch (\Exception $exception) {
-            return false;
+        foreach ($comparisons as $c) {
+            if ($expected !== $c) return false;
         }
 
         return true;
@@ -59,9 +53,29 @@ namespace {
      *
      * @return bool
      */
-    function supportsIterable($array)
+    function isIterable($what)
     {
-        return (bool) (is_array($array) || supportsArrayAccess($array) || supportsCountable($array));
+        return (isArray($what) || hasArrayAccess($what) || isCountable($what)) === true;
+    }
+
+    /**
+     * @param mixed $what
+     *
+     * @return bool
+     */
+    function isCountable($what)
+    {
+        return (isArray($what) || ($what instanceof \Countable)) === true;
+    }
+
+    /**
+     * @param mixed $what
+     *
+     * @return bool
+     */
+    function hasArrayAccess($what)
+    {
+        return (isArray($what) || ($what instanceof \ArrayAccess)) === true;
     }
 
     /**
@@ -69,23 +83,9 @@ namespace {
      *
      * @return bool
      */
-    function supportsCountable($array)
+    function isArray($array)
     {
-        return (bool) (is_array($array) || $array instanceof \Countable);
-    }
-
-    /**
-     * @param mixed $array
-     *
-     * @return bool
-     */
-    function supportsArrayAccess($array)
-    {
-        if (is_array($array) || $array instanceof \ArrayAccess) {
-            return true;
-        }
-
-        return false;
+        return is_array($array);
     }
 
     /**
@@ -93,13 +93,9 @@ namespace {
      *
      * @return bool
      */
-    function isEmptyIterable($iterable)
+    function isIterableEmpty($iterable)
     {
-        if (!supportsIterable($iterable)) {
-            return;
-        }
-
-        return (bool) (!notEmptyIterable($iterable));
+        return isCountable($iterable) ? isCountableEqual($iterable, 0) : null;
     }
 
     /**
@@ -107,23 +103,34 @@ namespace {
      *
      * @return bool
      */
-    function notEmptyIterable($iterable)
+    function isIterableNotEmpty($iterable)
     {
-        if (!supportsIterable($iterable)) {
-            return;
-        }
-
-        return (bool) (getCountableSize($iterable) !== 0);
+        return isCountable($iterable) ? (isCountableEqual($iterable, 0) !== true) : null;
     }
 
     /**
-     * @param mixed $array
+     * @param mixed $countable
      *
-     * @return int
+     * @return int|null
      */
-    function getCountableSize($array)
+    function countableSize($countable)
     {
-        return (int) (supportsCountable($array) ? count($array) : 0);
+        return isIterable($countable) ? count($countable) : null;
+    }
+
+    /**
+     * @param \Countable|mixed[] $countable
+     * @param int                $expected
+     *
+     * @return bool|null
+     */
+    function isCountableEqual($countable, $expected = 0)
+    {
+        if (($result = countableSize($countable)) === null) {
+            return null;
+        }
+
+        return ($result === $expected);
     }
 
     /**
@@ -134,11 +141,8 @@ namespace {
      */
     function getArrayElement($index, $array)
     {
-        if (!supportsArrayAccess($array) || !array_key_exists($index, $array)) {
-            return;
-        }
-
-        return $array[$index];
+        return (hasArrayAccess($array) && array_key_exists($index, $array)) ?
+            $array[$index] : null;
     }
 
     /**
@@ -148,7 +152,7 @@ namespace {
      */
     function getFirstArrayElement($array)
     {
-        if (!supportsArrayAccess($array)) {
+        if (!hasArrayAccess($array)) {
             return;
         }
 
@@ -164,13 +168,37 @@ namespace {
      */
     function getLastArrayElement($array)
     {
-        if (!supportsArrayAccess($array)) {
+        if (!hasArrayAccess($array)) {
             return;
         }
 
         $element = end($array);
 
         return $element ?: null;
+    }
+
+    /**
+     * @param mixed $iterable
+     *
+     * @deprecated
+     *
+     * @return bool|null
+     */
+    function notisIterableEmpty($iterable)
+    {
+        DeprecationErrorHandler::trigger(__METHOD__, __LINE__, 'Use isIterableNotEmpty()', '0.3', '0.5');
+
+        return isIterableNotEmpty($iterable);
+    }
+
+    /**
+     * @deprecated
+     */
+    function isisIterableEmpty($iterable)
+    {
+        DeprecationErrorHandler::trigger(__METHOD__, __LINE__, 'Use isIterableEmpty()', '0.3', '0.5');
+
+        return isIterableEmpty($iterable);
     }
 }
 

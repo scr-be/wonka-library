@@ -15,9 +15,9 @@ namespace Scribe\Wonka\Utility\System\Execute;
 use Scribe\Wonka\Exception\RuntimeException;
 
 /**
- * Class SystemExecute.
+ * Class Command.
  */
-class SystemExecute extends AbstractSystemExecute
+class Command extends AbstractCommand
 {
     /**
      * @var string
@@ -64,7 +64,7 @@ class SystemExecute extends AbstractSystemExecute
     protected function sanitizeAndGetCommand()
     {
         if ($this->command === null) {
-            throw new RuntimeException('Cannot run an empty command in "%s".', null, null, __METHOD__);
+            throw new RuntimeException('Cannot run an empty command in "%s".', __METHOD__);
         }
 
         return sprintf('%s -c \'%s\' %s', (string) $this->shell, (string) $this->command,

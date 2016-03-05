@@ -10,14 +10,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Utility\System\Platform;
+namespace Scribe\Wonka\Utility\System;
 
 use Scribe\Wonka\Utility\StaticClass\StaticClassTrait;
 
 /**
- * Class SystemPlatform.
+ * Class Platform.
  */
-class SystemPlatform
+class Platform
 {
     use StaticClassTrait;
 
@@ -26,55 +26,66 @@ class SystemPlatform
      *
      * @var string
      */
-    const OS_DARWIN = 'DAR';
+    const TYPE_DARWIN = 'DAR';
 
     /**
      * Response string for Linux-based OS.
      *
      * @var string
      */
-    const OS_LINUX = 'LIN';
+    const TYPE_LINUX = 'LIN';
 
     /**
      * Response for Windows-based OS.
      *
      * @var string
      */
-    const OS_WINDOWS = 'WIN';
+    const TYPE_WINDOWS = 'WIN';
 
     /**
      * Response for unknown OS.
      *
      * @var null
      */
-    const OS_UNKNOWN = null;
+    const TYPE_UNKNOWN = null;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public static function getSystemPlatform()
+    public static function name()
     {
-        return (string) static::normalizeSystemPlatform(PHP_OS);
+        return static::normalizeName(PHP_OS);
     }
 
     /**
-     * @param string $platform
+     * @param string $name
      *
      * @return bool
      */
-    public static function isSystemPlatform($platform)
+    public static function is($name)
     {
-        return (bool) (static::getSystemPlatform() === static::normalizeSystemPlatform($platform) ?: false);
+        return static::equal(static::name(), $name);
     }
 
     /**
-     * @param mixed $platform
+     * @param string $name
      *
      * @return bool
      */
-    public static function isNotSystemPlatform($platform)
+    public static function isNot($name)
     {
-        return (bool) (static::isSystemPlatform($platform) === false);
+        return !static::is($name);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $name
+     *
+     * @return bool
+     */
+    public static function equal($expected, $name)
+    {
+        return static::normalizeName($expected) === static::normalizeName($name);
     }
 
     /**
@@ -82,9 +93,9 @@ class SystemPlatform
      *
      * @return string
      */
-    protected static function normalizeSystemPlatform($name)
+    protected static function normalizeName($name)
     {
-        return (string) (strtoupper(substr($name, 0, 3)));
+        return strtoupper(substr((string) $name, 0, 3));
     }
 }
 

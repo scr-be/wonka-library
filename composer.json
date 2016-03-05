@@ -39,9 +39,7 @@
         },
         "files" : [
             "lib/stub/functions-values.php",
-            "lib/stub/functions-collections.php",
-            "lib/stub/functions-plugins.php",
-            "lib/stub/functions-deprecated.php"
+            "lib/stub/functions-collections.php"
         ]
     },
     "autoload-dev" : {
@@ -56,7 +54,7 @@
     },
     "extra" : {
         "branch-alias" : {
-            "dev-master" : "0.3-dev"
+            "dev-master" : "0.5-dev"
         }
     }
 }

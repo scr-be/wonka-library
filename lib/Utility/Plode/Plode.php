@@ -83,7 +83,7 @@ class Plode implements PlodeInterface
     {
         $message = $message !== null ? $message : 'Invalid static magic call to %s';
 
-        throw new BadFunctionCallException($message, null, null, __CLASS__);
+        throw new BadFunctionCallException($message, __CLASS__);
     }
 
     /**

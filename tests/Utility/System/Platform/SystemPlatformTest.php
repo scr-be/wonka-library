@@ -12,41 +12,41 @@
 
 namespace Scribe\Wonka\Tests\Utility\System\Platform;
 
-use Scribe\Wonka\Utility\System\Platform\SystemPlatform;
+use Scribe\Wonka\Utility\System\Platform;
 use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
-class SystemPlatformTest extends WonkaTestCase
+class PlatformTest extends WonkaTestCase
 {
     public function testShouldThrowExceptionOnInstantiation()
     {
         $this->setExpectedException('RuntimeException');
 
-        new SystemPlatform();
+        new Platform();
     }
 
-    public function testGetSystemPlatform()
+    public function testname()
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'LIN') {
-            static::assertEquals('LIN', SystemPlatform::getSystemPlatform());
+            static::assertEquals('LIN', Platform::name());
         } elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-            static::assertEquals('WIN', SystemPlatform::getSystemPlatform());
+            static::assertEquals('WIN', Platform::name());
         } else {
             static::markTestSkipped('Not Linux/Windows OS.');
         }
     }
 
-    public function testIsSystemPlatform()
+    public function testis()
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'LIN') {
-            static::assertTrue(SystemPlatform::isSystemPlatform('LINUX'));
-            static::assertFalse(SystemPlatform::isSystemPlatform('WINDOWS'));
-            static::assertFalse(SystemPlatform::isNotSystemPlatform('LINUX'));
-            static::assertTrue(SystemPlatform::isNotSystemPlatform('WINDOWS'));
+            static::assertTrue(Platform::is('LINUX'));
+            static::assertFalse(Platform::is('WINDOWS'));
+            static::assertFalse(Platform::isNot('LINUX'));
+            static::assertTrue(Platform::isNot('WINDOWS'));
         } elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-            static::assertFalse(SystemPlatform::isSystemPlatform('LINUX'));
-            static::assertTrue(SystemPlatform::isSystemPlatform('WINDOWS'));
-            static::assertTrue(SystemPlatform::isNotSystemPlatform('LINUX'));
-            static::assertFalse(SystemPlatform::isNotSystemPlatform('WINDOWS'));
+            static::assertFalse(Platform::is('LINUX'));
+            static::assertTrue(Platform::is('WINDOWS'));
+            static::assertTrue(Platform::isNot('LINUX'));
+            static::assertFalse(Platform::isNot('WINDOWS'));
         } else {
             static::markTestSkipped('Not Linux/Windows OS.');
         }

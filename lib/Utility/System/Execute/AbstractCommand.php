@@ -13,9 +13,9 @@
 namespace Scribe\Wonka\Utility\System\Execute;
 
 /**
- * Class AbstractSystemExecute.
+ * Class AbstractCommand.
  */
-abstract class AbstractSystemExecute
+abstract class AbstractCommand
 {
     /**
      * @var string

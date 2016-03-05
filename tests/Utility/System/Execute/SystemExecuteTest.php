@@ -12,19 +12,19 @@
 
 namespace Scribe\Wonka\Tests\Utility\System\Execute;
 
-use Scribe\Wonka\Utility\System\Execute\SystemExecute;
+use Scribe\Wonka\Utility\System\Execute\Command;
 use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
-class SystemExecuteTest extends WonkaTestCase
+class CommandTest extends WonkaTestCase
 {
     public function testFactory()
     {
-        static::assertInstanceOf('Scribe\Wonka\Utility\System\Execute\SystemExecute', SystemExecute::start());
+        static::assertInstanceOf('Scribe\Wonka\Utility\System\Execute\Command', Command::start());
     }
 
     public function testBasicCommandWithDefaults()
     {
-        $cmd = SystemExecute::start()
+        $cmd = Command::start()
             ->setCommand('cat /proc/cpuinfo')
             ->run()
         ;
@@ -35,7 +35,7 @@ class SystemExecuteTest extends WonkaTestCase
 
     public function testBasicCommandWithCustom()
     {
-        $cmd = SystemExecute::start()
+        $cmd = Command::start()
             ->setCommand('this-command-does-not-exist-on-any-system')
             ->run()
         ;
@@ -72,11 +72,11 @@ class SystemExecuteTest extends WonkaTestCase
 
     public function testAlternateShellSh()
     {
-        $cmd = SystemExecute::start()
+        $cmd = Command::start()
             ->setCommand('this-command-does-not-exist-on-any-system')
             ->setExpectedReturn(127)
             ->setStdErrToNull(false)
-            ->setShell(SystemExecute::SHELL_SH)
+            ->setShell(Command::SHELL_SH)
             ->run()
         ;
 
@@ -94,12 +94,12 @@ class SystemExecuteTest extends WonkaTestCase
             '#Cannot run an empty command in.*#'
         );
 
-        $cmd = SystemExecute::start()->run();
+        $cmd = Command::start()->run();
     }
 
     public function testComplexCommand()
     {
-        $cmd = SystemExecute::start()
+        $cmd = Command::start()
             ->setCommand('cat /proc/cpuinfo | grep "model name" | wc -l')
             ->run()
         ;

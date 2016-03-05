@@ -18,22 +18,6 @@ namespace Scribe\Wonka\Exception;
 class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
     use ExceptionTrait;
-
-    /**
-     * @return string
-     */
-    public function getDefaultMessage()
-    {
-        return self::MSG_GENERIC;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDefaultCode()
-    {
-        return self::CODE_GENERIC;
-    }
 }
 
 /* EOF */

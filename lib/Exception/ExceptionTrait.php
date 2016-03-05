@@ -26,16 +26,20 @@ trait ExceptionTrait
     protected $attributes;
 
     /**
-     * @param string|null $message      Message string (see later {@see:$replacements} parameter replacement support)
-     * @param int|null    $code         The error code. Default is {@see ExceptionInterface::CODE_GENERIC}
-     * @param \Exception  $previous     The previous exception, if applicable
-     * @param mixed,...   $replacements Additional parameters are fed to {@see sprintf} against the message string
+     * @param string|null                    $message    Message string (see {@see:$parameters} to send values that
+     *                                                   will be passed to sprintf.
+     * @param ExceptionInterface|mixed[],... $parameters Additional parameters are fed to {@see sprintf} as
+     *                                                   replacements for the message provided. Additionally,
+     *                                                   a previous exception can be passed as the last parameter
+     *                                                   and it will be pop'd off the replacements and assigned.
      */
-    public function __construct($message = null, $code = null, \Exception $previous = null, ...$replacements)
+    final public function __construct($message = null, ...$parameters)
     {
+        list($previous, $replacements) = $this->parseParameters($parameters);
+
         parent::__construct(
             $this->getFinalMessage((string) $message, ...$replacements),
-            $this->getFinalCode((int) $code),
+            $this->getFinalCode(ExceptionInterface::CODE_GENERIC),
             $this->getFinalPrevious($previous)
         );
 
@@ -50,7 +54,7 @@ trait ExceptionTrait
      */
     public static function create($message = null, ...$replacements)
     {
-        return new static($message, null, null, ...$replacements);
+        return new static($message, ...$replacements);
     }
 
     /**
@@ -67,6 +71,25 @@ trait ExceptionTrait
         ];
 
         return (string) print_r((array) $stringSet, true);
+    }
+
+    /**
+     * @param ExceptionInterface[]|mixed[] $parameters
+     *
+     * @return ExceptionInterface[]|array[]
+     */
+    protected function parseParameters(array $parameters = [])
+    {
+        $previous = null;
+        $replaces = array_filter($parameters, function ($param) use (&$previous) {
+            if ($param instanceof ExceptionInterface) {
+                $previous = $param;
+                return false;
+            }
+            return true;
+        });
+
+        return [ $previous, $replaces ];
     }
 
     /**
@@ -102,12 +125,18 @@ trait ExceptionTrait
     /**
      * @return string
      */
-    abstract public function getDefaultMessage();
+    public function getDefaultMessage()
+    {
+        return self::MSG_GENERIC;
+    }
 
     /**
      * @return int
      */
-    abstract public function getDefaultCode();
+    public function getDefaultCode()
+    {
+        return self::CODE_GENERIC;
+    }
 
     /**
      * @param string    $message

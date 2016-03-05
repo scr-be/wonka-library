@@ -44,7 +44,7 @@ namespace {
     function isNullOrEmptyStr($string)
     {
         if (!is_string($string)) {
-            throw new InvalidArgumentException('Value provided to %s is not a sting.', null, null, __FUNCTION__);
+            throw new InvalidArgumentException('Value provided to %s is not a sting.', __FUNCTION__);
         }
 
         return (bool) ($string === null || mb_strlen($string) === 0);

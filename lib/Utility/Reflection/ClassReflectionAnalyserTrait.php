@@ -272,7 +272,7 @@ trait ClassReflectionAnalyserTrait
 
         if (false === $this->hasProperty($property)) {
             throw new InvalidArgumentException('The requested property %s does not exist on the passed class %s.',
-                null, null, $property, $className);
+                $property, $className);
         }
 
         $classProperty = $class->getProperty($property);
@@ -296,7 +296,7 @@ trait ClassReflectionAnalyserTrait
 
         if (false === $this->hasMethod($method)) {
             throw new InvalidArgumentException('The requested method %s does not exist on the passed class %s.',
-                null, null, $method, $className);
+                $method, $className);
         }
 
         $classMethod = $class->getMethod($method);

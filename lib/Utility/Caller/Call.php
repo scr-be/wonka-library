@@ -47,7 +47,7 @@ class Call implements CallInterface
             return self::handle($callable, null, null, ...$arguments);
         }
 
-        throw new InvalidArgumentException('Invalid parameters provided for "%s". Unsure how to handle call.', null, null, __METHOD__);
+        throw new InvalidArgumentException('Invalid parameters provided for "%s". Unsure how to handle call.', __METHOD__);
     }
 
     /**
@@ -126,7 +126,7 @@ class Call implements CallInterface
     protected static function validateCall($method = null, $object = null, $static = null)
     {
         if (null === $method && null === $object && null === $static) {
-            throw new InvalidArgumentException('Invalid parameters provided for %s.', null, null, __METHOD__);
+            throw new InvalidArgumentException('Invalid parameters provided for %s.', __METHOD__);
         }
 
         if (null !== $method && null === $object && null === $static) {
@@ -150,7 +150,7 @@ class Call implements CallInterface
     protected static function validateFunction($function)
     {
         if (false === function_exists($function)) {
-            throw new BadFunctionCallException('The requested function %s does not exist.', null, null, (string) $function);
+            throw new BadFunctionCallException('The requested function %s does not exist.', (string) $function);
         }
 
         return (string) $function;
@@ -173,8 +173,7 @@ class Call implements CallInterface
         $class = (string) (true === is_string($object) ? $object : get_class($object));
 
         if (false === class_exists($class)) {
-            throw new BadFunctionCallException('The requested class "%s" cannot be found in "%s".', null, null,
-                (string) $class, (string) __METHOD__);
+            throw new BadFunctionCallException('The requested class "%s" cannot be found in "%s".', (string) $class, __METHOD__);
         }
 
         return true === $static ? $class : $object;
@@ -198,8 +197,10 @@ class Call implements CallInterface
         $call = (true === $static ? $object.'::'.$method : [$object, $method]);
 
         if (false === method_exists($object, $method) || false === is_callable($call)) {
-            throw new BadFunctionCallException('The requested %s %s does not exist for class %s (or is not callable).',
-                null, null, (true === $static ? 'static function' : 'method'), $method, $object);
+            throw new BadFunctionCallException(
+                'The requested %s %s does not exist for class %s (or is not callable).',
+                (true === $static ? 'static function' : 'method'), $method, $object
+            );
         }
 
         return $call;

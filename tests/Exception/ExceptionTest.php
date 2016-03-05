@@ -14,6 +14,7 @@ namespace Scribe\Wonka\Tests\Exception;
 
 use Scribe\Wonka\Exception\BadFunctionCallException;
 use Scribe\Wonka\Exception\Exception;
+use Scribe\Wonka\Exception\ExceptionInterface;
 use Scribe\Wonka\Exception\InvalidArgumentException;
 use Scribe\Wonka\Exception\LogicException;
 use Scribe\Wonka\Exception\RuntimeException;
@@ -26,9 +27,9 @@ class ExceptionTest extends WonkaTestCase
 {
     public function testDefaults()
     {
-        $e = new Exception('A %s.', 100, null, 'message');
+        $e = new Exception('A %s.', 'message');
         static::assertEquals('A message.', $e->getMessage());
-        static::assertEquals(100, $e->getCode());
+        static::assertEquals(ExceptionInterface::CODE_GENERIC, $e->getCode());
 
         $e = new Exception();
         static::assertNotNull($e->getMessage());
@@ -37,9 +38,9 @@ class ExceptionTest extends WonkaTestCase
 
     public function testLogicException()
     {
-        $e = new LogicException('A %s.', 100, null, 'message');
+        $e = new LogicException('A %s.', 'message');
         static::assertEquals('A message.', $e->getMessage());
-        static::assertEquals(100, $e->getCode());
+        static::assertEquals(ExceptionInterface::CODE_GENERIC, $e->getCode());
 
         $e = new LogicException();
         static::assertNotNull($e->getMessage());
@@ -48,9 +49,9 @@ class ExceptionTest extends WonkaTestCase
 
     public function testBadFunctionCallException()
     {
-        $e = new BadFunctionCallException('A %s.', 100, null, 'message');
+        $e = new BadFunctionCallException('A %s.', 'message');
         static::assertEquals('A message.', $e->getMessage());
-        static::assertEquals(100, $e->getCode());
+        static::assertEquals(ExceptionInterface::CODE_GENERIC, $e->getCode());
 
         $e = new BadFunctionCallException();
         static::assertNotNull($e->getMessage());
@@ -59,9 +60,8 @@ class ExceptionTest extends WonkaTestCase
 
     public function testRuntimeException()
     {
-        $e = new RuntimeException('A %s.', 100, null, 'message');
+        $e = new RuntimeException('A %s.', 'message');
         static::assertEquals('A message.', $e->getMessage());
-        static::assertEquals(100, $e->getCode());
 
         $e = new RuntimeException();
         static::assertNotNull($e->getMessage());
@@ -70,9 +70,8 @@ class ExceptionTest extends WonkaTestCase
 
     public function testInvalidArgumentException()
     {
-        $e = new InvalidArgumentException('A %s.', 100, null, 'message');
+        $e = new InvalidArgumentException('A %s.', 'message');
         static::assertEquals('A message.', $e->getMessage());
-        static::assertEquals(100, $e->getCode());
 
         $e = new InvalidArgumentException();
         static::assertNotNull($e->getMessage());

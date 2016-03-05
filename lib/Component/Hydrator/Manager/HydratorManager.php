@@ -64,7 +64,7 @@ class HydratorManager implements HydratorManagerInterface
     public function getMappedObject($from, $to)
     {
         if (false === is_object($from) || false === is_object($to)) {
-            throw new InvalidArgumentException('The method %s expects to be passed two objects.', null, null, __METHOD__);
+            throw new InvalidArgumentException('The method %s expects to be passed two objects.', __METHOD__);
         }
 
         return $this->mapPropertyCollection(
