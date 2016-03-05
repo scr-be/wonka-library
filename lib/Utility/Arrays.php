@@ -51,5 +51,3 @@ class Arrays
 }
 
 /* EOF */
-
-/* EOF */

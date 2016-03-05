@@ -15,19 +15,24 @@ namespace Scribe\Wonka\Utility\Logger;
 use Psr\Log\LoggerInterface;
 
 /**
- * Interface LoggerCallableInterface.
+ * Interface LoggerInvokableInterface.
  */
-interface LoggerCallableInterface
+interface LoggerInvokableInterface
 {
     /**
      * @param LoggerInterface $logger
+     * @param string|null     $levelDefault
      */
-    public function __construct(LoggerInterface $logger);
+    public function __construct(LoggerInterface $logger, $levelDefault = null);
 
     /**
-     * @param string $message
+     * @param string      $message
+     * @param null|string $level
+     * @param mixed[]     $context
+     *
+     * @return null
      */
-    public function __invoke($message);
+    public function __invoke($message, $level = null, array $context = []);
 }
 
 /* EOF */

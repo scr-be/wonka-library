@@ -12,7 +12,9 @@
 
 namespace Scribe\Wonka\Tests\Exception;
 
+use Scribe\Wonka\Exception\ExceptionInterface;
 use Scribe\Wonka\Exception\ExceptionTrait;
+use Scribe\Wonka\Exception\LogicException;
 use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 
 /**
@@ -21,17 +23,39 @@ use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
 class ExceptionTraitTest extends WonkaTestCase
 {
     /**
-     * @var ExceptionTrait
+     * @var ExceptionTrait|ExceptionInterface
      */
     protected static $e;
 
+    /**
+     * @return ExceptionTrait|ExceptionInterface
+     */
     public function setUp()
     {
-        static::$e = $this->getMockBuilder('Scribe\Wonka\Exception\ExceptionTrait')
-            ->disableOriginalConstructor()
-            ->getMockForTrait();
+        static::$e = $this->makeMock();
 
         parent::setUp();
+    }
+
+    /**
+     * @return ExceptionTrait|ExceptionInterface
+     */
+    public function makeMock()
+    {
+        return $this->getMockBuilder('Scribe\Wonka\Exception\ExceptionTrait')
+            ->disableOriginalConstructor()
+            ->getMockForTrait();
+    }
+
+    /**
+     * @param string $message
+     * @param mixed  $parameter
+     *
+     * @return LogicException
+     */
+    public function makeMockForLogicExcepeption($message, $parameter)
+    {
+        return new LogicException($message, $parameter);
     }
 
     public function testToString()
@@ -74,6 +98,56 @@ class ExceptionTraitTest extends WonkaTestCase
         static::assertEquals($a, static::$e->getAttributes());
         static::$e->addAttribute(current($b));
         static::assertEquals(array_merge($a, $b), static::$e->getAttributes());
+        static::assertTrue(static::$e->hasAttribute(key($a)));
+        static::assertSame(current($a), static::$e->getAttribute(key($a)));
+        static::assertFalse(static::$e->hasAttribute('invalid-attribute'));
+        static::assertNull(static::$e->getAttribute('invalid-attribute'));
+    }
+
+    public function testCodeAndMessageDefaults()
+    {
+        $e = static::$e;
+
+        static::assertSame(ExceptionInterface::CODE_GENERIC, $e->getDefaultCode());
+        static::assertSame(ExceptionInterface::MSG_GENERIC, $e->getDefaultMessage());
+    }
+
+    public function testSetterAndGetterMethods()
+    {
+        $e = $this->makeMockForLogicExcepeption('Custom string %s', __METHOD__);
+        static::assertSame(sprintf('Custom string %s', __METHOD__), $e->getMessage());
+
+        $e = $this->makeMockForLogicExcepeption(null, 'idk');
+
+        $message = 'A brand new message for the test method %s.';
+        $method = __METHOD__;
+        $code = mt_rand(100,999);
+        $file = __FILE__;
+        $line = __LINE__;
+
+        $e
+            ->setMessage($message, $method)
+            ->setCode($code)
+            ->setFile($file)
+            ->setLine($line);
+
+        static::assertEquals(sprintf($message, $method), $e->getMessage());
+        static::assertEquals($code, $e->getCode());
+        static::assertEquals($line, $e->getLine());
+        static::assertEquals($file, $e->getFile());
+
+        $e2 = LogicException::create('This one from %s test case has %d exceptions passed with replacements.', __METHOD__, 1, $e);
+
+        static::assertSame($e, $e2->getPrevious());
+
+        $e->setPrevious($e2);
+
+        static::assertSame($e2, $e->getPrevious());
+
+        $splFile = new \SplFileInfo(__FILE__);
+        $e->setFile($splFile);
+
+        static::assertEquals($splFile->getPathname(), $e->getFile());
     }
 }
 

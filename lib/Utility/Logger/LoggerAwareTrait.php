@@ -15,29 +15,29 @@ namespace Scribe\Wonka\Utility\Logger;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class LoggerCallableTrait.
+ * Class LoggerAwareTrait.
  */
-trait LoggerCallableTrait
+trait LoggerAwareTrait
 {
     /**
      * @var LoggerInterface
      */
-    private $logger;
+    protected $logger;
 
     /**
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
     /**
-     * @param string $message
+     * @return LoggerInterface
      */
-    public function __invoke($message)
+    public function getLogger()
     {
-        $this->logger->debug($message);
+        return $this->logger;
     }
 }
 

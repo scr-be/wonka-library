@@ -127,7 +127,7 @@ trait ExceptionTrait
      */
     public function getDefaultMessage()
     {
-        return self::MSG_GENERIC;
+        return ExceptionInterface::MSG_GENERIC;
     }
 
     /**
@@ -135,7 +135,7 @@ trait ExceptionTrait
      */
     public function getDefaultCode()
     {
-        return self::CODE_GENERIC;
+        return ExceptionInterface::CODE_GENERIC;
     }
 
     /**
@@ -159,6 +159,8 @@ trait ExceptionTrait
     public function setCode($code = null)
     {
         $this->code = $this->getFinalCode($code);
+
+        return $this;
     }
 
     /**
@@ -377,20 +379,6 @@ trait ExceptionTrait
     public function getFinalPrevious(\Exception $exception = null)
     {
         return $exception;
-    }
-
-    /**
-     * @param mixed $exception
-     *
-     * @internal
-     *
-     * @return null|\Exception
-     */
-    public function getFinalPreviousException($exception = null)
-    {
-        DeprecationErrorHandler::trigger(__METHOD__, __LINE__, 'Use getFinalPrevious instead.', '2015-12-14 10:00 -0400', '0.3');
-
-        return $this->getFinalPrevious($exception);
     }
 }
 
