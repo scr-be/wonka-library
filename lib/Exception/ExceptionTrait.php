@@ -38,7 +38,7 @@ trait ExceptionTrait
 
         parent::__construct(
             $this->getFinalMessage((string) $message, ...$replacements),
-            $this->getFinalCode(ExceptionInterface::CODE_GENERIC),
+            $this->getFinalCode(null),
             $this->getFinalPrevious($previous)
         );
 
@@ -355,7 +355,7 @@ trait ExceptionTrait
      */
     protected function getFinalCode($code = null)
     {
-        return (int) ($code ? $code : $this->getDefaultCode());
+        return $code !== null ? $code : $this->getDefaultCode();
     }
 
     /**
