@@ -15,9 +15,9 @@ namespace Scribe\Wonka\Utility\Logger;
 use Psr\Log\LoggerInterface;
 
 /**
- * Interface LoggerInvokableInterface.
+ * Interface InvokableLoggerInterface.
  */
-interface LoggerInvokableInterface
+interface InvokableLoggerInterface
 {
     /**
      * @param LoggerInterface $logger

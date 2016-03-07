@@ -168,7 +168,7 @@ class OutBuffer extends ConsoleStringFormatter
     {
         array_walk($lines, function (&$l) {
             if (isset($l['prefix'])) {
-                return;
+                return null;
             }
             $l = self::performColorPlaceholderSubstitutions($l);
         });
@@ -187,7 +187,7 @@ class OutBuffer extends ConsoleStringFormatter
 
         array_walk($lines, function (&$l) use (&$temp) {
             if (isset($l['prefix'])) {
-                return;
+                return null;
             }
             $l = array_shift($temp);
         });

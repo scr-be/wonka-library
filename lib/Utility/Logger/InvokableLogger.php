@@ -16,9 +16,9 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class LoggerInvokable.
+ * Class InvokableLogger.
  */
-class LoggerInvokable implements LoggerAwareInterface, LoggerInvokableInterface, LevelsAwareInterface
+class InvokableLogger implements LoggerAwareInterface, InvokableLoggerInterface, LevelsAwareInterface
 {
     use LoggerAwareTrait;
     use LevelsAwareTrait;

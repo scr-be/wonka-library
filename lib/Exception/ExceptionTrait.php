@@ -267,7 +267,7 @@ trait ExceptionTrait
     public function getAttribute($index)
     {
         if (isNullOrEmpty($index) || !$this->hasAttribute($index)) {
-            return;
+            return null;
         }
 
         return $this->attributes[$index];

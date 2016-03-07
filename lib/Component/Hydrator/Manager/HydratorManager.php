@@ -109,7 +109,7 @@ class HydratorManager implements HydratorManagerInterface
     {
         if (true !== $refFrom->hasProperty($fromProperty) ||
             true !== $refTo->hasProperty($toProperty)) {
-            return;
+            return null;
         }
 
         $refFromProperty = $refFrom->setPropertyPublic($fromProperty);

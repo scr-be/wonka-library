@@ -163,7 +163,7 @@ namespace {
     function getFirstArrayElement($array)
     {
         if (!hasArrayAccess($array)) {
-            return;
+            return null;
         }
 
         $element = reset($array);
@@ -179,7 +179,7 @@ namespace {
     function getLastArrayElement($array)
     {
         if (!hasArrayAccess($array) || isCountableEmpty($array)) {
-            return;
+            return null;
         }
 
         $element = end($array);

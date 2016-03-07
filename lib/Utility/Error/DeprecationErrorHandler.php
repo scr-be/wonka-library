@@ -195,7 +195,7 @@ class DeprecationErrorHandler
         }
 
         if ((int) $timezoneOffset > 26 || (int) $timezoneOffset < -26 || (int) $timezoneOffset === 0) {
-            return;
+            return null;
         }
 
         $timezoneOffset *= 3600;
