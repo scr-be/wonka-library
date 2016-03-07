@@ -103,6 +103,13 @@ interface ExceptionInterface
     public static function create($message = null, ...$replacements);
 
     /**
+     * @param mixed,... ...$parameters
+     *
+     * @return $this
+     */
+    public function with(...$parameters);
+
+    /**
      * @return string
      */
     public function __toString();
@@ -136,16 +143,6 @@ interface ExceptionInterface
      * @return array
      */
     public function getTrace();
-
-    /**
-     * @return string
-     */
-    public function getDefaultMessage();
-
-    /**
-     * @return int
-     */
-    public function getDefaultCode();
 
     /**
      * @param string    $message
@@ -228,11 +225,11 @@ interface ExceptionInterface
     public function getTraceLimited();
 
     /**
-     * @param false|bool $fQCN
+     * @param false|bool $fqcn
      *
      * @return string
      */
-    public function getType($fQCN = false);
+    public function getType($fqcn = false);
 }
 
 /* EOF */

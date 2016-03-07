@@ -75,7 +75,19 @@ class ExceptionTraitTest extends WonkaTestCase
 
     public function testGetMessageSprintf()
     {
-        static::assertEquals('A test string with number "10".', static::$e->getFinalMessage('A %s string with number "%d".', 'test', 10));
+        $e = $this->makeMockForLogicExcepeption(null, null);
+        $e->setMessage('A %s string with number "%d".', 'test', 10);
+        static::assertEquals('A test string with number "10".', $e->getMessage());
+    }
+
+    public function testMessageInConstructorAndWithForParameters()
+    {
+        $previous = new LogicException('PREVIOUS');
+        $string = 'A test %s with %d number.';
+
+        $e = LogicException::create($string)->with($previous, 'string', 10);
+
+        static::assertEquals('A test string with 10 number.', $e->getMessage());
     }
 
     public function testSetAttributes()

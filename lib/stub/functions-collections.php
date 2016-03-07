@@ -134,6 +134,16 @@ namespace {
     }
 
     /**
+     * @param \Countable|mixed $countable
+     *
+     * @return bool|null
+     */
+    function isCountableEmpty($countable)
+    {
+        return isCountableEqual($countable, 0);
+    }
+
+    /**
      * @param string             $index
      * @param array|\ArrayAccess $array
      *
@@ -168,37 +178,13 @@ namespace {
      */
     function getLastArrayElement($array)
     {
-        if (!hasArrayAccess($array)) {
+        if (!hasArrayAccess($array) || isCountableEmpty($array)) {
             return;
         }
 
         $element = end($array);
 
         return $element ?: null;
-    }
-
-    /**
-     * @param mixed $iterable
-     *
-     * @deprecated
-     *
-     * @return bool|null
-     */
-    function notisIterableEmpty($iterable)
-    {
-        DeprecationErrorHandler::trigger(__METHOD__, __LINE__, 'Use isIterableNotEmpty()', '0.3', '0.5');
-
-        return isIterableNotEmpty($iterable);
-    }
-
-    /**
-     * @deprecated
-     */
-    function isisIterableEmpty($iterable)
-    {
-        DeprecationErrorHandler::trigger(__METHOD__, __LINE__, 'Use isIterableEmpty()', '0.3', '0.5');
-
-        return isIterableEmpty($iterable);
     }
 }
 

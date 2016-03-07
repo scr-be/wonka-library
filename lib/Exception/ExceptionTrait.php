@@ -13,7 +13,6 @@
 namespace Scribe\Wonka\Exception;
 
 use Scribe\Wonka\Utility\ClassInfo;
-use Scribe\Wonka\Utility\Error\DeprecationErrorHandler;
 
 /**
  * Class ExceptionTrait.
@@ -26,12 +25,12 @@ trait ExceptionTrait
     protected $attributes;
 
     /**
-     * @param string|null                    $message    Message string (see {@see:$parameters} to send values that
-     *                                                   will be passed to sprintf.
-     * @param ExceptionInterface|mixed[],... $parameters Additional parameters are fed to {@see sprintf} as
-     *                                                   replacements for the message provided. Additionally,
-     *                                                   a previous exception can be passed as the last parameter
-     *                                                   and it will be pop'd off the replacements and assigned.
+     * @param string|null            $message    Message string (see {@see:$parameters} to send values that
+     *                                           will be passed to sprintf.
+     * @param \Throwable|mixed[],... $parameters Additional parameters are fed to {@see sprintf} as
+     *                                           replacements for the message provided. Additionally,
+     *                                           a previous exception can be passed as the last parameter
+     *                                           and it will be pop'd off the replacements and assigned.
      */
     final public function __construct($message = null, ...$parameters)
     {
@@ -55,6 +54,26 @@ trait ExceptionTrait
     public static function create($message = null, ...$replacements)
     {
         return new static($message, ...$replacements);
+    }
+
+    /**
+     * @param mixed,... ...$parameters
+     *
+     * @return $this
+     */
+    public function with(...$parameters)
+    {
+        list($previous, $replacements) = $this->parseParameters($parameters);
+
+        if (!isNullOrEmpty($previous)) {
+            $this->setPrevious($previous);
+        }
+
+        if (!isCountableEmpty($replacements)) {
+            $this->setMessage($this->getMessage(), ...$replacements);
+        }
+
+        return $this;
     }
 
     /**
@@ -82,10 +101,11 @@ trait ExceptionTrait
     {
         $previous = null;
         $replaces = array_filter($parameters, function ($param) use (&$previous) {
-            if ($param instanceof ExceptionInterface) {
+            if ($param instanceof \Throwable) {
                 $previous = $param;
                 return false;
             }
+
             return true;
         });
 
@@ -194,7 +214,7 @@ trait ExceptionTrait
      */
     public function setPrevious(\Exception $exception)
     {
-        $this->__construct($this->getMessage(), $this->getCode(), $this->getFinalPrevious($exception));
+        $this->__construct($this->getMessage(), $exception);
 
         return $this;
     }
@@ -301,11 +321,11 @@ trait ExceptionTrait
      *
      * @return string
      */
-    public function getType($fQCN = false)
+    public function getType($fqcn = false)
     {
         $called = get_called_class();
 
-        return $fQCN ? $called : ClassInfo::getClassName($called);
+        return $fqcn === true ? $called : ClassInfo::getClassName($called);
     }
 
     /**
@@ -316,17 +336,13 @@ trait ExceptionTrait
      *
      * @return string
      */
-    public function getFinalMessage($message = null, ...$replacements)
+    protected function getFinalMessage($message = null, ...$replacements)
     {
         if (isNullOrEmpty($message)) {
             $message = $this->getDefaultMessage();
         }
 
-        if (count($replacements) === 0) {
-            return $message;
-        }
-
-        return sprintf($message, ...$replacements);
+        return isCountableEmpty($replacements) ? $message : @sprintf($message, ...$replacements);
     }
 
     /**
@@ -336,7 +352,7 @@ trait ExceptionTrait
      *
      * @return int
      */
-    public function getFinalCode($code = null)
+    protected function getFinalCode($code = null)
     {
         return (int) ($code ? $code : $this->getDefaultCode());
     }
@@ -376,7 +392,7 @@ trait ExceptionTrait
      *
      * @return null|\Exception
      */
-    public function getFinalPrevious(\Exception $exception = null)
+    protected function getFinalPrevious(\Throwable $exception = null)
     {
         return $exception;
     }
