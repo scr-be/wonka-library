@@ -100,9 +100,10 @@ trait ExceptionTrait
     protected function parseParameters(array $parameters = [])
     {
         $previous = null;
-        $replaces = array_filter($parameters, function ($param) use (&$previous) {
-            if ($param instanceof \Throwable) {
-                $previous = $param;
+        $replaces = array_filter($parameters, function ($v) use (&$previous) {
+            if ($v instanceof \Throwable || $v instanceof \Exception) {
+                $previous = $v;
+
                 return false;
             }
 
@@ -386,15 +387,15 @@ trait ExceptionTrait
     }
 
     /**
-     * @param \Exception $exception
+     * @param null|\Exception|\Throwable $e
      *
      * @internal
      *
-     * @return null|\Exception
+     * @return null|\Exception|\Throwable
      */
-    protected function getFinalPrevious(\Throwable $exception = null)
+    protected function getFinalPrevious($e = null)
     {
-        return $exception;
+        return ($e instanceof \Throwable || $e instanceof \Exception) ? $e : null;
     }
 }
 
