@@ -1,25 +1,25 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Utility\System\Execute;
+namespace SR\Wonka\Tests\Utility\System\Execute;
 
-use Scribe\Wonka\Utility\System\Execute\Command;
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Utility\System\Execute\Command;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
 
 class CommandTest extends WonkaTestCase
 {
     public function testFactory()
     {
-        static::assertInstanceOf('Scribe\Wonka\Utility\System\Execute\Command', Command::start());
+        static::assertInstanceOf('SR\Wonka\Utility\System\Execute\Command', Command::start());
     }
 
     public function testBasicCommandWithDefaults()
@@ -90,7 +90,7 @@ class CommandTest extends WonkaTestCase
     public function testExceptionOnNoCommandDefined()
     {
         $this->setExpectedExceptionRegExp(
-            'Scribe\Wonka\Exception\RuntimeException',
+            'SR\Wonka\Exception\RuntimeException',
             '#Cannot run an empty command in.*#'
         );
 

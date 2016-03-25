@@ -1,20 +1,20 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Utility;
+namespace SR\Wonka\Tests\Utility;
 
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
-use Scribe\Wonka\Utility\Plode\Plode;
-use Scribe\Wonka\Exception\BadFunctionCallException;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Utility\Plode\Plode;
+use SR\Wonka\Exception\BadFunctionCallException;
 
 class PlodeTest extends WonkaTestCase
 {
@@ -22,7 +22,7 @@ class PlodeTest extends WonkaTestCase
     {
         $this->setExpectedException(
             'RuntimeException',
-            'Cannot instantiate static class Scribe\Wonka\Utility\Plode\Plode.'
+            'Cannot instantiate static class SR\Wonka\Utility\Plode\Plode.'
         );
         new Plode();
     }

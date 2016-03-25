@@ -1,27 +1,27 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Utility;
+namespace SR\Wonka\Tests\Utility;
 
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
-use Scribe\Wonka\Utility\Extension;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Utility\Extension;
 
 class ExtensionTest extends WonkaTestCase
 {
     public function testThrowsExceptionOnInstantiation()
     {
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\RuntimeException',
-            'Cannot instantiate static class Scribe\Wonka\Utility\Extension'
+            'SR\Wonka\Exception\RuntimeException',
+            'Cannot instantiate static class SR\Wonka\Utility\Extension'
         );
 
         new Extension();
@@ -79,8 +79,8 @@ class ExtensionTest extends WonkaTestCase
     public function testExceptionOnEmptyString()
     {
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\RuntimeException',
-            'Cannot check extension availability against empty string in Scribe\Wonka\Utility\Extension.'
+            'SR\Wonka\Exception\RuntimeException',
+            'Cannot check extension availability against empty string in SR\Wonka\Utility\Extension.'
         );
 
         Extension::isEnabled('');

@@ -1,19 +1,19 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Utility\Reflection;
+namespace SR\Wonka\Tests\Utility\Reflection;
 
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
-use Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyser;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Utility\Reflection\ClassReflectionAnalyser;
 
 /**
  * Class ClassReflectionAnalyserTest.
@@ -23,7 +23,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
     /**
      * @var string
      */
-    const FQCN = 'Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyser';
+    const FQCN = 'SR\Wonka\Utility\Reflection\ClassReflectionAnalyser';
 
     /**
      * @var ClassReflectionAnalyser
@@ -51,7 +51,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         ));
 
         static::assertTrue($reflectionClassAnalyser->hasTrait(
-            'Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $refOfClassReflectionAnalyser
+            'SR\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $refOfClassReflectionAnalyser
         ));
     }
 
@@ -60,12 +60,12 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->unsetReflectionClass();
 
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\InvalidArgumentException',
+            'SR\Wonka\Exception\InvalidArgumentException',
             'No valid object reflection class instance provided explicitly via method call or injected into object instance.'
         );
 
         $this->reflectionClassAnalyser->hasTrait(
-            'Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $this->refOfClassReflectionAnalyser
+            'SR\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $this->refOfClassReflectionAnalyser
         );
     }
 
@@ -79,7 +79,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         ));
 
         static::assertTrue($this->reflectionClassAnalyser->hasTrait(
-            'Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $this->refOfClassReflectionAnalyser
+            'SR\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $this->refOfClassReflectionAnalyser
         ));
     }
 
@@ -96,7 +96,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         ));
 
         static::assertTrue($this->reflectionClassAnalyser->hasTrait(
-            'Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $this->refOfClassReflectionAnalyser
+            'SR\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $this->refOfClassReflectionAnalyser
         ));
     }
 
@@ -114,19 +114,19 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         ));
 
         static::assertTrue($this->reflectionClassAnalyser->hasTrait(
-            'Scribe\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockChildTrait', null, true
+            'SR\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockChildTrait', null, true
         ));
 
         static::assertFalse($this->reflectionClassAnalyser->hasTrait(
-            'Scribe\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockChildTrait', null, false
+            'SR\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockChildTrait', null, false
         ));
 
         static::assertTrue($this->reflectionClassAnalyser->hasTrait(
-            'Scribe\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockParentTrait', null, true
+            'SR\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockParentTrait', null, true
         ));
 
         static::assertFalse($this->reflectionClassAnalyser->hasTrait(
-            'Scribe\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockChildTrait', null, false
+            'SR\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockChildTrait', null, false
         ));
 
         static::assertFalse($this->reflectionClassAnalyser->hasTrait(
@@ -143,7 +143,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         ));
 
         static::assertTrue($this->reflectionClassAnalyser->hasTrait(
-            'Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $this->refOfClassReflectionAnalyser
+            'SR\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait', $this->refOfClassReflectionAnalyser
         ));
     }
 
@@ -166,7 +166,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->unsetReflectionClass();
 
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\InvalidArgumentException',
+            'SR\Wonka\Exception\InvalidArgumentException',
             'No valid object reflection class instance provided explicitly via method call or injected into object instance.'
         );
 
@@ -198,7 +198,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->unsetReflectionClass();
 
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\InvalidArgumentException',
+            'SR\Wonka\Exception\InvalidArgumentException',
             'No valid object reflection class instance provided explicitly via method call or injected into object instance.'
         );
 
@@ -230,8 +230,8 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->setReflectionClassFromClassName(self::FQCN);
 
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\InvalidArgumentException',
-            'The requested property property-does-not-exist does not exist on the passed class Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyser.'
+            'SR\Wonka\Exception\InvalidArgumentException',
+            'The requested property property-does-not-exist does not exist on the passed class SR\Wonka\Utility\Reflection\ClassReflectionAnalyser.'
         );
 
         $this->reflectionClassAnalyser->setPropertyPublic('property-does-not-exist');
@@ -244,7 +244,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
 
         $reflectionMethod = $this->reflectionClassAnalyser->setMethodPublic('getTraitNames');
 
-        $expected = ['Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait'];
+        $expected = ['SR\Wonka\Utility\Reflection\ClassReflectionAnalyserTrait'];
         $traits = $reflectionMethod->invoke($this->reflectionClassAnalyser, $this->reflectionClassAnalyser->getReflectionClass());
 
         static::assertEquals($expected, $traits);
@@ -256,8 +256,8 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->setReflectionClassFromClassName(self::FQCN);
 
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\InvalidArgumentException',
-            'The requested method method-does-not-exist does not exist on the passed class Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyser.'
+            'SR\Wonka\Exception\InvalidArgumentException',
+            'The requested method method-does-not-exist does not exist on the passed class SR\Wonka\Utility\Reflection\ClassReflectionAnalyser.'
         );
 
         $this->reflectionClassAnalyser->setMethodPublic('method-does-not-exist');
@@ -280,7 +280,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->setReflectionClassFromClassName(self::FQCN);
 
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\InvalidArgumentException',
+            'SR\Wonka\Exception\InvalidArgumentException',
             'Invalid filter provided to getProperties. Valid filters are false (for all properties), '.
             '\ReflectionProperty::IS_PRIVATE \ReflectionProperty::IS_PROTECTED, and \ReflectionProperty::IS_PUBLIC.'
         );

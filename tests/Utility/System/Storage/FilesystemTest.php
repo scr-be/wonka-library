@@ -1,19 +1,19 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Utility\System\Storage;
+namespace SR\Wonka\Tests\Utility\System\Storage;
 
-use Scribe\Wonka\Utility\System\Storage\SystemStorage;
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Utility\System\Storage\SystemStorage;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
 
 class FilesystemTest extends WonkaTestCase
 {

@@ -1,21 +1,21 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Component\Hydrator\Manager;
+namespace SR\Wonka\Tests\Component\Hydrator\Manager;
 
-use Scribe\Wonka\Component\Hydrator\Mapping\HydratorMapping;
-use Scribe\Wonka\Component\Hydrator\Manager\HydratorManager;
-use Scribe\Wonka\Tests\Component\Hydrator\HydratorMockObjectInstance;
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Component\Hydrator\Mapping\HydratorMapping;
+use SR\Wonka\Component\Hydrator\Manager\HydratorManager;
+use SR\Wonka\Tests\Component\Hydrator\HydratorMockObjectInstance;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
 
 /**
  * Class HydratorManagerTest.
@@ -123,11 +123,11 @@ class HydratorManagerTest extends WonkaTestCase
         ]);
 
         $this->setExpectedException(
-            '\Scribe\Wonka\Exception\InvalidArgumentException',
-            'The method Scribe\Wonka\Component\Hydrator\Manager\HydratorManager::getMappedObject expects to be passed two objects.'
+            '\SR\Wonka\Exception\InvalidArgumentException',
+            'The method SR\Wonka\Component\Hydrator\Manager\HydratorManager::getMappedObject expects to be passed two objects.'
         );
 
-        $transferManager = new \Scribe\Wonka\Component\Hydrator\Manager\HydratorManager($def);
+        $transferManager = new \SR\Wonka\Component\Hydrator\Manager\HydratorManager($def);
         $transferManager->getMappedObject(self::$objectInstanceOne, 'not-an-obj');
     }
 }

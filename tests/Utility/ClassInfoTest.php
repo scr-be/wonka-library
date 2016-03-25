@@ -1,19 +1,19 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Utility;
+namespace SR\Wonka\Tests\Utility;
 
-use Scribe\Wonka\Utility\ClassInfo;
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Utility\ClassInfo;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
 
 class ClassInfoTest extends WonkaTestCase
 {
@@ -30,8 +30,8 @@ class ClassInfoTest extends WonkaTestCase
         );
 
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\BadFunctionCallException',
-            'The requested static function getinvalidMethodCall does not exist for class Scribe\Wonka\Utility\ClassInfo (or is not callable).'
+            'SR\Wonka\Exception\BadFunctionCallException',
+            'The requested static function getinvalidMethodCall does not exist for class SR\Wonka\Utility\ClassInfo (or is not callable).'
         );
 
         static::assertEquals(
@@ -43,13 +43,13 @@ class ClassInfoTest extends WonkaTestCase
     public function testGetNamespace()
     {
         static::assertEquals(
-            'Scribe\Wonka\Tests\Utility\\',
+            'SR\Wonka\Tests\Utility\\',
             ClassInfo::getNamespace(__CLASS__)
         );
 
         static::assertEquals(
             [
-                'Scribe',
+                'SR',
                 'Wonka',
                 'Tests',
                 'Utility',
@@ -58,13 +58,13 @@ class ClassInfoTest extends WonkaTestCase
         );
 
         static::assertEquals(
-            'Scribe\Wonka\Tests\Utility\\',
+            'SR\Wonka\Tests\Utility\\',
             ClassInfo::getNamespaceByInstance($this)
         );
 
         static::assertEquals(
             [
-                'Scribe',
+                'SR',
                 'Wonka',
                 'Tests',
                 'Utility',
@@ -98,7 +98,7 @@ class ClassInfoTest extends WonkaTestCase
 
     public function testGetTraitName()
     {
-        $trait = 'Scribe\SomeRandomTrait';
+        $trait = 'SR\SomeRandomTrait';
 
         static::assertEquals(
             'SomeRandomTrait',

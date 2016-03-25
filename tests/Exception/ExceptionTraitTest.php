@@ -1,21 +1,21 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Exception;
+namespace SR\Wonka\Tests\Exception;
 
-use Scribe\Wonka\Exception\ExceptionInterface;
-use Scribe\Wonka\Exception\ExceptionTrait;
-use Scribe\Wonka\Exception\LogicException;
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Exception\ExceptionInterface;
+use SR\Wonka\Exception\ExceptionTrait;
+use SR\Wonka\Exception\LogicException;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
 
 /**
  * Class ExceptionTraitTest.
@@ -42,7 +42,7 @@ class ExceptionTraitTest extends WonkaTestCase
      */
     public function makeMock()
     {
-        return $this->getMockBuilder('Scribe\Wonka\Exception\ExceptionTrait')
+        return $this->getMockBuilder('SR\Wonka\Exception\ExceptionTrait')
             ->disableOriginalConstructor()
             ->getMockForTrait();
     }

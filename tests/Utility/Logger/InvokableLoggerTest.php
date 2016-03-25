@@ -1,21 +1,21 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Utility\Logger;
+namespace SR\Wonka\Tests\Utility\Logger;
 
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
-use Scribe\Wonka\Utility\Logger\InvokableLogger;
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Utility\Logger\InvokableLogger;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
 
 /**
  * Class LoggerInvokableTest.
@@ -28,7 +28,7 @@ class LoggerInvokableTest extends WonkaTestCase
     public function mockInvokable(LoggerInterface $logger, $levelDefault = null)
     {
         return $this
-            ->getMockBuilder('Scribe\Wonka\Utility\Logger\InvokableLogger')
+            ->getMockBuilder('SR\Wonka\Utility\Logger\InvokableLogger')
             ->setConstructorArgs([$logger, $levelDefault])
             ->setMethods(null)
             ->getMock();

@@ -1,21 +1,21 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Component\Hydrator\Manager;
+namespace SR\Wonka\Component\Hydrator\Manager;
 
-use Scribe\Wonka\Component\Hydrator\Mapping\HydratorMapping;
-use Scribe\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface;
-use Scribe\Wonka\Exception\InvalidArgumentException;
-use Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyser;
+use SR\Wonka\Component\Hydrator\Mapping\HydratorMapping;
+use SR\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface;
+use SR\Wonka\Exception\InvalidArgumentException;
+use SR\Wonka\Utility\Reflection\ClassReflectionAnalyser;
 
 /**
  * Class HydratorManager.
@@ -23,14 +23,14 @@ use Scribe\Wonka\Utility\Reflection\ClassReflectionAnalyser;
 class HydratorManager implements HydratorManagerInterface
 {
     /**
-     * @var \Scribe\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface
+     * @var \SR\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface
      */
     protected $mapping;
 
     /**
      * Object can be instantiated with the mapping definition directly.
      *
-     * @param \Scribe\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface $mapping
+     * @param \SR\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface $mapping
      */
     public function __construct(HydratorMappingInterface $mapping = null)
     {
@@ -42,7 +42,7 @@ class HydratorManager implements HydratorManagerInterface
     /**
      * Set custom object property mapping.
      *
-     * @param \Scribe\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface|null $mapping
+     * @param \SR\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface|null $mapping
      *
      * @return $this
      */

@@ -1,22 +1,22 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Utility\System;
+namespace SR\Wonka\Utility\System;
 
-use Scribe\Wonka\Exception\LogicException;
-use Scribe\Wonka\Exception\RuntimeException;
-use Scribe\Wonka\Utility\Math;
-use Scribe\Wonka\Utility\StaticClass\StaticClassTrait;
-use Scribe\Wonka\Utility\System\Execute\Command;
+use SR\Wonka\Exception\LogicException;
+use SR\Wonka\Exception\RuntimeException;
+use SR\Wonka\Utility\Math;
+use SR\Wonka\Utility\StaticClass\StaticClassTrait;
+use SR\Wonka\Utility\System\Execute\Command;
 
 /**
  * Class Stats.

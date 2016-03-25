@@ -1,19 +1,19 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Utility;
+namespace SR\Wonka\Tests\Utility;
 
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
-use Scribe\Wonka\Utility\Math;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Utility\Math;
 
 class MathTest extends WonkaTestCase
 {
@@ -21,7 +21,7 @@ class MathTest extends WonkaTestCase
     {
         $this->setExpectedException(
             'RuntimeException',
-            'Cannot instantiate static class Scribe\Wonka\Utility\Math.'
+            'Cannot instantiate static class SR\Wonka\Utility\Math.'
         );
 
         new Math();
@@ -30,7 +30,7 @@ class MathTest extends WonkaTestCase
     public function testShouldAcceptNoLessThanThreeArguments()
     {
         $this->setExpectedException(
-            'Scribe\Wonka\Exception\InvalidArgumentException'
+            'SR\Wonka\Exception\InvalidArgumentException'
         );
 
         Math::toBase(0, 0, 0);

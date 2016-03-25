@@ -1,19 +1,19 @@
 <?php
 
 /*
- * This file is part of the Wonka Library.
+ * This file is part of the `src-run/wonka-library` project.
  *
- * (c) Scribe Inc.     <oss@src.run>
  * (c) Rob Frawley 2nd <rmf@src.run>
+ * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
 
-namespace Scribe\Wonka\Tests\Utility;
+namespace SR\Wonka\Tests\Utility;
 
-use Scribe\Wonka\Serializer\SerializerFactory;
-use Scribe\Wonka\Utility\UnitTest\WonkaTestCase;
+use SR\Wonka\Serializer\SerializerFactory;
+use SR\Wonka\Utility\UnitTest\WonkaTestCase;
 
 /**
  * Class SerializerFactoryTest.
@@ -22,7 +22,7 @@ class SerializerFactoryTest extends WonkaTestCase
 {
     public function testInstantiationException()
     {
-        $this->setExpectedException('Scribe\Wonka\Exception\RuntimeException');
+        $this->setExpectedException('SR\Wonka\Exception\RuntimeException');
 
         new SerializerFactory();
     }
@@ -30,17 +30,17 @@ class SerializerFactoryTest extends WonkaTestCase
     public function testCreateTypes()
     {
         static::assertInstanceOf(
-            'Scribe\Wonka\Serializer\SerializerIgbinary',
+            'SR\Wonka\Serializer\SerializerIgbinary',
             SerializerFactory::create(SerializerFactory::SERIALIZER_IGBINARY)
         );
 
         static::assertInstanceOf(
-            'Scribe\Wonka\Serializer\SerializerJson',
+            'SR\Wonka\Serializer\SerializerJson',
             SerializerFactory::create(SerializerFactory::SERIALIZER_JSON)
         );
 
         static::assertInstanceOf(
-            'Scribe\Wonka\Serializer\SerializerNative',
+            'SR\Wonka\Serializer\SerializerNative',
             SerializerFactory::create(SerializerFactory::SERIALIZER_NATIVE)
         );
     }
@@ -49,7 +49,7 @@ class SerializerFactoryTest extends WonkaTestCase
     {
         if (extension_loaded('igbinary')) {
             static::assertInstanceOf(
-                'Scribe\Wonka\Serializer\SerializerIgbinary',
+                'SR\Wonka\Serializer\SerializerIgbinary',
                 SerializerFactory::create(SerializerFactory::SERIALIZER_AUTO)
             );
         }
@@ -59,7 +59,7 @@ class SerializerFactoryTest extends WonkaTestCase
     {
         if (!extension_loaded('igbinary')) {
             static::assertInstanceOf(
-                'Scribe\Wonka\Serializer\SerializerNative',
+                'SR\Wonka\Serializer\SerializerNative',
                 SerializerFactory::create(SerializerFactory::SERIALIZER_NATIVE)
             );
         }
