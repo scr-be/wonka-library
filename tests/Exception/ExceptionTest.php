@@ -36,6 +36,22 @@ class ExceptionTest extends WonkaTestCase
         static::assertNotNull($e->getCode());
     }
 
+    public function testPrevious()
+    {
+        $p = new Exception();
+        $e = new Exception(null, $p);
+
+        static::assertArraySubset(['back' => []], $e->__debugInfo());
+        static::assertSame($p, $e->getPrevious());
+    }
+
+    public function testMessageReplacementPlaceholderCleanup()
+    {
+        $e = new Exception('A message with (%s) unused placeholders %s everywhere %d$01d and %s$s');
+
+        static::assertSame('A message with (<null>) unused placeholders <null> everywhere <null> and <null>', $e->getMessage());
+    }
+
     public function testLogicException()
     {
         $e = new LogicException('A %s.', 'message');

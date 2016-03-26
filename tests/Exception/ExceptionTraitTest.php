@@ -65,7 +65,7 @@ class ExceptionTraitTest extends WonkaTestCase
 
     public function testDebugOutput()
     {
-        static::assertArraySubset(['trace' => []], static::$e->getDebugOutput());
+        static::assertArraySubset(['back' => []], static::$e->__debugInfo());
     }
 
     public function testType()
@@ -82,7 +82,7 @@ class ExceptionTraitTest extends WonkaTestCase
 
     public function testMessageInConstructorAndWithForParameters()
     {
-        $previous = new LogicException('PREVIOUS');
+        $previous = new \Exception();
         $string = 'A test %s with %d number.';
 
         $e = LogicException::create($string)->with($previous, 'string', 10);

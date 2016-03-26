@@ -25,65 +25,46 @@ trait ExceptionTrait
     protected $attributes;
 
     /**
-     * @param string|null            $message    Message string (see {@see:$parameters} to send values that
-     *                                           will be passed to sprintf.
-     * @param \Throwable|mixed[],... $parameters Additional parameters are fed to {@see sprintf} as
-     *                                           replacements for the message provided. Additionally,
-     *                                           a previous exception can be passed as the last parameter
-     *                                           and it will be pop'd off the replacements and assigned.
+     * @var string|null
+     */
+    protected $messageOriginal;
+
+    /**
+     * @param string|null $message
+     * @param mixed,...   $parameters
      */
     final public function __construct($message = null, ...$parameters)
     {
+        $this->setAttributes([]);
+
         list($previous, $replacements) = $this->parseParameters($parameters);
 
         parent::__construct(
-            $this->getFinalMessage((string) $message, ...$replacements),
-            $this->getFinalCode(null),
-            $this->getFinalPrevious($previous)
+            $this->compileMessage($message, ...$replacements),
+            $this->compileCode(null),
+            $this->compilePrevious($previous)
         );
-
-        $this->setAttributes([]);
     }
 
     /**
      * @param string|null $message
-     * @param mixed,...   $replacements
+     * @param mixed,...   $parameters
      *
      * @return static
      */
-    public static function create($message = null, ...$replacements)
+    final static public function create($message = null, ...$parameters)
     {
-        return new static($message, ...$replacements);
-    }
-
-    /**
-     * @param mixed,... ...$parameters
-     *
-     * @return $this
-     */
-    public function with(...$parameters)
-    {
-        list($previous, $replacements) = $this->parseParameters($parameters);
-
-        if (!isNullOrEmpty($previous)) {
-            $this->setPrevious($previous);
-        }
-
-        if (!isCountableEmpty($replacements)) {
-            $this->setMessage($this->getMessage(), ...$replacements);
-        }
-
-        return $this;
+        return new static($message, ...$parameters);
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    final public function __toString()
     {
         $stringSet = [
             'type' => $this->getType(true),
-            'msg' => $this->getMessage(),
+            'text' => $this->getMessage(),
             'code' => $this->getCode(),
             'file' => $this->getFile(),
             'line' => $this->getLine(),
@@ -93,24 +74,19 @@ trait ExceptionTrait
     }
 
     /**
-     * @param ExceptionInterface[]|mixed[] $parameters
-     *
-     * @return ExceptionInterface[]|array[]
+     * @return array
      */
-    protected function parseParameters(array $parameters = [])
+    final public function __debugInfo()
     {
-        $previous = null;
-        $replaces = array_filter($parameters, function ($v) use (&$previous) {
-            if ($v instanceof \Throwable || $v instanceof \Exception) {
-                $previous = $v;
-
-                return false;
-            }
-
-            return true;
-        });
-
-        return [ $previous, $replaces ];
+        return (array) [
+            'type' => $this->getType(true),
+            'text' => $this->getMessage(),
+            'code' => $this->getCode(),
+            'file' => $this->getFile(),
+            'line' => $this->getLine(),
+            'more' => $this->getAttributes(),
+            'back' => $this->getTraceLimited(),
+        ];
     }
 
     /**
@@ -160,14 +136,34 @@ trait ExceptionTrait
     }
 
     /**
+     * @param mixed,... ...$parameters
+     *
+     * @return $this
+     */
+    final public function with(...$parameters)
+    {
+        list($previous, $replacements) = $this->parseParameters($parameters);
+
+        if (!isNullOrEmpty($previous)) {
+            $this->setPrevious($previous);
+        }
+
+        if (!isCountableEmpty($replacements)) {
+            $this->setMessage($this->messageOriginal, ...$replacements);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param string    $message
      * @param mixed,... $replacements
      *
      * @return $this
      */
-    public function setMessage($message, ...$replacements)
+    final public function setMessage($message, ...$replacements)
     {
-        $this->message = $this->getFinalMessage($message, ...$replacements);
+        $this->message = $this->compileMessage($message, ...$replacements);
 
         return $this;
     }
@@ -177,9 +173,9 @@ trait ExceptionTrait
      *
      * @return $this
      */
-    public function setCode($code = null)
+    final public function setCode($code)
     {
-        $this->code = $this->getFinalCode($code);
+        $this->code = $this->compileCode($code);
 
         return $this;
     }
@@ -189,9 +185,9 @@ trait ExceptionTrait
      *
      * @return $this
      */
-    public function setFile($file)
+    final public function setFile($file)
     {
-        $this->file = $this->getFinalFile($file);
+        $this->file = $this->compileFile($file);
 
         return $this;
     }
@@ -201,9 +197,9 @@ trait ExceptionTrait
      *
      * @return $this
      */
-    public function setLine($line)
+    final public function setLine($line)
     {
-        $this->line = $this->getFinalLine($line);
+        $this->line = $this->compileLine($line);
 
         return $this;
     }
@@ -213,9 +209,9 @@ trait ExceptionTrait
      *
      * @return $this
      */
-    public function setPrevious(\Exception $exception)
+    final public function setPrevious(\Exception $exception)
     {
-        $this->__construct($this->getMessage(), $exception);
+        $this->__construct($this->messageOriginal ?: $this->getMessage(), $exception);
 
         return $this;
     }
@@ -225,7 +221,7 @@ trait ExceptionTrait
      *
      * @return $this
      */
-    public function setAttributes(array $attributes = [])
+    final public function setAttributes(array $attributes = [])
     {
         $this->attributes = $attributes;
 
@@ -235,26 +231,24 @@ trait ExceptionTrait
     /**
      * @return mixed[]
      */
-    public function getAttributes()
+    final public function getAttributes()
     {
         return (array) $this->attributes;
     }
 
     /**
-     * @param mixed           $attribute
-     * @param null|string|int $index
+     * @param mixed      $value
+     * @param null|mixed $index
      *
      * @return $this
      */
-    public function addAttribute($attribute, $index = null)
+    final public function addAttribute($value, $index = null)
     {
         if (isNullOrEmpty($index)) {
-            $this->attributes[] = $attribute;
-
-            return $this;
+            $this->attributes[] = $value;
+        } else {
+            $this->attributes[$index] = $value;
         }
-
-        $this->attributes[$index] = $attribute;
 
         return $this;
     }
@@ -264,7 +258,7 @@ trait ExceptionTrait
      *
      * @return null|mixed
      */
-    public function getAttribute($index)
+    final public function getAttribute($index)
     {
         if (isNullOrEmpty($index) || !$this->hasAttribute($index)) {
             return null;
@@ -278,94 +272,106 @@ trait ExceptionTrait
      *
      * @return bool
      */
-    public function hasAttribute($index)
+    final public function hasAttribute($index)
     {
-        return (bool) (isNullOrEmpty($index) || isset($this->attributes[$index]));
+        return (bool) isNullOrEmpty($index) || isset($this->attributes[$index]);
     }
 
     /**
      * @return array
      */
-    public function getDebugOutput()
-    {
-        return (array) [
-            'e' => $this->getType(true),
-            'msg' => $this->getMessage(),
-            'code' => $this->getCode(),
-            'attrbs' => $this->getAttributes(),
-            'name' => $this->getFile(),
-            'line' => $this->getLine(),
-            'trace' => $this->getTraceLimited(),
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getTraceLimited()
+    final public function getTraceLimited()
     {
         $trace = (array) $this->getTrace();
 
-        array_walk($trace, function (&$v, $i) {
-            foreach ($v['args'] as &$arg) {
-                if (is_object($arg)) {
-                    $arg = get_class($arg);
-                }
-            }
+        array_walk($trace, function (&$t) {
+            array_walk($t['args'], function (&$a) {
+                $a = is_object($a) ? get_class($a) : $a;
+            });
         });
 
         return (array) $trace;
     }
 
     /**
-     * @param false|bool $fQCN
+     * @param false|bool $fqcn
      *
      * @return string
      */
-    public function getType($fqcn = false)
+    final public function getType($fqcn = false)
     {
-        $called = get_called_class();
+        $className = get_called_class();
 
-        return $fqcn === true ? $called : ClassInfo::getClassName($called);
+        return $fqcn ? $className : ClassInfo::getClassName($className);
     }
 
     /**
+     * @internal
+     *
+     * @param ExceptionInterface[]|mixed[] $parameters
+     *
+     * @return ExceptionInterface[]|mixed[]
+     */
+    final protected function parseParameters(array $parameters = [])
+    {
+        $throwable = null;
+
+        $replaces = array_filter($parameters, function ($value) use (&$throwable) {
+            if ($value instanceof \Throwable || $value instanceof \Exception) {
+                $throwable = $value;
+
+                return false;
+            }
+
+            return true;
+        });
+
+        return [$throwable, $replaces];
+    }
+
+    /**
+     * @internal
+     *
      * @param null|string $message
      * @param mixed,...   $replacements
      *
-     * @internal
-     *
      * @return string
      */
-    protected function getFinalMessage($message = null, ...$replacements)
+    final protected function compileMessage($message = null, ...$replacements)
     {
-        if (isNullOrEmpty($message)) {
-            $message = $this->getDefaultMessage();
+        $this->messageOriginal = $message;
+
+        $message = $message ?: $this->getDefaultMessage();
+
+        if (countableSize($replacements) > 0) {
+            $message = @sprintf($message, ...$replacements) ?: $message;
         }
 
-        return isCountableEmpty($replacements) ? $message : @sprintf($message, ...$replacements);
+        return preg_replace_callback('{%[0-9ds][0-9]?(?:\$[0-9]?[0-9]?[a-z]?)?}i', function (array $matches) {
+            return '<null>';
+        }, $message);
     }
 
     /**
-     * @param int|null $code
-     *
      * @internal
+     *
+     * @param int|null $code
      *
      * @return int
      */
-    protected function getFinalCode($code = null)
+    final protected function compileCode($code = null)
     {
         return $code !== null ? $code : $this->getDefaultCode();
     }
 
     /**
-     * @param string|\SplFileInfo $file
-     *
      * @internal
+     *
+     * @param string|\SplFileInfo $file
      *
      * @return string|null
      */
-    protected function getFinalFile($file)
+    final protected function compileFile($file)
     {
         if ($file instanceof \SplFileInfo) {
             return $file->getPathname();
@@ -375,25 +381,25 @@ trait ExceptionTrait
     }
 
     /**
-     * @param int $line
+     * @internal
      *
-     * @default
+     * @param int $line
      *
      * @return int|null
      */
-    protected function getFinalLine($line)
+    final protected function compileLine($line)
     {
         return is_int($line) ? $line : null;
     }
 
     /**
-     * @param null|\Exception|\Throwable $e
-     *
      * @internal
+     *
+     * @param null|\Exception|\Throwable $e
      *
      * @return null|\Exception|\Throwable
      */
-    protected function getFinalPrevious($e = null)
+    final protected function compilePrevious($e = null)
     {
         return ($e instanceof \Throwable || $e instanceof \Exception) ? $e : null;
     }

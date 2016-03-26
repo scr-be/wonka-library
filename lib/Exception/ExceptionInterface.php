@@ -96,18 +96,16 @@ interface ExceptionInterface
 
     /**
      * @param string|null $message
-     * @param mixed,...   $replacements
+     * @param mixed,...   $parameters
      *
      * @return static
      */
-    public static function create($message = null, ...$replacements);
+    public static function create($message = null, ...$parameters);
 
     /**
-     * @param mixed,... ...$parameters
-     *
-     * @return $this
+     * @return array
      */
-    public function with(...$parameters);
+    public function __debugInfo();
 
     /**
      * @return string
@@ -145,8 +143,15 @@ interface ExceptionInterface
     public function getTrace();
 
     /**
+     * @param mixed,... ...$parameters
+     *
+     * @return $this
+     */
+    public function with(...$parameters);
+
+    /**
      * @param string    $message
-     * @param mixed,... $stringReplacements
+     * @param mixed,... $replacements
      *
      * @return $this
      */
@@ -188,12 +193,12 @@ interface ExceptionInterface
     public function setAttributes(array $attributes = []);
 
     /**
-     * @param mixed       $attribute
-     * @param null|string $key
+     * @param mixed       $value
+     * @param null|string $index
      *
      * @return $this
      */
-    public function addAttribute($attribute, $key = null);
+    public function addAttribute($value, $index = null);
 
     /**
      * @return array
@@ -213,11 +218,6 @@ interface ExceptionInterface
      * @return bool
      */
     public function hasAttribute($index);
-
-    /**
-     * @return array
-     */
-    public function getDebugOutput();
 
     /**
      * @return array
