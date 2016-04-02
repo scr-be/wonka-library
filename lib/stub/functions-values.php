@@ -12,7 +12,7 @@
 
 namespace {
 
-    use SR\Wonka\Exception\InvalidArgumentException;
+    use SR\Exception\InvalidArgumentException;
 
     /**
      * Checks for null or empty value.

@@ -90,7 +90,7 @@ class CommandTest extends WonkaTestCase
     public function testExceptionOnNoCommandDefined()
     {
         $this->setExpectedExceptionRegExp(
-            'SR\Wonka\Exception\RuntimeException',
+            'SR\Exception\RuntimeException',
             '#Cannot run an empty command in.*#'
         );
 

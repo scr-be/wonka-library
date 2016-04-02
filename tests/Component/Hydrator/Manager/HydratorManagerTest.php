@@ -123,7 +123,7 @@ class HydratorManagerTest extends WonkaTestCase
         ]);
 
         $this->setExpectedException(
-            '\SR\Wonka\Exception\InvalidArgumentException',
+            '\SR\Exception\InvalidArgumentException',
             'The method SR\Wonka\Component\Hydrator\Manager\HydratorManager::getMappedObject expects to be passed two objects.'
         );
 

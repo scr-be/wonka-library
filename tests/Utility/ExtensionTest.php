@@ -20,7 +20,7 @@ class ExtensionTest extends WonkaTestCase
     public function testThrowsExceptionOnInstantiation()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\RuntimeException',
+            'SR\Exception\RuntimeException',
             'Cannot instantiate static class SR\Wonka\Utility\Extension'
         );
 
@@ -79,7 +79,7 @@ class ExtensionTest extends WonkaTestCase
     public function testExceptionOnEmptyString()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\RuntimeException',
+            'SR\Exception\RuntimeException',
             'Cannot check extension availability against empty string in SR\Wonka\Utility\Extension.'
         );
 

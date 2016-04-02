@@ -30,7 +30,7 @@ class MathTest extends WonkaTestCase
     public function testShouldAcceptNoLessThanThreeArguments()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\InvalidArgumentException'
+            'SR\Exception\InvalidArgumentException'
         );
 
         Math::toBase(0, 0, 0);

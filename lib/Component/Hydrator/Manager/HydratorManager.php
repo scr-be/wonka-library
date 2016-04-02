@@ -12,9 +12,9 @@
 
 namespace SR\Wonka\Component\Hydrator\Manager;
 
+use SR\Exception\InvalidArgumentException;
 use SR\Wonka\Component\Hydrator\Mapping\HydratorMapping;
 use SR\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface;
-use SR\Wonka\Exception\InvalidArgumentException;
 use SR\Wonka\Utility\Reflection\ClassReflectionAnalyser;
 
 /**
@@ -23,14 +23,14 @@ use SR\Wonka\Utility\Reflection\ClassReflectionAnalyser;
 class HydratorManager implements HydratorManagerInterface
 {
     /**
-     * @var \SR\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface
+     * @var HydratorMappingInterface
      */
     protected $mapping;
 
     /**
      * Object can be instantiated with the mapping definition directly.
      *
-     * @param \SR\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface $mapping
+     * @param HydratorMappingInterface $mapping
      */
     public function __construct(HydratorMappingInterface $mapping = null)
     {
@@ -42,7 +42,7 @@ class HydratorManager implements HydratorManagerInterface
     /**
      * Set custom object property mapping.
      *
-     * @param \SR\Wonka\Component\Hydrator\Mapping\HydratorMappingInterface|null $mapping
+     * @param HydratorMappingInterface|null $mapping
      *
      * @return $this
      */

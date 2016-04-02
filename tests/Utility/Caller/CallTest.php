@@ -20,7 +20,7 @@ class CallTest extends WonkaTestCase
     public function testShouldThrowExceptionOnInstantiation()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\RuntimeException',
+            'SR\Exception\RuntimeException',
             'Cannot instantiate static class SR\Wonka\Utility\Caller\Call.'
         );
 
@@ -30,7 +30,7 @@ class CallTest extends WonkaTestCase
     public function testShouldThrowExceptionOnInvalidFunctionCall()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\BadFunctionCallException'
+            'SR\Exception\BadFunctionCallException'
         );
 
         Call::func('this_function_does_not_exist');
@@ -85,7 +85,7 @@ class CallTest extends WonkaTestCase
     public function testShouldThrowExceptionOnInvalidMethodCall()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\BadFunctionCallException'
+            'SR\Exception\BadFunctionCallException'
         );
         $exception = new \Exception();
 
@@ -103,7 +103,7 @@ class CallTest extends WonkaTestCase
     public function testShouldThrowExceptionOnInvalidStaticMethodCall()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\BadFunctionCallException'
+            'SR\Exception\BadFunctionCallException'
         );
 
         Call::staticMethod('\Datetime', 'static_method_does_not_exist');
@@ -120,7 +120,7 @@ class CallTest extends WonkaTestCase
     public function testValidateCall()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\InvalidArgumentException',
+            'SR\Exception\InvalidArgumentException',
             'Invalid parameters provided for SR\Wonka\Utility\Caller\Call::validateCall.'
         );
 
@@ -130,7 +130,7 @@ class CallTest extends WonkaTestCase
     public function testStaticCallOnInvalidClass()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\BadFunctionCallException',
+            'SR\Exception\BadFunctionCallException',
             'The requested class "ThisCallDoesNotExistAnywhereIHopeIfYouMadeThisClassWhy" cannot be found in "SR\Wonka\Utility\Caller\Call::validateClass".'
         );
 
@@ -140,7 +140,7 @@ class CallTest extends WonkaTestCase
     public function testInvalidCallToSomething()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\InvalidArgumentException',
+            'SR\Exception\InvalidArgumentException',
             'Invalid parameters provided for "SR\Wonka\Utility\Caller\Call::generic". Unsure how to handle call.'
         );
 

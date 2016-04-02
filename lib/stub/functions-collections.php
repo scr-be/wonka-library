@@ -12,8 +12,7 @@
 
 namespace {
 
-    use SR\Wonka\Exception\InvalidArgumentException;
-    use SR\Wonka\Utility\Error\DeprecationErrorHandler;
+    use SR\Exception\InvalidArgumentException;
 
     /**
      * @param mixed $first

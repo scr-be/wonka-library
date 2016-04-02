@@ -12,8 +12,8 @@
 
 namespace SR\Wonka\Utility\System;
 
-use SR\Wonka\Exception\LogicException;
-use SR\Wonka\Exception\RuntimeException;
+use SR\Exception\LogicException;
+use SR\Exception\RuntimeException;
 use SR\Wonka\Utility\Math;
 use SR\Wonka\Utility\StaticClass\StaticClassTrait;
 use SR\Wonka\Utility\System\Execute\Command;

@@ -22,7 +22,7 @@ class SerializerFactoryTest extends WonkaTestCase
 {
     public function testInstantiationException()
     {
-        $this->setExpectedException('SR\Wonka\Exception\RuntimeException');
+        $this->setExpectedException('SR\Exception\RuntimeException');
 
         new SerializerFactory();
     }

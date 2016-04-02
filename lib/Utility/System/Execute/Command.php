@@ -12,7 +12,7 @@
 
 namespace SR\Wonka\Utility\System\Execute;
 
-use SR\Wonka\Exception\RuntimeException;
+use SR\Exception\RuntimeException;
 
 /**
  * Class Command.

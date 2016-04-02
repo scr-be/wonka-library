@@ -30,7 +30,7 @@ class ClassInfoTest extends WonkaTestCase
         );
 
         $this->setExpectedException(
-            'SR\Wonka\Exception\BadFunctionCallException',
+            'SR\Exception\BadFunctionCallException',
             'The requested static function getinvalidMethodCall does not exist for class SR\Wonka\Utility\ClassInfo (or is not callable).'
         );
 

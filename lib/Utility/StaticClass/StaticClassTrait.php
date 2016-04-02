@@ -12,7 +12,7 @@
 
 namespace SR\Wonka\Utility\StaticClass;
 
-use SR\Wonka\Exception\RuntimeException;
+use SR\Exception\RuntimeException;
 
 /**
  * StaticClassTrait

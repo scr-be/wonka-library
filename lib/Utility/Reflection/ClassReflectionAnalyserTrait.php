@@ -12,7 +12,7 @@
 
 namespace SR\Wonka\Utility\Reflection;
 
-use SR\Wonka\Exception\InvalidArgumentException;
+use SR\Exception\InvalidArgumentException;
 use SR\Wonka\Utility\ClassInfo;
 
 /**
@@ -361,7 +361,7 @@ trait ClassReflectionAnalyserTrait
     private function getTraitNamesUnqualified(array $traits)
     {
         array_walk($traits, function (&$t) {
-            $t = ClassInfo::getTraitName($t);
+            $t = preg_replace('{.*\\}', '', $t);
         });
 
         return (array) $traits;

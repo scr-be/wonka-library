@@ -13,7 +13,7 @@
 namespace SR\Wonka\Utility;
 
 use SR\Wonka\Utility\StaticClass\StaticClassTrait;
-use SR\Wonka\Exception\InvalidArgumentException;
+use SR\Exception\InvalidArgumentException;
 
 /**
  * Class Math.

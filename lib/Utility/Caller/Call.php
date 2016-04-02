@@ -12,8 +12,8 @@
 
 namespace SR\Wonka\Utility\Caller;
 
-use SR\Wonka\Exception\InvalidArgumentException;
-use SR\Wonka\Exception\BadFunctionCallException;
+use SR\Exception\InvalidArgumentException;
+use SR\Exception\BadFunctionCallException;
 use SR\Wonka\Utility\StaticClass\StaticClassTrait;
 
 /**

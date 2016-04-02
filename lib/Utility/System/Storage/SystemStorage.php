@@ -12,7 +12,7 @@
 
 namespace SR\Wonka\Utility\System\Storage;
 
-use SR\Wonka\Exception\InvalidArgumentException;
+use SR\Exception\InvalidArgumentException;
 
 /**
  * Class SystemStorage.

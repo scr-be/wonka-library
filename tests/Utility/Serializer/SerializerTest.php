@@ -20,7 +20,7 @@ class SerializerTest extends WonkaTestCase
     public function testThrowsExceptionOnInstantiation()
     {
         $this->setExpectedException(
-            'SR\Wonka\Exception\RuntimeException',
+            'SR\Exception\RuntimeException',
             'Cannot instantiate static class SR\Wonka\Utility\Serializer\Serializer'
         );
 

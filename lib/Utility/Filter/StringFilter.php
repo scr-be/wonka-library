@@ -12,108 +12,11 @@
 
 namespace SR\Wonka\Utility\Filter;
 
-use SR\Wonka\Exception\RuntimeException;
-use SR\Wonka\Utility\Caller\Call;
-
 /**
  * Class StringFilter.
  */
 class StringFilter
 {
-    /**
-     * @param string $s
-     *
-     * @return string
-     */
-    public static function alphanumericOnly($s)
-    {
-        return preg_replace('/[^a-z0-9-]/i', '', $s);
-    }
-
-    /**
-     * @param string $s
-     *
-     * @return string
-     */
-    public static function spacesToDashes($s)
-    {
-        return str_replace(' ', '-', $s);
-    }
-
-    /**
-     * @param string $s
-     *
-     * @return string
-     */
-    public static function dashedToSpaces($s)
-    {
-        return str_replace('-', ' ', $s);
-    }
-
-    /**
-     * @param string $s
-     * @param string $function
-     *
-     * @return mixed
-     */
-    public static function alphanumericAndDashesOnly($s, $function = 'strtolower')
-    {
-        $s = self::spacesToDashes($s);
-        $s = self::alphanumericOnly($s);
-        if (null !== $function) {
-            $s = Call::func($function, $s);
-        }
-
-        return $s;
-    }
-
-    /**
-     * @param string $phone
-     *
-     * @return string
-     */
-    public static function parsePhoneString($phone)
-    {
-        $phone =
-            preg_replace(
-                '~.*(\d{3})[^\d]*(\d{3})[^\d]*(\d{4}).*~',
-                '$1$2$3',
-                $phone
-            )
-        ;
-        $phone =
-            preg_replace(
-                '/[^0-9]/',
-                '',
-                $phone
-            )
-        ;
-
-        return $phone;
-    }
-
-    /**
-     * @param string $phone
-     *
-     * @return string
-     */
-    public static function formatPhoneString($phone)
-    {
-        if (strlen($phone) !== 10) {
-            return $phone;
-        }
-
-        $formatted =
-            '+1 ('.
-            substr($phone, 0, 3).
-            ') '.
-            substr($phone, 3, 3).'-'.
-            substr($phone, 6, 4)
-        ;
-
-        return $formatted;
-    }
-
     /**
      * Function to attempt proper title case rules for a given string.
      *
@@ -212,77 +115,6 @@ class StringFilter
 
         /* return result */
         return $title;
-    }
-
-    /**
-     * @param string      $str1
-     * @param string      $str2
-     * @param null|string $encoding
-     *
-     * @return int
-     */
-    public static function mb_strnatcasecmp($str1, $str2, $encoding = 'UTF-8')
-    {
-        if (null !== $encoding) {
-            mb_internal_encoding($encoding);
-        }
-
-        $str1Split = self::mb_str_split(mb_convert_case($str1, MB_CASE_LOWER));
-        $str2Split = self::mb_str_split(mb_convert_case($str2, MB_CASE_LOWER));
-
-        if (count($str1Split) !== count($str2Split)) {
-            return false;
-        }
-
-        for ($i = 0; $i < count($str1Split); ++$i) {
-            if ($str1Split[$i] !== $str2Split[$i]) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param string $string
-     *
-     * @return array
-     */
-    public static function mb_str_split($string)
-    {
-        $stop = mb_strlen($string);
-        $result = [];
-
-        for ($idx = 0; $idx < $stop; ++$idx) {
-            $result[] = mb_substr($string, $idx, 1);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Determine if string is longer than the requested length.
-     *
-     * @param string $string The string to check against
-     * @param int    $length The minimum length of the string
-     * @param bool   $throw  Whether to throw an exception or return a boolean
-     *
-     * @throws RuntimeException
-     *
-     * @return bool
-     */
-    public static function isLongerThan($string, $length, $throw = true)
-    {
-        if (true === (mb_strlen($string) < $length)) {
-            if (true === $throw) {
-                throw new RuntimeException('The string "%s" must be greater than %n characters.', null, null,
-                    (string) $string, (int) $length);
-            }
-
-            return false;
-        }
-
-        return true;
     }
 }
 
