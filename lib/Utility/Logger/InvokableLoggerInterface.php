@@ -29,8 +29,6 @@ interface InvokableLoggerInterface
      * @param string      $message
      * @param null|string $level
      * @param mixed[]     $context
-     *
-     * @return null
      */
     public function __invoke($message, $level = null, array $context = []);
 }

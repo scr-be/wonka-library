@@ -19,14 +19,14 @@ use Psr\Log\LogLevel;
  */
 interface LevelsAwareInterface
 {
-    const EMERGENCY    = LogLevel::EMERGENCY;
-    const ALERT        = LogLevel::ALERT;
-    const CRITICAL     = LogLevel::CRITICAL;
-    const ERROR        = LogLevel::ERROR;
-    const WARNING      = LogLevel::WARNING;
-    const NOTICE       = LogLevel::NOTICE;
-    const INFO         = LogLevel::INFO;
-    const DEBUG        = LogLevel::DEBUG;
+    const EMERGENCY = LogLevel::EMERGENCY;
+    const ALERT = LogLevel::ALERT;
+    const CRITICAL = LogLevel::CRITICAL;
+    const ERROR = LogLevel::ERROR;
+    const WARNING = LogLevel::WARNING;
+    const NOTICE = LogLevel::NOTICE;
+    const INFO = LogLevel::INFO;
+    const DEBUG = LogLevel::DEBUG;
     const HARD_DEFAULT = self::INFO;
 
     /**

@@ -88,7 +88,6 @@ class Stats
             ->run()
             ->getOutput();
 
-
         if (isNullOrEmpty($outputs) || !isCountableEqual($outputs, 1)) {
             throw new RuntimeException('The platform %s returned invalid core count lookup data with return "%d".', Platform::name(), (int) $command->getReturn());
         }

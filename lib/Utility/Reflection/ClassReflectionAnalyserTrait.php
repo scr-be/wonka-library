@@ -13,7 +13,6 @@
 namespace SR\Wonka\Utility\Reflection;
 
 use SR\Exception\InvalidArgumentException;
-use SR\Wonka\Utility\ClassInfo;
 
 /**
  * Class ClassReflectionAnalyserTrait.

@@ -41,7 +41,9 @@ namespace {
         $expected = array_shift($comparisons);
 
         foreach ($comparisons as $c) {
-            if ($expected !== $c) return false;
+            if ($expected !== $c) {
+                return false;
+            }
         }
 
         return true;
@@ -129,7 +131,7 @@ namespace {
             return null;
         }
 
-        return ($result === $expected);
+        return $result === $expected;
     }
 
     /**
