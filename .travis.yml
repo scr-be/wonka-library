@@ -10,53 +10,26 @@
 # file distributed with this source code.
 ##
 
-# Set the required project language environment and advise
-# Travis that this project fully supports the new, speedy,
-# container-built infrastructure.
-language : php
 sudo     : false
+language : php
+php      : [ 5.6, 7.0 ]
 
-# Build against the following engines: Zend 5.6.x, 7.0.x, and
-# 7-nightly, and HHVM-stable and -nightly builds.
-php :
-  - 5.6
-  - 7.0
-
-# Set a sane clone depth for Git.
-git :
+git:
   depth : 3
 
-# List of services to enable. Globally we make sure Memcached and
-# MySQL is installed and running.
-services :
-  - mysql
-  - memcached
-
-# Add custom Hostname to build environment.
-addons :
-  hosts :
-    - mainline.src.run
-
-# Define any required global enviornment variables. Specifically,
-# the package_builder variable must be set to true to enable the
-# automated package builder scripts.
 env :
   global :
-    - build_package=true
+    - secure: q2zaAFkTNmv5Y6B5UUP7gTOZkX9LHzR8XQvMD7em6rr7Sc7JqhfsoI6pshKvsPTlG9syIJ5S+OIcevpf++sX1lsX0033B0Z2IMe1NY+a9wnV/fsLFfKfvoAeJGDWAE3PTjo5c6WvET/W407a+vUO+vWTfPfB+bzuFhEysFrSC3wq6TkZc8Xa2cOu2LrMhdareW6ASkP5cgi4tn/wo7dhkCPKfOgoZHruguarCQMRtvi9XMMI0e0Bdqyv4CXmhpTI4qU05oyDyaP2wAA0502Hy0P2r2PNj01EQXZkpzkErS+SdUk0XyNSjk6htAcVzGwrBV2GGl/rbz2bR3fAQMHnvRG4ZvdBt1Opw0zYrIRQAMNakefKuUT2BEOt5Uc4T7/28jOBg8OXdeoe2CnSsOUN2eAmLKOXfJq+xoMPvyxTiKYePeBuPmkkBkGcbhmyjRvjf/fvAxNpRf4xXQ3qeOtcDa43d5g3u4RJvcg6+zxb0ZPYNvTgnI4QEjEEmYrcBa0Sdnx11AVJXl9+IQjXky5zESHlQA2sEm9HsD73J7uT0kaQ6msgF41mJZn4N9JqqMsWOXFEP1+4V5X4uiDJT1AMWdzOrbP2TmdZHOqNoyKFQ4uXDGNuZ/EiFgnSjaIyIce68sWAxmq9uZhVqEmXf6jv0AYXK92s6TkWXpddUu/WKbM=
 
-# Use builder to install system environment and application 
-# requirements.
 install :
-  - bash .run/builders/build-reqs/build-reqs.bash up-env
-  - bash .run/builders/build-reqs/build-reqs.bash up-app
+  - bash .bldr/bldr -b up-env -q
+  - bash .bldr/bldr -b up-app -q
 
-# Run unit tests!
-script : bin/phpunit -vvv
+script :
+  - bin/phpunit -vvv
 
-# Use builder to run post-operations, most importantly handle
-# statistics submissions for text coverage.
 after_script :
-  - bash .run/builders/build-reqs/build-reqs.bash dn-app
-  - bash .run/builders/build-reqs/build-reqs.bash dn-env
+  - bash .bldr/bldr -b down-app -q
+  - bash .bldr/bldr -b down-env -q
 
 ...

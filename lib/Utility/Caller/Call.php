@@ -14,7 +14,7 @@ namespace SR\Wonka\Utility\Caller;
 
 use SR\Exception\InvalidArgumentException;
 use SR\Exception\BadFunctionCallException;
-use SR\Wonka\Utility\StaticClass\StaticClassTrait;
+use SR\Reflection\Inspect;
 
 /**
  * Class Call.
@@ -24,30 +24,31 @@ use SR\Wonka\Utility\StaticClass\StaticClassTrait;
  */
 class Call implements CallInterface
 {
-    /*
-     * disallow instantiation
-     */
-    use StaticClassTrait;
-
     /**
      * Call a global function or class method (if exists) or callable with specified arguments.
      *
-     * @param string|array|\Closure $callable  A global function name or class method (if exists) or callable
+     * @param string|array|\Closure $what  A global function name or class method (if exists) or callable
      * @param mixed,...             $arguments Arguments to pass to the global function
      *
      * @return mixed
      */
-    public static function generic($callable, ...$arguments)
+    public static function this($what, ...$arguments)
     {
-        if (true === is_array($callable)) {
-            return self::handle(getLastArrayElement($callable), getFirstArrayElement($callable), false, ...$arguments);
-        } elseif ($callable instanceof \Closure) {
-            return $callable(...$arguments);
-        } elseif (true === is_string($callable)) {
-            return self::handle($callable, null, null, ...$arguments);
+        if (is_string($what)) {
+            return static::handle($what, null, null, ...$arguments);
         }
 
-        throw new InvalidArgumentException('Invalid parameters provided for "%s". Unsure how to handle call.', __METHOD__);
+        if (is_array($what)) {
+            return static::handle(getLastArrayElement($what), getFirstArrayElement($what), false, ...$arguments);
+        }
+
+        if ($what instanceof \Closure) {
+            return $what(...$arguments);
+        }
+
+        throw InvalidArgumentException::create()
+            ->setMessage('Invalid call requested (got "%s" with parameters "%s").')
+            ->with(var_export($what, true), var_export($arguments, true));
     }
 
     /**
@@ -60,7 +61,7 @@ class Call implements CallInterface
      */
     public static function func($function, ...$arguments)
     {
-        return self::handle($function, null, null, ...$arguments);
+        return static::handle($function, null, null, ...$arguments);
     }
 
     /**
@@ -74,7 +75,7 @@ class Call implements CallInterface
      */
     public static function method($object, $method, ...$arguments)
     {
-        return self::handle($method, $object, false, ...$arguments);
+        return static::handle($method, $object, false, ...$arguments);
     }
 
     /**
@@ -88,7 +89,7 @@ class Call implements CallInterface
      */
     public static function staticMethod($object, $method, ...$arguments)
     {
-        return self::handle($method, $object, true, ...$arguments);
+        return static::handle($method, $object, true, ...$arguments);
     }
 
     /**
@@ -103,9 +104,9 @@ class Call implements CallInterface
      *
      * @return mixed
      */
-    public static function handle($method = null, $object = null, $static = false, ...$arguments)
+    private static function handle($method = null, $object = null, $static = false, ...$arguments)
     {
-        $call = self::validateCall($method, $object, $static);
+        $call = static::validateCall($method, $object, $static);
 
         return call_user_func_array($call, $arguments);
     }
@@ -117,23 +118,23 @@ class Call implements CallInterface
      * @param string|object|null $object An object class name
      * @param bool|null          $static Whether this is a static call or not
      *
-     * @internal
-     *
      * @throws InvalidArgumentException
      *
      * @return array|string
      */
-    protected static function validateCall($method = null, $object = null, $static = null)
+    private static function validateCall($method = null, $object = null, $static = null)
     {
         if (null === $method && null === $object && null === $static) {
-            throw new InvalidArgumentException('Invalid parameters provided for %s.', __METHOD__);
+            throw InvalidArgumentException::create()
+                ->setMessage('Could not validate call (got method "%s", object "%s", static "%s").')
+                ->with(var_export($method, true), var_export($object, true), var_export($static, true));
         }
 
         if (null !== $method && null === $object && null === $static) {
-            return self::validateFunction($method);
+            return static::validateFunction($method);
         }
 
-        return self::validateMethod($method, self::validateClass($object, $static), $static);
+        return static::validateMethod($method, static::validateClass($object, $static), $static);
     }
 
     /**
@@ -147,13 +148,15 @@ class Call implements CallInterface
      *
      * @return string
      */
-    protected static function validateFunction($function)
+    private static function validateFunction($function)
     {
-        if (false === function_exists($function)) {
-            throw new BadFunctionCallException('The requested function %s does not exist.', (string) $function);
+        if (function_exists($function)) {
+            return $function;
         }
 
-        return (string) $function;
+        throw BadFunctionCallException::create()
+            ->setMessage('Could not find call function (got "%s").')
+            ->with(var_export($function, true));
     }
 
     /**
@@ -168,15 +171,17 @@ class Call implements CallInterface
      *
      * @return string|object
      */
-    protected static function validateClass($object, $static)
+    private static function validateClass($object, $static)
     {
-        $class = (string) (true === is_string($object) ? $object : get_class($object));
-
-        if (false === class_exists($class)) {
-            throw new BadFunctionCallException('The requested class "%s" cannot be found in "%s".', (string) $class, __METHOD__);
+        try {
+            $class = Inspect::this($object)->nameQualified();
+        } catch (\Exception $e) {
+            throw BadFunctionCallException::create()
+                ->setMessage('Could not validate call class (got "%s" with message "%s").')
+                ->with(var_export($object, true), $e->getMessage());
         }
 
-        return true === $static ? $class : $object;
+        return $static ? $class : $object;
     }
 
     /**
@@ -192,18 +197,15 @@ class Call implements CallInterface
      *
      * @return string|array
      */
-    protected static function validateMethod($method, $object, $static)
+    private static function validateMethod($method, $object, $static)
     {
-        $call = (true === $static ? $object.'::'.$method : [$object, $method]);
+        $callable = $static ? $object.'::'.$method : [$object, $method];
 
-        if (false === method_exists($object, $method) || false === is_callable($call)) {
-            throw new BadFunctionCallException(
-                'The requested %s %s does not exist for class %s (or is not callable).',
-                (true === $static ? 'static function' : 'method'), $method, $object
-            );
+        if (method_exists($object, $method) && is_callable($callable)) {
+            return $callable;
         }
 
-        return $call;
+        throw BadFunctionCallException::create('Could not validate call method.');
     }
 }
 

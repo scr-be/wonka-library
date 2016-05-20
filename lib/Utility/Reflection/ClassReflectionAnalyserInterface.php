@@ -18,11 +18,11 @@ namespace SR\Wonka\Utility\Reflection;
 interface ClassReflectionAnalyserInterface
 {
     /**
-     * @param \ReflectionClass|null $reflectionClass
+     * @param string|null $class
      *
-     * @return ClassReflectionAnalyser
+     * @return $this
      */
-    public static function create(\ReflectionClass $reflectionClass = null);
+    public static function create($class = null);
 
     /**
      * Optional injection at instantiation of reflection class for analysis.

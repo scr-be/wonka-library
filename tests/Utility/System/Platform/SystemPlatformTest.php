@@ -12,7 +12,7 @@
 
 namespace SR\Wonka\Tests\Utility\System\Platform;
 
-use SR\Wonka\Utility\System\Platform;
+use SR\Wonka\Utility\System\Platform\Platform;
 use SR\Wonka\Utility\UnitTest\WonkaTestCase;
 
 class PlatformTest extends WonkaTestCase

@@ -17,31 +17,17 @@ use SR\Wonka\Utility\Caller\Call;
 
 class CallTest extends WonkaTestCase
 {
-    public function testShouldThrowExceptionOnInstantiation()
-    {
-        $this->setExpectedException(
-            'SR\Exception\RuntimeException',
-            'Cannot instantiate static class SR\Wonka\Utility\Caller\Call.'
-        );
-
-        new Call();
-    }
-
     public function testShouldThrowExceptionOnInvalidFunctionCall()
     {
-        $this->setExpectedException(
-            'SR\Exception\BadFunctionCallException'
-        );
+        $this->expectException('SR\Exception\BadFunctionCallException');
 
         Call::func('this_function_does_not_exist');
     }
 
     public function testShouldResultInPhpErrorOnInvalidFunctionArgument()
     {
-        $this->setExpectedException(
-            'PHPUnit_Framework_Error',
-            'strtolower() expects parameter 1 to be string, array given'
-        );
+        $this->expectException('PHPUnit_Framework_Error');
+        $this->expectExceptionMessage('strtolower() expects parameter 1 to be string, array given');
 
         $result = Call::func('strtolower', ['an', 'array']);
         static::assertFalse($result);
@@ -51,12 +37,20 @@ class CallTest extends WonkaTestCase
     {
         $phpVersion = Call::func('phpversion');
 
-        static::assertEquals($phpVersion, phpVersion());
+        static::assertEquals($phpVersion, phpversion());
+
+        $phpVersion = Call::this('phpversion');
+
+        static::assertEquals($phpVersion, phpversion());
     }
 
     public function testShouldReturnResultOnFunctionCallWithSingleStringArgument()
     {
         $string = Call::func('strtolower', 'STRING');
+
+        static::assertEquals($string, 'string');
+
+        $string = Call::this('strtolower', 'STRING');
 
         static::assertEquals($string, 'string');
     }
@@ -66,11 +60,19 @@ class CallTest extends WonkaTestCase
         $array = Call::func('array_keys', ['one', 'two', 'three']);
 
         static::assertEquals($array, [0, 1, 2]);
+
+        $array = Call::this('array_keys', ['one', 'two', 'three']);
+
+        static::assertEquals($array, [0, 1, 2]);
     }
 
     public function testShouldReturnResultOnFunctionCallWithMultipleStringArguments()
     {
         $array = Call::func('explode', ',', 'one,two,three');
+
+        static::assertEquals($array, ['one', 'two', 'three']);
+
+        $array = Call::this('explode', ',', 'one,two,three');
 
         static::assertEquals($array, ['one', 'two', 'three']);
     }
@@ -80,13 +82,15 @@ class CallTest extends WonkaTestCase
         $string = Call::func('implode', ',', ['one', 'two', 'three']);
 
         static::assertEquals($string, 'one,two,three');
+
+        $string = Call::this('implode', ',', ['one', 'two', 'three']);
+
+        static::assertEquals($string, 'one,two,three');
     }
 
     public function testShouldThrowExceptionOnInvalidMethodCall()
     {
-        $this->setExpectedException(
-            'SR\Exception\BadFunctionCallException'
-        );
+        $this->expectException('SR\Exception\BadFunctionCallException');
         $exception = new \Exception();
 
         Call::method($exception, 'method_does_not_exist');
@@ -102,9 +106,7 @@ class CallTest extends WonkaTestCase
 
     public function testShouldThrowExceptionOnInvalidStaticMethodCall()
     {
-        $this->setExpectedException(
-            'SR\Exception\BadFunctionCallException'
-        );
+        $this->expectException('SR\Exception\BadFunctionCallException');
 
         Call::staticMethod('\Datetime', 'static_method_does_not_exist');
     }
@@ -112,39 +114,48 @@ class CallTest extends WonkaTestCase
     public function testShouldReturnResultOnStaticMethodCall()
     {
         $time = time();
-        $result = Call::staticMethod('\Datetime', 'createFromFormat', 'Y', $time);
+        $result = Call::staticMethod('\DateTime', 'createFromFormat', 'Y', $time);
 
-        static::assertEquals($result, \Datetime::createFromFormat('Y', $time));
+        static::assertEquals($result, \DateTime::createFromFormat('Y', $time));
+
+        $time = time();
+        $result = Call::this(['\DateTime', 'createFromFormat'], 'Y', $time);
+
+        static::assertEquals($result, \DateTime::createFromFormat('Y', $time));
     }
 
     public function testValidateCall()
     {
-        $this->setExpectedException(
-            'SR\Exception\InvalidArgumentException',
-            'Invalid parameters provided for SR\Wonka\Utility\Caller\Call::validateCall.'
-        );
+        $this->expectException('SR\Exception\InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('{Could not validate call.*}');
 
         Call::func(null);
     }
 
     public function testStaticCallOnInvalidClass()
     {
-        $this->setExpectedException(
-            'SR\Exception\BadFunctionCallException',
-            'The requested class "ThisCallDoesNotExistAnywhereIHopeIfYouMadeThisClassWhy" cannot be found in "SR\Wonka\Utility\Caller\Call::validateClass".'
-        );
+        $this->expectException('SR\Exception\BadFunctionCallException');
+        $this->expectExceptionMessageRegExp('{Could not validate call class.*}');
 
         Call::staticMethod('ThisCallDoesNotExistAnywhereIHopeIfYouMadeThisClassWhy', 'someMethod', 'arg1', 'arg2');
     }
 
     public function testInvalidCallToSomething()
     {
-        $this->setExpectedException(
-            'SR\Exception\InvalidArgumentException',
-            'Invalid parameters provided for "SR\Wonka\Utility\Caller\Call::generic". Unsure how to handle call.'
-        );
+        $this->expectException('SR\Exception\InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('{Invalid call requested.*}');
 
-        Call::generic(42);
+        Call::this(42);
+    }
+
+    public function testCallClosure()
+    {
+        $closure = function () {
+            return 'closure: '.__METHOD__;
+        };
+
+        $return = Call::this($closure);
+        $this->assertContains('closure: ', $return);
     }
 }
 

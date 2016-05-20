@@ -41,6 +41,24 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser = $r;
     }
 
+    public function testStaticConstructor()
+    {
+        $instance = ClassReflectionAnalyser::create(self::FQCN);
+
+        $this->assertInstanceOf(self::FQCN, $instance);
+    }
+
+    public function testTraitsTest()
+    {
+        $class = 'SR\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockChild';
+        $instance = ClassReflectionAnalyser::create($class);
+        $instance->setRequireFQN(false);
+
+        $this->assertTrue($instance->hasTrait('ClassReflectionUnitMockChildTrait'));
+        $this->assertTrue($instance->hasTrait('SR\Wonka\Tests\Utility\Reflection\ClassReflectionUnitMockChildTrait'));
+        $this->assertFalse($instance->hasTrait('BadTraitName_ClassReflectionUnitMockChildTrait'));
+    }
+
     public function testFunctionsOutsideOfContainer()
     {
         $refOfClassReflectionAnalyser = new \ReflectionClass(self::FQCN);

@@ -30,6 +30,15 @@ class FunctionsTest extends WonkaTestCase
         static::assertTrue(\isEqual($b, $b));
     }
 
+    public function testIsCountableEqual()
+    {
+        $a = ['a', 'b', 1, '2'];
+
+        static::assertNotTrue(\isCountableEqual($a, 5));
+        static::assertTrue(\isCountableEqual($a, 4));
+        static::assertNull(\isCountableEqual('a', 4));
+    }
+
     public function testIsCollectionEquals()
     {
         $a = ['a', 'b', 1, '2'];
@@ -120,6 +129,11 @@ class FunctionsTest extends WonkaTestCase
         $this->setExpectedException('\SR\Exception\InvalidArgumentException');
 
         static::assertTrue(isNullOrEmptyStr(null));
+    }
+
+    public function testGetArrayFirstOnNonArrayAccess()
+    {
+        static::assertNull(getFirstArrayElement('not-iterable'));
     }
 
     public function testGetArrayLastOnNonArrayAccess()

@@ -360,7 +360,7 @@ trait ClassReflectionAnalyserTrait
     private function getTraitNamesUnqualified(array $traits)
     {
         array_walk($traits, function (&$t) {
-            $t = preg_replace('{.*\\}', '', $t);
+            $t = preg_replace('{.*\\\}', '', $t);
         });
 
         return (array) $traits;

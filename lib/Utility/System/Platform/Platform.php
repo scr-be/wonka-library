@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SR\Wonka\Utility\System;
+namespace SR\Wonka\Utility\System\Platform;
 
 use SR\Wonka\Utility\StaticClass\StaticClassTrait;
 

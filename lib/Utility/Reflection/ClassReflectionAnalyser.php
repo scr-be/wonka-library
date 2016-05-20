@@ -23,13 +23,13 @@ class ClassReflectionAnalyser implements ClassReflectionAnalyserInterface
     use ClassReflectionAnalyserTrait;
 
     /**
-     * @param \ReflectionClass|null $reflectionClass
+     * @param string|null $class
      *
      * @return $this
      */
-    public static function create(\ReflectionClass $reflectionClass = null)
+    public static function create($class = null)
     {
-        return new self($reflectionClass);
+        return new self($class === null ? null : new \ReflectionClass($class));
     }
 
     /**
