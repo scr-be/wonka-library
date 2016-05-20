@@ -1,57 +1,57 @@
 {
-    "name"        : "src-run/wonka-library",
-    "license"     : "MIT",
-    "type"        : "library",
-    "homepage"    : "https://get.src.run/wonka-library",
-    "description" : "a collection of framework-agnostic classes, interfaces, traits, and root-namespace functions used as the building blocks for other projects",
-    "support" : {
-        "email"  : "rmf@src.run",
-        "source" : "https://get.src.run/wonka-library/git",
-        "issues" : "https://get.src.run/wonka-library/issues"
-    },
-    "keywords"    : [
-        "wonka-library", "wonka", "library", "rmf", "src-run"
-    ],
-    "authors" : [
-        {
-            "name"     : "Rob Frawley 2nd",
-            "email"    : "rmf@src.run",
-            "homepage" : "https://get.src.run/rmf",
-            "role"     : "Project Lead"
-        }
-    ],
-    "require" : {
-        "php"                      : "^5.6||^7.0",
-        "src-run/augustus-library" : "^0.6"
-    },
-    "require-dev" : {
-        "monolog/monolog"        : "^1.18",
-        "phpunit/phpunit"        : "^5.0",
-        "codacy/coverage"        : "^1.0",
-        "satooshi/php-coveralls" : "^1.0"
-    },
-    "autoload" : {
-        "psr-4" : {
-            "SR\\Wonka\\" : "lib/"
-        },
-        "files" : [
-            "lib/stub/functions-values.php",
-            "lib/stub/functions-collections.php"
-        ]
-    },
-    "autoload-dev" : {
-        "psr-4" : {
-            "SR\\Wonka\\Tests\\" : "tests/"
-        }
-    },
-    "minimum-stability" : "dev",
-    "prefer-stable"     : true,
-    "config": {
-        "bin-dir" : "bin"
-    },
-    "extra" : {
-        "branch-alias" : {
-            "dev-master" : "0.6-dev"
-        }
+  "name"        : "src-run/wonka-library",
+  "license"     : "MIT",
+  "type"        : "library",
+  "homepage"    : "https://src.run/wonka-library",
+  "description" : "a collection of framework-agnostic classes, interfaces, traits, and root-namespace functions used as the building blocks for other projects",
+  "support" : {
+    "email"  : "rmf@src.run",
+    "source" : "https://src.run/wonka-library/git",
+    "issues" : "https://src.run/wonka-library/issues"
+  },
+  "keywords"    : [
+    "wonka-library", "wonka", "library", "rmf", "src-run"
+  ],
+  "authors" : [
+    {
+      "name"     : "Rob Frawley 2nd",
+      "email"    : "rmf@src.run",
+      "homepage" : "https://src.run/rmf",
+      "role"     : "Project Lead"
     }
+  ],
+  "require" : {
+    "php"                      : "^5.6||^7.0",
+    "src-run/augustus-library" : "^0.6"
+  },
+  "require-dev" : {
+    "monolog/monolog"        : "^1.18",
+    "phpunit/phpunit"        : "^5.0",
+    "codacy/coverage"        : "^1.0",
+    "satooshi/php-coveralls" : "^1.0"
+  },
+  "autoload" : {
+    "psr-4" : {
+      "SR\\Wonka\\" : "lib/"
+    },
+    "files" : [
+      "lib/stub/functions-values.php",
+      "lib/stub/functions-collections.php"
+    ]
+  },
+  "autoload-dev" : {
+    "psr-4" : {
+      "SR\\Wonka\\Tests\\" : "tests/"
+    }
+  },
+  "minimum-stability" : "dev",
+  "prefer-stable"     : true,
+  "config": {
+    "bin-dir" : "bin"
+  },
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "0.6-dev"
+    }
+  }
 }
