@@ -88,7 +88,7 @@ trait ClassReflectionAnalyserTrait
     }
 
     /**
-     * Unsets the current reflection class associated with object.
+     * Un-sets the current reflection class associated with object.
      *
      * @return $this
      */

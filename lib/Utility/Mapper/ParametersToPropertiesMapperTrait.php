@@ -23,9 +23,9 @@ trait ParametersToPropertiesMapperTrait
 {
     /**
      * Ingests one or more associative arrays (passed as parameters to this method---unlimited in number as method
-     * definition is variadic---and maps them to properties of an object utalizing this trait. The format of the
+     * definition is variadic---and maps them to properties of an object utilizing this trait. The format of the
      * associative arrays must be ['propertyNameFoo' => 'propertyValueFoo', 'propertyNameBar' => 'propertyValueBar, ...]
-     * where the index is a string whos name directly maps to a object property.
+     * where the index is a string who's name directly maps to a object property.
      *
      * Do note that any array keys that exist in multiple method parameter arrays will be overridden by the last
      * definition of that key value.
