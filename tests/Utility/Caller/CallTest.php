@@ -19,7 +19,7 @@ class CallTest extends WonkaTestCase
 {
     public function testShouldThrowExceptionOnInvalidFunctionCall()
     {
-        $this->expectException('SR\Exception\BadFunctionCallException');
+        $this->expectException('SR\Exception\Logic\BadFunctionCallException');
 
         Call::func('this_function_does_not_exist');
     }
@@ -90,7 +90,7 @@ class CallTest extends WonkaTestCase
 
     public function testShouldThrowExceptionOnInvalidMethodCall()
     {
-        $this->expectException('SR\Exception\BadFunctionCallException');
+        $this->expectException('SR\Exception\Logic\BadFunctionCallException');
         $exception = new \Exception();
 
         Call::method($exception, 'method_does_not_exist');
@@ -106,7 +106,7 @@ class CallTest extends WonkaTestCase
 
     public function testShouldThrowExceptionOnInvalidStaticMethodCall()
     {
-        $this->expectException('SR\Exception\BadFunctionCallException');
+        $this->expectException('SR\Exception\Logic\BadFunctionCallException');
 
         Call::staticMethod('\Datetime', 'static_method_does_not_exist');
     }
@@ -126,7 +126,7 @@ class CallTest extends WonkaTestCase
 
     public function testValidateCall()
     {
-        $this->expectException('SR\Exception\InvalidArgumentException');
+        $this->expectException('SR\Exception\Logic\InvalidArgumentException');
         $this->expectExceptionMessageRegExp('{Could not validate call.*}');
 
         Call::func(null);
@@ -134,7 +134,7 @@ class CallTest extends WonkaTestCase
 
     public function testStaticCallOnInvalidClass()
     {
-        $this->expectException('SR\Exception\BadFunctionCallException');
+        $this->expectException('SR\Exception\Logic\BadFunctionCallException');
         $this->expectExceptionMessageRegExp('{Could not validate call class.*}');
 
         Call::staticMethod('ThisCallDoesNotExistAnywhereIHopeIfYouMadeThisClassWhy', 'someMethod', 'arg1', 'arg2');
@@ -142,7 +142,7 @@ class CallTest extends WonkaTestCase
 
     public function testInvalidCallToSomething()
     {
-        $this->expectException('SR\Exception\InvalidArgumentException');
+        $this->expectException('SR\Exception\Logic\InvalidArgumentException');
         $this->expectExceptionMessageRegExp('{Invalid call requested.*}');
 
         Call::this(42);

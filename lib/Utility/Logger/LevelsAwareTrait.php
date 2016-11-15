@@ -12,6 +12,10 @@
 
 namespace SR\Wonka\Utility\Logger;
 
+use SR\Exception\Logic\InvalidArgumentException;
+use SR\Reflection\Inspect;
+use SR\Reflection\Inspector\ConstantInspector;
+
 /**
  * Class LevelsAwareTrait.
  */
@@ -20,39 +24,38 @@ trait LevelsAwareTrait
     /**
      * @var string
      */
-    protected $levelDefault;
+    private $logLevelDefault = self::LOG_LEVEL_DEFAULT;
 
     /**
-     * @param string $level
+     * @param string|null $level
      */
-    public function setLevelDefault($level)
+    public function setLogDefaultLevel($level = null)
     {
-        $this->levelDefault = $this->getLevelValidated($level);
+        $this->logLevelDefault = $this->sanitizeLogLevelConstant($level);
     }
 
     /**
      * @return string
      */
-    public function getLevelDefault()
+    public function getLogDefaultLevel() : string
     {
-        return $this->getLevelValidated($this->levelDefault);
+        return $this->logLevelDefault;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLogDefaultLevel() : bool
+    {
+        return $this->logLevelDefault === self::LOG_LEVEL_DEFAULT;
     }
 
     /**
      * @return string[]
      */
-    public function getLevelListing()
+    public function getLogLevels(): array
     {
-        return [
-            LevelsAwareInterface::EMERGENCY,
-            LevelsAwareInterface::ALERT,
-            LevelsAwareInterface::CRITICAL,
-            LevelsAwareInterface::ERROR,
-            LevelsAwareInterface::WARNING,
-            LevelsAwareInterface::NOTICE,
-            LevelsAwareInterface::INFO,
-            LevelsAwareInterface::DEBUG,
-        ];
+        return $this->getLogLevelConstantValues();
     }
 
     /**
@@ -60,9 +63,50 @@ trait LevelsAwareTrait
      *
      * @return string
      */
-    protected function getLevelValidated($level = null)
+    private function sanitizeLogLevelConstant($level = null)
     {
-        return in_array($level, $this->getLevelListing()) ? $level : LevelsAwareInterface::HARD_DEFAULT;
+        $levelOpening = 'LOG_LEVEL_';
+        $levelDefault = $levelOpening.'DEFAULT';
+
+        $level = strtoupper($level);
+
+        if (substr($level, 0, 10) !== $levelOpening) {
+            $level = $levelOpening.$level;
+        }
+
+        if (!in_array($level, $this->getLogLevelConstantNames())) {
+            $level = $levelDefault;
+        }
+
+        return constant(__CLASS__.'::'.$level);
+    }
+
+    /**
+     * @return \SR\Reflection\Inspector\ConstantInspector[]
+     */
+    private function getLogLevelConstants()
+    {
+        return Inspect::useInstance($this)->constants();
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getLogLevelConstantNames()
+    {
+        return array_map(function (ConstantInspector $constant) {
+            return (string) $constant->name();
+        }, $this->getLogLevelConstants());
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getLogLevelConstantValues()
+    {
+        return array_map(function (ConstantInspector $constant) {
+            return (string) $constant->value();
+        }, $this->getLogLevelConstants());
     }
 }
 

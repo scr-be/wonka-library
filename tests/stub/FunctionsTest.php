@@ -106,7 +106,7 @@ class FunctionsTest extends WonkaTestCase
 
     public function testIsIteratorNotIterable()
     {
-        $a = $this->getMockBuilder('\SR\Exception\RuntimeException')
+        $a = $this->getMockBuilder('\SR\Exception\Runtime\RuntimeException')
             ->getMockForAbstractClass();
 
         static::assertFalse(isIterable($a));
@@ -126,7 +126,7 @@ class FunctionsTest extends WonkaTestCase
         static::assertTrue(isNullOrEmptyStr(''));
         static::assertFalse(notNullOrEmptyStr(''));
 
-        $this->setExpectedException('\SR\Exception\InvalidArgumentException');
+        $this->setExpectedException('\SR\Exception\Logic\InvalidArgumentException');
 
         static::assertTrue(isNullOrEmptyStr(null));
     }

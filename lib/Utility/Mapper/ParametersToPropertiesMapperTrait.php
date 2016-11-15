@@ -11,8 +11,7 @@
  */
 
 namespace SR\Wonka\Utility\Mapper;
-
-use SR\Utility\ArrayInspect;
+use SR\Util\Info\ArrayInfo;
 
 /**
  * Trait MagicPropertyMapperAwareTrait.
@@ -69,7 +68,7 @@ trait ParametersToPropertiesMapperTrait
      */
     final private function filterPropertyAssignmentsForSelf(array $assignmentCollection, array $objectPropertyCollection = [])
     {
-        if (false === ArrayInspect::isAssociative($assignmentCollection)) {
+        if (false === ArrayInfo::isAssociative($assignmentCollection)) {
             return [];
         }
 

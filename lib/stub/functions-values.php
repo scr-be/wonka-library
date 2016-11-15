@@ -12,7 +12,7 @@
 
 namespace {
 
-    use SR\Exception\InvalidArgumentException;
+    use SR\Exception\Logic\InvalidArgumentException;
 
     /**
      * Checks for null or empty value.

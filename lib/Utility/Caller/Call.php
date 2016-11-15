@@ -12,8 +12,8 @@
 
 namespace SR\Wonka\Utility\Caller;
 
-use SR\Exception\InvalidArgumentException;
-use SR\Exception\BadFunctionCallException;
+use SR\Exception\Logic\BadFunctionCallException;
+use SR\Exception\Logic\InvalidArgumentException;
 use SR\Reflection\Inspect;
 
 /**
@@ -47,8 +47,7 @@ class Call implements CallInterface
         }
 
         throw InvalidArgumentException::create()
-            ->setMessage('Invalid call requested (got "%s" with parameters "%s").')
-            ->with(var_export($what, true), var_export($arguments, true));
+            ->setMessage('Invalid call requested (got "%s" with parameters "%s").', var_export($what, true), var_export($arguments, true));
     }
 
     /**
@@ -126,8 +125,7 @@ class Call implements CallInterface
     {
         if (null === $method && null === $object && null === $static) {
             throw InvalidArgumentException::create()
-                ->setMessage('Could not validate call (got method "%s", object "%s", static "%s").')
-                ->with(var_export($method, true), var_export($object, true), var_export($static, true));
+                ->setMessage('Could not validate call (got method "%s", object "%s", static "%s").', var_export($method, true), var_export($object, true), var_export($static, true));
         }
 
         if (null !== $method && null === $object && null === $static) {
@@ -155,8 +153,7 @@ class Call implements CallInterface
         }
 
         throw BadFunctionCallException::create()
-            ->setMessage('Could not find call function (got "%s").')
-            ->with(var_export($function, true));
+            ->setMessage('Could not find call function (got "%s").', var_export($function, true));
     }
 
     /**
@@ -174,11 +171,10 @@ class Call implements CallInterface
     private static function validateClass($object, $static)
     {
         try {
-            $class = Inspect::this($object)->nameQualified();
+            $class = Inspect::using($object)->nameQualified();
         } catch (\Exception $e) {
             throw BadFunctionCallException::create()
-                ->setMessage('Could not validate call class (got "%s" with message "%s").')
-                ->with(var_export($object, true), $e->getMessage());
+                ->setMessage('Could not validate call class (got "%s" with message "%s").', var_export($object, true), $e->getMessage());
         }
 
         return $static ? $class : $object;

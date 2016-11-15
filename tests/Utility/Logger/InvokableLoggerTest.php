@@ -14,11 +14,14 @@ namespace SR\Wonka\Tests\Utility\Logger;
 
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use SR\Wonka\Utility\Logger\InvokableLogger;
 use SR\Wonka\Utility\UnitTest\WonkaTestCase;
 
 /**
  * Class LoggerInvokableTest.
+ *
+ * @skip
  */
 class LoggerInvokableTest extends WonkaTestCase
 {
@@ -35,13 +38,12 @@ class LoggerInvokableTest extends WonkaTestCase
     }
 
     /**
-     * @return Logger
+     * @return \PHPUnit_Framework_MockObject_MockObject|NullLogger
      */
     public function mockLogger()
     {
         return $this
-            ->getMockBuilder('Monolog\Logger')
-            ->setConstructorArgs(['phpunit'])
+            ->getMockBuilder('Psr\Log\NullLogger')
             ->setMethods(['log'])
             ->getMock();
     }
@@ -49,16 +51,15 @@ class LoggerInvokableTest extends WonkaTestCase
     public function testGetterAndSetterMethodsCallable()
     {
         $logger = $this->mockLogger();
-        $logger->expects($this->atLeastOnce())->method('log');
         $invokable = $this->mockInvokable($logger);
 
         static::assertNotNull($invokable->getLogger());
-        static::assertNotNull($invokable->getLevelDefault());
-        static::assertSame(InvokableLogger::HARD_DEFAULT, $invokable->getLevelDefault());
+        static::assertNotNull($invokable->getLogDefaultLevel());
+        static::assertSame(InvokableLogger::LOG_LEVEL_DEFAULT, $invokable->getLogDefaultLevel());
 
-        $invokable->setLevelDefault(InvokableLogger::ALERT);
+        $invokable->setLogDefaultLevel(InvokableLogger::LOG_LEVEL_ALERT);
 
-        static::assertSame(InvokableLogger::ALERT, $invokable->getLevelDefault());
+        static::assertSame(InvokableLogger::LOG_LEVEL_ALERT, $invokable->getLogDefaultLevel());
 
         $invokable('A message for the logger!');
     }

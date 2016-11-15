@@ -61,4 +61,6 @@
 LICENSE
 README
 
+/.php_cs.cache
+
 # EOF

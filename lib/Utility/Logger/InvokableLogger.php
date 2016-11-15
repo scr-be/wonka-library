@@ -12,8 +12,10 @@
 
 namespace SR\Wonka\Utility\Logger;
 
-use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use SR\Exception\Logic\InvalidArgumentException;
+use SR\Log\LoggerAwareInterface;
+use SR\Log\LoggerAwareTrait;
 
 /**
  * Class InvokableLogger.
@@ -30,7 +32,7 @@ class InvokableLogger implements LoggerAwareInterface, InvokableLoggerInterface,
     public function __construct(LoggerInterface $logger, $levelDefault = null)
     {
         $this->setLogger($logger);
-        $this->setLevelDefault($levelDefault);
+        $this->setLogDefaultLevel($levelDefault);
     }
 
     /**
@@ -42,7 +44,16 @@ class InvokableLogger implements LoggerAwareInterface, InvokableLoggerInterface,
      */
     public function __invoke($message, $level = null, array $context = [])
     {
-        $this->logger->log($this->getLevelValidated($level), $message, $context);
+        if (is_null($level)) {
+            $level = $this->getLogDefaultLevel();
+        }
+
+        $method = sprintf('log%s', ucfirst(strtolower($level)));
+
+        call_user_func_array([$this, $method], [
+            $message,
+            $context,
+        ]);
 
         return $this;
     }

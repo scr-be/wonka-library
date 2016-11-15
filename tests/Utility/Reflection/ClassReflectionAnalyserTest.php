@@ -78,7 +78,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->unsetReflectionClass();
 
         $this->setExpectedException(
-            'SR\Exception\InvalidArgumentException',
+            'SR\Exception\Logic\InvalidArgumentException',
             'No valid object reflection class instance provided explicitly via method call or injected into object instance.'
         );
 
@@ -184,7 +184,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->unsetReflectionClass();
 
         $this->setExpectedException(
-            'SR\Exception\InvalidArgumentException',
+            'SR\Exception\Logic\InvalidArgumentException',
             'No valid object reflection class instance provided explicitly via method call or injected into object instance.'
         );
 
@@ -216,7 +216,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->unsetReflectionClass();
 
         $this->setExpectedException(
-            'SR\Exception\InvalidArgumentException',
+            'SR\Exception\Logic\InvalidArgumentException',
             'No valid object reflection class instance provided explicitly via method call or injected into object instance.'
         );
 
@@ -248,7 +248,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->setReflectionClassFromClassName(self::FQCN);
 
         $this->setExpectedException(
-            'SR\Exception\InvalidArgumentException',
+            'SR\Exception\Logic\InvalidArgumentException',
             'The requested property property-does-not-exist does not exist on the passed class SR\Wonka\Utility\Reflection\ClassReflectionAnalyser.'
         );
 
@@ -274,7 +274,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->setReflectionClassFromClassName(self::FQCN);
 
         $this->setExpectedException(
-            'SR\Exception\InvalidArgumentException',
+            'SR\Exception\Logic\InvalidArgumentException',
             'The requested method method-does-not-exist does not exist on the passed class SR\Wonka\Utility\Reflection\ClassReflectionAnalyser.'
         );
 
@@ -298,7 +298,7 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->setReflectionClassFromClassName(self::FQCN);
 
         $this->setExpectedException(
-            'SR\Exception\InvalidArgumentException',
+            'SR\Exception\Logic\InvalidArgumentException',
             'Invalid filter provided to getProperties. Valid filters are false (for all properties), '.
             '\ReflectionProperty::IS_PRIVATE \ReflectionProperty::IS_PROTECTED, and \ReflectionProperty::IS_PUBLIC.'
         );

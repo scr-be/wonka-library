@@ -12,7 +12,7 @@
 
 namespace {
 
-    use SR\Exception\InvalidArgumentException;
+    use SR\Exception\Logic\InvalidArgumentException;
 
     /**
      * @param mixed $first

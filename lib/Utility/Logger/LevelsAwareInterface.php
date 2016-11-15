@@ -19,30 +19,35 @@ use Psr\Log\LogLevel;
  */
 interface LevelsAwareInterface
 {
-    const EMERGENCY = LogLevel::EMERGENCY;
-    const ALERT = LogLevel::ALERT;
-    const CRITICAL = LogLevel::CRITICAL;
-    const ERROR = LogLevel::ERROR;
-    const WARNING = LogLevel::WARNING;
-    const NOTICE = LogLevel::NOTICE;
-    const INFO = LogLevel::INFO;
-    const DEBUG = LogLevel::DEBUG;
-    const HARD_DEFAULT = self::INFO;
+    const LOG_LEVEL_EMERGENCY = LogLevel::EMERGENCY;
+    const LOG_LEVEL_ALERT = LogLevel::ALERT;
+    const LOG_LEVEL_CRITICAL = LogLevel::CRITICAL;
+    const LOG_LEVEL_ERROR = LogLevel::ERROR;
+    const LOG_LEVEL_WARNING = LogLevel::WARNING;
+    const LOG_LEVEL_NOTICE = LogLevel::NOTICE;
+    const LOG_LEVEL_INFO = LogLevel::INFO;
+    const LOG_LEVEL_DEBUG = LogLevel::DEBUG;
+    const LOG_LEVEL_DEFAULT = self::LOG_LEVEL_DEBUG;
 
     /**
-     * @param string $level
+     * @param string|null $level
      */
-    public function setLevelDefault($level);
+    public function setLogDefaultLevel($level = null);
 
     /**
      * @return string
      */
-    public function getLevelDefault();
+    public function getLogDefaultLevel() : string;
+
+    /**
+     * @return bool
+     */
+    public function isLogDefaultLevel() : bool;
 
     /**
      * @return string[]
      */
-    public function getLevelListing();
+    public function getLogLevels() : array;
 }
 
 /* EOF */
