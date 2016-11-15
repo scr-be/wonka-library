@@ -37,16 +37,6 @@ interface LevelsAwareInterface
      * @return string
      */
     public function getLogDefaultLevel() : string;
-
-    /**
-     * @return bool
-     */
-    public function isLogDefaultLevel() : bool;
-
-    /**
-     * @return string[]
-     */
-    public function getLogLevels() : array;
 }
 
 /* EOF */

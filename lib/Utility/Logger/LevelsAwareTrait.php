@@ -41,22 +41,6 @@ trait LevelsAwareTrait
     }
 
     /**
-     * @return bool
-     */
-    public function isLogDefaultLevel() : bool
-    {
-        return $this->logLevelDefault === self::LOG_LEVEL_DEFAULT;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getLogLevels(): array
-    {
-        return $this->getLogLevelConstantValues();
-    }
-
-    /**
      * @param null|string $level
      *
      * @return string
@@ -94,16 +78,6 @@ trait LevelsAwareTrait
     {
         return array_map(function (ConstantInspector $constant) {
             return (string) $constant->name();
-        }, $this->getLogLevelConstants());
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getLogLevelConstantValues()
-    {
-        return array_map(function (ConstantInspector $constant) {
-            return (string) $constant->value();
         }, $this->getLogLevelConstants());
     }
 }
