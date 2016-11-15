@@ -4,7 +4,6 @@
  * This file is part of the `src-run/wonka-library` project.
  *
  * (c) Rob Frawley 2nd <rmf@src.run>
- * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
@@ -22,13 +21,18 @@ class ParametersToPropertiesMapperTraitTest extends WonkaTestCase
         $propertyString[] = 'some-random-string-value';
         $propertyInt[] = 1023;
         $propertyArray[] = ['some', 'random', 'array', 'values'];
-        $propertyCallable[] = [function () {}];
+        $propertyCallable[] = [function () {
+        }];
         $propertyDoesNotExist[] = 'not-a-valid-property';
 
         $propertyString[] = 'another-random-string';
         $propertyInt[] = 2222;
-        $propertyArray[] = ['more' => ['complex', 'array'], 'with-callable' => function () { return true; }, 'and-integers' => [1, 2, 3, 4], 'and-more', 'oh-my!'];
-        $propertyCallable[] = [function ($param1, $param2) { return $param1.$param2; }];
+        $propertyArray[] = ['more' => ['complex', 'array'], 'with-callable' => function () {
+            return true;
+        }, 'and-integers' => [1, 2, 3, 4], 'and-more', 'oh-my!'];
+        $propertyCallable[] = [function ($param1, $param2) {
+            return $param1.$param2;
+        }];
         $propertyDoesNotExist[] = ['this', 'is', 'not', 'a', 'valid', 'property'];
 
         $loopCount = count($propertyString);
@@ -70,7 +74,8 @@ class ParametersToPropertiesMapperTraitTest extends WonkaTestCase
         $mapper = new MapperFixture(
             [
                 'not-valid' => 'nope',
-                'another-invalid-property' => function () {},
+                'another-invalid-property' => function () {
+                },
             ],
             [
                 'last-invalid-assignment' => 12,
@@ -101,7 +106,8 @@ class ParametersToPropertiesMapperTraitTest extends WonkaTestCase
         $parameters = [
             [
                 'not-valid' => 'nope',
-                'another-invalid-property' => function () {},
+                'another-invalid-property' => function () {
+                },
                 'last-invalid-assignment' => 12,
                 'propertyString' => 'a-string',
             ],

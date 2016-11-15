@@ -4,7 +4,6 @@
  * This file is part of the `src-run/wonka-library` project.
  *
  * (c) Rob Frawley 2nd <rmf@src.run>
- * (c) Scribe Inc      <scr@src.run>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
@@ -20,7 +19,7 @@ interface CallInterface
     /**
      * Call a global function or class method (if exists) or callable with specified arguments.
      *
-     * @param string|array|\Closure $what  A global function name or class method (if exists) or callable
+     * @param string|array|\Closure $what      A global function name or class method (if exists) or callable
      * @param ...mixed              $arguments Arguments to pass to the global function
      *
      * @return mixed
