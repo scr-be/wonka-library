@@ -86,7 +86,7 @@ interface ClassReflectionAnalyserInterface
      *
      * @return bool
      */
-    public function getRequireFQN();
+    public function isFqcnRequired();
 
     /**
      * Return true if the given object has the provided trait.

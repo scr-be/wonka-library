@@ -116,7 +116,7 @@ trait ClassReflectionAnalyserTrait
      *
      * @return bool
      */
-    public function getRequireFQN()
+    public function isFqcnRequired()
     {
         return (bool) $this->requireFQN;
     }
@@ -358,8 +358,8 @@ trait ClassReflectionAnalyserTrait
      */
     private function getTraitNamesUnqualified(array $traits)
     {
-        array_walk($traits, function (&$t) {
-            $t = preg_replace('{.*\\\}', '', $t);
+        array_walk($traits, function (&$name) {
+            $name = preg_replace('{.*\\\}', '', $name);
         });
 
         return (array) $traits;

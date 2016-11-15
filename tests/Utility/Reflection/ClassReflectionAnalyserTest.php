@@ -230,15 +230,15 @@ class ClassReflectionAnalyserTest extends WonkaTestCase
         $this->reflectionClassAnalyser->setReflectionClassFromClassName(self::FQCN);
 
         $this->reflectionClassAnalyser->setRequireFQN(true);
-        static::assertTrue($this->reflectionClassAnalyser->getRequireFQN());
+        static::assertTrue($this->reflectionClassAnalyser->isFqcnRequired());
 
         $reflectionProperty = $this->reflectionClassAnalyser->setPropertyPublic('requireFQN');
 
         $reflectionProperty->setValue($this->reflectionClassAnalyser, false);
-        static::assertFalse($this->reflectionClassAnalyser->getRequireFQN());
+        static::assertFalse($this->reflectionClassAnalyser->isFqcnRequired());
 
         $reflectionProperty->setValue($this->reflectionClassAnalyser, true);
-        static::assertTrue($this->reflectionClassAnalyser->getRequireFQN());
+        static::assertTrue($this->reflectionClassAnalyser->isFqcnRequired());
     }
 
     public function testSetPropertyPublicException()
