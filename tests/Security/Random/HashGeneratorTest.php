@@ -50,6 +50,27 @@ class HashGeneratorDisabled extends \PHPUnit_Framework_TestCase
         $this->assertNotSame(128, strlen($generated));
         $this->assertRegExp('{[0-9]}i', $generated);
     }
+
+    public function testGeneratorAlgorithms()
+    {
+        $generator = new HashGenerator();
+        $generator->setReturnRaw(false);
+
+        $generator->setAlgorithm(HashGenerator::ALGORITHM_SHA256);
+        $this->assertSame(64, strlen($generator->generate()));
+
+        $generator->setAlgorithm(HashGenerator::ALGORITHM_SHA384);
+        $this->assertSame(96, strlen($generator->generate()));
+
+        $generator->setAlgorithm(HashGenerator::ALGORITHM_SHA512);
+        $this->assertSame(128, strlen($generator->generate()));
+
+        $generator->setAlgorithm(HashGenerator::ALGORITHM_GOST);
+        $this->assertSame(64, strlen($generator->generate()));
+
+        $generator->setAlgorithm(HashGenerator::ALGORITHM_MD5);
+        $this->assertSame(32, strlen($generator->generate()));
+    }
 }
 
 /* EOF */
