@@ -17,7 +17,9 @@ use SR\Wonka\Security\Random\BytesGenerator;
 /**
  * Class BytesGeneratorTest.
  *
- * @covers \SR\Wonka\Security\Random\AbstractGenerator
+ * @covers \SR\Wonka\Security\Random\GeneratorLengthTrait
+ * @covers \SR\Wonka\Security\Random\GeneratorReturnFilterTrait
+ * @covers \SR\Wonka\Security\Random\GeneratorReturnRawTrait
  * @covers \SR\Wonka\Security\Random\BytesGenerator
  * @covers \SR\Wonka\Security\Random\BytesGeneratorInterface
  */
@@ -67,7 +69,7 @@ class BytesGeneratorTest extends \PHPUnit_Framework_TestCase
         $generator = new BytesGenerator();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot generate random bytes with length of "0" as positive value required.');
+        $this->expectExceptionMessage('Generator length value provided "0" must be non-zero, positive value');
         $generator->setLength(0);
     }
 
@@ -76,7 +78,7 @@ class BytesGeneratorTest extends \PHPUnit_Framework_TestCase
         $generator = new BytesGenerator();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot generate random bytes with length of "-10" as positive value required.');
+        $this->expectExceptionMessage('Generator length value provided "-10" must be non-zero, positive value');
         $generator->setLength(-10);
     }
 

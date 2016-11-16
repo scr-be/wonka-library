@@ -17,7 +17,11 @@ use SR\Wonka\Security\Random\PasswordGenerator;
 /**
  * Class PasswordGeneratorTest.
  *
- * @covers \SR\Wonka\Security\Random\AbstractGenerator
+ * @covers \SR\Wonka\Security\Random\GeneratorBytesInstanceAware
+ * @covers \SR\Wonka\Security\Random\GeneratorEntropyTrait
+ * @covers \SR\Wonka\Security\Random\GeneratorLengthTrait
+ * @covers \SR\Wonka\Security\Random\GeneratorReturnFilterTrait
+ * @covers \SR\Wonka\Security\Random\GeneratorReturnRawTrait
  * @covers \SR\Wonka\Security\Random\PasswordGenerator
  * @covers \SR\Wonka\Security\Random\PasswordGeneratorInterface
  */
@@ -59,15 +63,6 @@ class PasswordGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(1, $generator->getIterations());
     }
 
-    public function testGeneratorLengthExceptionOnLessThanEightValue()
-    {
-        $generator = new PasswordGenerator();
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot generate random password with length of "4" as value of 8 or more is required.');
-        $generator->setLength(4);
-    }
-
     public function testReturnFilter()
     {
         $generator = new PasswordGenerator();
@@ -80,6 +75,24 @@ class PasswordGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertRegExp('{[:]*}', $generated);
         $this->assertRegExp('{[^a-z]}', $generated);
+    }
+
+    public function testGeneratorLengthExceptionOnLessThanEightValue()
+    {
+        $generator = new PasswordGenerator();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Generator length value provided "4" must be greater than eight');
+        $generator->setLength(4);
+    }
+
+    public function testGeneratorEntropyExceptionOnLessThanEightValue()
+    {
+        $generator = new PasswordGenerator();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Generator entropy value provided "0" must be non-zero, positive value');
+        $generator->setEntropy(0);
     }
 }
 

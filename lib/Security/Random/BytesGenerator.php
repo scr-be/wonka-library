@@ -11,12 +11,11 @@
 
 namespace SR\Wonka\Security\Random;
 
-class BytesGenerator extends AbstractGenerator implements BytesGeneratorInterface
+class BytesGenerator implements BytesGeneratorInterface
 {
-    /**
-     * @var \Closure
-     */
-    private $returnRaw;
+    use GeneratorLengthTrait;
+    use GeneratorReturnFilterTrait;
+    use GeneratorReturnRawTrait;
 
     /**
      * BytesGenerator constructor.
@@ -44,20 +43,6 @@ class BytesGenerator extends AbstractGenerator implements BytesGeneratorInterfac
         $instance->setReturnFilter($returnFilter);
 
         return $instance;
-    }
-
-    /**
-     * Set whether raw bytes are returned or not.
-     *
-     * @param bool $returnRaw
-     *
-     * @return BytesGeneratorInterface
-     */
-    public function setReturnRaw(bool $returnRaw = false) : BytesGeneratorInterface
-    {
-        $this->returnRaw = $returnRaw;
-
-        return $this;
     }
 
     /**

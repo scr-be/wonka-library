@@ -14,12 +14,15 @@ namespace SR\Wonka\Security\Random;
 use SR\Exception\Logic\InvalidArgumentException;
 use SR\Wonka\Utility\Security\Password;
 
-class PasswordGenerator extends AbstractGenerator implements PasswordGeneratorInterface
+class PasswordGenerator implements PasswordGeneratorInterface
 {
-    /**
-     * @var int
-     */
-    private $entropy = self::DEFAULT_ENTROPY;
+    use GeneratorBytesInstanceAware;
+    use GeneratorEntropyTrait;
+    use GeneratorLengthTrait {
+        GeneratorLengthTrait::setLength as setLengthBase;
+    }
+    use GeneratorReturnFilterTrait;
+    use GeneratorReturnRawTrait;
 
     /**
      * List of special characters to use in password.
@@ -61,11 +64,12 @@ class PasswordGenerator extends AbstractGenerator implements PasswordGeneratorIn
      *
      * @return PasswordGeneratorInterface
      */
-    public static function create(int $length = 20, int $entropy = self::DEFAULT_ENTROPY, \Closure $returnFilter = null) : PasswordGeneratorInterface
+    public static function create(int $length = 20, int $entropy = 1000, \Closure $returnFilter = null) : PasswordGeneratorInterface
     {
         $instance = new static();
 
         $instance->setLength($length);
+        $instance->setEntropy($entropy);
         $instance->setReturnFilter($returnFilter);
 
         return $instance;
@@ -83,26 +87,10 @@ class PasswordGenerator extends AbstractGenerator implements PasswordGeneratorIn
     public function setLength(int $length) : GeneratorInterface
     {
         if ($length < 8) {
-            throw new InvalidArgumentException('Cannot generate random password with length of "%d" as value of 8 or more is required.', $length);
+            throw new InvalidArgumentException('Generator length value provided "%d" must be greater than eight', $length);
         }
 
-        return parent::setLength($length);
-    }
-
-    /**
-     * Set the amount of random bytes entropy to use for the password.
-     *
-     * @param $entropy
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return BytesGeneratorInterface
-     */
-    public function setEntropy(int $entropy) : PasswordGeneratorInterface
-    {
-        $this->entropy = $entropy;
-
-        return $this;
+        return $this->setLengthBase($length);
     }
 
     /**
@@ -153,7 +141,7 @@ class PasswordGenerator extends AbstractGenerator implements PasswordGeneratorIn
         $this->iterations = 0;
 
         do {
-            $generated = $this->tryGeneration($this->getBytesGenerator());
+            $generated = $this->tryGeneration($this->instantiateBytesGenerator($this->entropy));
         } while (++$this->iterations && !$this->isSecure($generated));
 
         if ($this->returnFilter) {
@@ -161,18 +149,6 @@ class PasswordGenerator extends AbstractGenerator implements PasswordGeneratorIn
         }
 
         return $generated;
-    }
-
-    /**
-     * @return BytesGenerator
-     */
-    private function getBytesGenerator()
-    {
-        $generator = new BytesGenerator();
-        $generator->setReturnRaw(false);
-        $generator->setLength($this->entropy);
-
-        return $generator;
     }
 
     /**
